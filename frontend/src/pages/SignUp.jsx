@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { Link } from "react-router-dom"
 import useSignup from "../hooks/useSignup"
+import LoadingSpinner from "../components/LoadingSpinner"
 
 
 const SignUp = () => {
@@ -12,6 +13,8 @@ const SignUp = () => {
         email: ""
     })
     const {loading, signup} =useSignup();
+
+    
 
  const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,7 +70,9 @@ const SignUp = () => {
     </div>
 
     <div className="text-center  my-2 sm:my-4 ">
-    <button className="bg-green-300 py-1 px-3 rounded-md hover:bg-green-400" >Signup</button>
+    <button className="bg-green-300 py-1 px-3 rounded-md hover:bg-green-400" disabled={loading} >
+    {loading ? <LoadingSpinner/> : "Sign Up"}
+    </button>
     </div>
 
     <p className="text-center mb-3 sm:text-base text-sm mx-3">Already have an account? 

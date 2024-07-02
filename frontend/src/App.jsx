@@ -5,7 +5,8 @@ import SignUp from './pages/SignUp'
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast'
 import useAuthStore from './zustand/useAuthStore';
-import Home from '../public/components/Home';
+import Home from './components/Home';
+
 
 function App() {
   const {authUser}  = useAuthStore();
