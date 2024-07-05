@@ -7,7 +7,8 @@ export default {
   theme: {
     extend: {
       colors: {
-                customGreen: "#40A578",
+                customGreen: "#41B06E  ",
+                customLightGreen: "#8DECB4"
             },
           },
         },

@@ -1,11 +1,14 @@
-import LogoutButton from "./LogoutButton"
+import Dashboard from "./Dashboard"
+import Sidebar from "./Sidebar"
+
 
 
 const Home = () => {
   return (
-    <div>
-   
-      <LogoutButton />
+    <div className="flex flex-row">
+   <Sidebar/>
+   <Dashboard />
+  
     </div>
   )
 }
