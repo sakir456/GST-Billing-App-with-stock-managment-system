@@ -1,4 +1,4 @@
-import Dashboard from "./Dashboard"
+import Dashboard from "./Dashboard/Dashboard"
 import Sidebar from "./Sidebar"
 
 
