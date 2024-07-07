@@ -11,9 +11,9 @@ const DashboardMain = () => {
       <DashboardGraphs/>
      </div>
     
-    <div className="w-auto ml-8 shadow-md">
+    
     <DashboardMainRight/>
-    </div>
+    
     </div>
   )
 }
