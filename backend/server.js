@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import connectToMongoDB from './db/connecttoMongoDB.js';
 import authRoutes from "./routes/auth.routes.js";
-
+import itemRoutes from "./routes/item.routes.js";
 
 dotenv.config();  // This line loads the environment variables
 
@@ -18,6 +18,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes)
+app.use("/api/item",itemRoutes)
 
 app.get('/', (req, res) => {
   res.send('Hello, world!');
