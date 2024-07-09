@@ -42,7 +42,7 @@ const DashboardButton = () => {
       hover:bg-customGreen hover:text-white shadow-md ">
       <div className="flex items-center">
       <BiDownload className="mr-1 text-customLightGreen group-hover:text-white"  />
-      <div className="text-sm">{"you'll Recieve" }`</div>
+      <div className="text-sm">{"you'll Recieve"}</div>
       </div>
       <div className="flex items-center mt-3 font-bold text-lg">
       <FaRupeeSign className="text-base" />
@@ -56,7 +56,7 @@ const DashboardButton = () => {
       hover:bg-customGreen hover:text-white shadow-md ">
       <div className="flex items-center">
       <BiUpload className="mr-1 text-customLightGreen group-hover:text-white"  />
-      <div className="text-sm">{"you'll Give" }`</div>
+      <div className="text-sm">{"you'll Give" }</div>
       </div>
       <div className="flex items-center mt-3 font-bold text-lg">
       <FaRupeeSign className="text-base" />
