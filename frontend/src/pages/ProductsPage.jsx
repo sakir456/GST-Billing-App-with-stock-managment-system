@@ -1,13 +1,12 @@
-import { useState } from "react";
+
 import { FiBox } from "react-icons/fi";
+import useItemStore from "../zustand/useItemStore";
 
 const ProductsPage = () => {
-  const [isAddingItem, setIsAddingItem]  = useState(false);
+  const {isAddingItem,  setIsAddingItem} = useItemStore();
+  
 
-  const handleAddItemClick = () => {
-    setIsAddingItem(true)
-  }
-
+  
   return (
     <div className="">
       <div className="m-4">
@@ -19,7 +18,7 @@ const ProductsPage = () => {
        <div className="flex gap-5">
          <input type="text" placeholder="Search" className="py-1 pl-3  bg-gray-100 outline-none text-sm"/>
          <button className="flex items-center px-2 py-1  bg-customLightGreen text-white rounded-md"
-          onClick={handleAddItemClick}>
+          onClick={()=> setIsAddingItem(true)}>
           + Add Item
 
           </button>
