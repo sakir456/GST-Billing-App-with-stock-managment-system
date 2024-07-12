@@ -3,7 +3,7 @@ import { FiBox } from "react-icons/fi";
 import useItemStore from "../zustand/useItemStore";
 
 const ProductsPage = () => {
-  const {isAddingItem,  setIsAddingItem} = useItemStore();
+  const { setIsAddingItem} = useItemStore();
   
 
   

@@ -1,5 +1,4 @@
-
-const TaxRate = () => {
+const TaxRate = ({ value, onChange }) => {
   const taxRates = [
     "None",
     "IGST@0%",
@@ -21,10 +20,13 @@ const TaxRate = () => {
 
   return (
     <div className="my-3">
-      <select defaultValue="None" className="py-1 px-2 border-2 border-gray-300
-       focus:outline-customLightGreen">
+      <select 
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="py-1 px-2 border-2 border-gray-300 focus:outline-customLightGreen"
+      >
         {taxRates.map((rate, index) => (
-          <option key={index} value={rate.toLowerCase().replace("@", "").replace(" ", "_")} >
+          <option key={index} value={rate.toLowerCase().replace("@", "").replace(" ", "_")}>
             {rate}
           </option>
         ))}
@@ -34,3 +36,4 @@ const TaxRate = () => {
 };
 
 export default TaxRate;
+

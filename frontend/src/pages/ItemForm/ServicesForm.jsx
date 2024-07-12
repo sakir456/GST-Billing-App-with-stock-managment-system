@@ -1,15 +1,23 @@
 import { RxCross1 } from "react-icons/rx"
 import SelectUnit from "../../utils/SelectUnit"
 import TaxRate from "../../utils/TaxRate"
+import useItemStore from "../../zustand/useItemStore";
 
 
 const ServicesForm = () => {
+  const {setIsAddingItem, setIsProducts } = useItemStore();
+
+  const closeServicesForm = () => {
+    setIsAddingItem(false)
+    setIsProducts("services")
+ }
+
   return (
 
-    <form className= "px-10 py-5 ">
+    <form className= "px-10 py-5 h-full ">
     <div className="flex justify-between text-lg font-medium  ">
     <div className="">Add Service</div>
-    <RxCross1 className="mr-3 cursor-pointer"/>
+    <RxCross1 className="mr-3 cursor-pointer" onClick={closeServicesForm}/>
     </div>
     <div className="flex items-center gap-5 my-5 ">
         <input placeholder="Item Name " className="py-1 px-2 border-2 border-gray-300
@@ -34,12 +42,8 @@ const ServicesForm = () => {
     <TaxRate />
      </div>
     </div>
-
-   
-    
-   
-     <div className="text-end">
-      <button className=" mt-20 items-center px-4 py-2  bg-customLightGreen text-white rounded-md">Save</button>
+    <div className="text-end mt-80  ">
+      <button className="  items-center px-4 py-2  bg-customLightGreen text-white rounded-md">Save</button>
      </div>
      
     </form>

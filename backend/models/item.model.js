@@ -18,11 +18,25 @@ const itemSchema = new mongoose.Schema({
         type:Number,
     },
     taxRate:{
-        type:Number,
+        type:String,
     },
     openingQuantity:{
         type:Number,
+    },
+    stockPrice:{
+        type:Number,
+    },
+    salePriceTax:{
+        type:String,
+    },
+    purchasePriceTax:{
+        type:String,
+    },
+    quantityUnit:{
+        type:String,
     }
+
+    
 }, {timestamps: true})
 
 const Item = mongoose.model('Item', itemSchema);
