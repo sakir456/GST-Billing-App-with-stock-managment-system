@@ -2,30 +2,18 @@ import SelectUnit from "../../utils/SelectUnit";
 import TaxRate from "../../utils/TaxRate";
 import { RxCross1 } from "react-icons/rx";
 import useItemStore from "../../zustand/useItemStore";
-import { useState } from "react";
 import useAddItem from "../../hooks/useAddItem";
 import LoadingSpinnerNew from "../../components/LoadingSpinnerNew";
+import useUpdateItem from "../../hooks/useUpdateItem";
 
 const ProductForm = () => {
-  const { setIsAddingItem, setIsProducts } = useItemStore();
+  const { setIsAddingItem, setIsProducts, isUpdateForm,  itemData, setItemData, resetItemData} = useItemStore();
   const { addItem, loading } = useAddItem();
-
-  const [itemData, setItemData] = useState({
-    itemName: "",
-    hsnCode: "",
-    category: "",
-    salePrice: "",
-    purchasePrice: "",
-    taxRate: "none",
-    openingQuantity: "",
-    stockPrice: "",
-    salePriceTax: "none",
-    purchasePriceTax: "none",
-    quantityUnit: "none"
-  });
-
+  const {updateItem, isLoading} = useUpdateItem()
+  
   const handleChange = (e) => {
     setItemData({ ...itemData, [e.target.name]: e.target.value });
+   
   };
 
   const handleSubmit = async (e) => {
@@ -42,33 +30,49 @@ const ProductForm = () => {
       purchasePriceTax: itemData.purchasePriceTax === "none" ? undefined : itemData.purchasePriceTax,
       quantityUnit: itemData.quantityUnit === "none" ? undefined : itemData.quantityUnit
     };
-
     await addItem(formattedItemData);
+    resetItemData();
   };
+
+  const handleUpdateForm = async(e) => {
+    e.preventDefault(); 
+    const formattedItemData = {
+      ...itemData,
+      hsnCode: itemData.hsnCode ? parseInt(itemData.hsnCode, 10) : undefined,
+      salePrice: itemData.salePrice ? parseFloat(itemData.salePrice) : undefined,
+      purchasePrice: itemData.purchasePrice ? parseFloat(itemData.purchasePrice) : undefined,
+      taxRate: itemData.taxRate === "none" ?  undefined : itemData.taxRate,
+      openingQuantity: itemData.openingQuantity ? parseInt(itemData.openingQuantity, 10) : undefined,
+      stockPrice: itemData.stockPrice ? parseFloat(itemData.stockPrice) : undefined,
+      salePriceTax: itemData.salePriceTax === "none" ? undefined : itemData.salePriceTax,
+      purchasePriceTax: itemData.purchasePriceTax === "none" ? undefined : itemData.purchasePriceTax,
+      quantityUnit: itemData.quantityUnit === "none" ? undefined : itemData.quantityUnit
+    };
+    await updateItem (itemData._id,formattedItemData);
+    resetItemData();
+  }
 
   const handleTaxRateChange = (value) => {
     setItemData({ ...itemData, taxRate: value });
   };
 
-  const handleUnitChange = (value) => {
+ const handleUnitChange = (value) => {
     setItemData({ ...itemData, quantityUnit: value });
   };
 
-  const closeProductForm = () => {
+ const closeProductForm = () => {
     setIsAddingItem(false);
     setIsProducts("products");
-  };
+    };
 
-
-  
-  return (
+return (
     <div>
-    {loading ? (
-     <LoadingSpinnerNew/>
+    {loading || isLoading ? (
+     <LoadingSpinnerNew />
     ) : (
-      <form className="px-10 py-5" onSubmit={handleSubmit}>
+      <form className="px-10 py-5" onSubmit={isUpdateForm ? handleUpdateForm  : handleSubmit}>
       <div className="flex justify-between text-lg font-medium">
-        <div className="">Add Item</div>
+        <div className="">{isUpdateForm ? "Update Item" : "Add Item"}</div>
         <RxCross1 className="mr-3 cursor-pointer" onClick={closeProductForm} />
       </div>
       <div className="flex items-center gap-5 my-5">
@@ -108,8 +112,7 @@ const ProductForm = () => {
             onChange={handleChange}
           />
           <select
-         
-            name="salePriceTax"
+         name="salePriceTax"
             className="py-1 px-2 border-2 border-gray-300 border-l-0"
             value={itemData.salePriceTax}
             onChange={handleChange}
@@ -169,9 +172,7 @@ const ProductForm = () => {
       </div>
     </form>
     )}
-    
-
-    </div>
+     </div>
   );
 };
 

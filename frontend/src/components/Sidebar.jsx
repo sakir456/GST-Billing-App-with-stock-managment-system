@@ -17,7 +17,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col">
+    <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col ">
       <div className="flex items-center mb-6 ml-3 w-52">
         <img src="shop.png" alt="shop-image" className="w-9 h-9 mr-2 border rounded-full p-1" />
         <h1 className="text-white overflow-hidden ml-2">Famous Radiators</h1>

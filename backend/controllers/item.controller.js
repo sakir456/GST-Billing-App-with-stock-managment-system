@@ -56,10 +56,10 @@ export const getItem = async (req,res) => {
 
 export const updateItem = async (req,res) => {
     try {
-        const {itemName, hsnCode, category,salePrice,purchasePrice, taxRate,openingQuantity} = req.body;
+        const {itemName, hsnCode, category,salePrice,purchasePrice,taxRate,openingQuantity,stockPrice,salePriceTax,purchasePriceTax,quantityUnit} = req.body;
         const updatedItem = await Item.findByIdAndUpdate(
             req.params.id,
-            {itemName, hsnCode, category,salePrice,purchasePrice, taxRate,openingQuantity},
+            {itemName, hsnCode, category,salePrice,purchasePrice, taxRate,openingQuantity,stockPrice,salePriceTax,purchasePriceTax,quantityUnit},
             {new:true, runValidators:true}
         );
         if(!updatedItem){

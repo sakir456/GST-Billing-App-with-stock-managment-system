@@ -9,9 +9,10 @@ import { Routes, Route } from 'react-router-dom';
 
 const Home = () => {
   return (
-    <div className="flex flex-row">
+    <div className="flex flex-row ">
+   
       <Sidebar />
-      <div className="flex-1">
+  <div className="flex-1">
         <Routes>
           <Route path="/" element={<Dashboard/>} />
           <Route path="/items" element={<ItemsContainer />} />
