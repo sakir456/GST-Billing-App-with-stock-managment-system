@@ -65,6 +65,8 @@ const ProductForm = () => {
     setIsProducts("products");
     };
 
+    const isSaveDisabled = !itemData.itemName || itemData.itemName.trim()==="";
+
 return (
     <div>
     {loading || isLoading ? (
@@ -168,7 +170,10 @@ return (
         />
       </div>
       <div className="text-end">
-        <button className="mt-8 items-center px-4 py-2 bg-customLightGreen text-white rounded-md">Save</button>
+        <button className={`mt-8 items-center px-4 py-2 text-white rounded-md 
+        ${isSaveDisabled ? "bg-gray-400" : "bg-customLightGreen"} `} disabled={isSaveDisabled} >
+        {isUpdateForm ? "Update" : "Save"}
+        </button>
       </div>
     </form>
     )}

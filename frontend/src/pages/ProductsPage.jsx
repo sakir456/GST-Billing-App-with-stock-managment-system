@@ -4,10 +4,14 @@ import useGetItems from "../hooks/useGetItems";
 import LoadingSpinnerNew from "../components/LoadingSpinnerNew";
 import { LuPencil } from "react-icons/lu";
 import { FaRegTrashAlt } from "react-icons/fa";
+import useDeleteItem from "../hooks/useDeleteItem"; 
+import { useState } from "react";
 
 const ProductsPage = () => {
   const { setIsAddingItem, setIsProductForm, setIsUpdateForm, setItemData, resetItemData } = useItemStore();
-  const { items, loading } = useGetItems();
+  const { items, loading, fetchItems } = useGetItems();
+  const { deleteItem, isLoading: isDeleting } = useDeleteItem(); 
+  const [searchQuery,setSearchQuery] = useState("")
 
   const handleAddItemButton = () => {
     setIsAddingItem(true);
@@ -22,9 +26,28 @@ const ProductsPage = () => {
     setItemData(item); 
   };
 
+  const handleDeleteButton = async (itemId) => {
+    if (window.confirm("Are you sure you want to delete this item?")) {
+      try {
+        await deleteItem(itemId);
+        fetchItems(); // Refetch items after successful deletion
+      } catch (error) {
+        console.error('Error deleting item:', error);
+      }
+    }
+  };
+
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const filteredItems = items.filter(item => 
+    item.itemName.toLowerCase().includes(searchQuery.toLowerCase())
+  )
+
   return (
     <div className="relative ">
-      {loading ? (
+      {loading || isDeleting ? ( // Show loading spinner if data is loading or an item is being deleted
         <LoadingSpinnerNew />
       ) : (
         <div className="">
@@ -35,7 +58,10 @@ const ProductsPage = () => {
                 <p className="font-medium">Inventory Management</p>
               </div>
               <div className="flex gap-5">
-                <input type="text" placeholder="Search" className="py-1 pl-3 bg-gray-100 outline-none text-sm" />
+                <input type="search" placeholder="Search" className="py-1 pl-3 bg-gray-100 outline-none text-sm"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
+                 />
                 <button className="flex items-center px-2 py-1 bg-customLightGreen text-white rounded-md" onClick={handleAddItemButton}>
                   + Add Item
                 </button>
@@ -52,8 +78,8 @@ const ProductsPage = () => {
                 <div className="w-1/6 text-center">Actions</div>
               </div>
 
-              {items &&
-                items.map((item) => (
+              {filteredItems &&
+                filteredItems.map((item) => (
                   <div className="flex h-10 px-2 items-center border border-b-2 border-x-2 border-gray-300" key={item._id}>
                     <div className="w-1/6 text-center">{item.itemName}</div>
                     <div className="w-1/6 text-center">{item.category}</div>
@@ -65,7 +91,7 @@ const ProductsPage = () => {
                         <LuPencil />
                         <span className="absolute hidden group-hover:block -bottom-4 left-14 bg-customLightGreen text-white text-xs rounded py-1 px-2">Edit</span>
                       </button>
-                      <button className="text-center group">
+                      <button className="text-center group" onClick={() => handleDeleteButton(item._id)}>
                         <FaRegTrashAlt />
                         <span className="absolute hidden group-hover:block -bottom-4 right-9 bg-customLightGreen text-white text-xs rounded py-1 px-2">Delete</span>
                       </button>
@@ -81,3 +107,4 @@ const ProductsPage = () => {
 };
 
 export default ProductsPage;
+
