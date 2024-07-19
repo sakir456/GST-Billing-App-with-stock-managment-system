@@ -17,7 +17,7 @@ const Sidebar = () => {
   };
 
   return (
-    <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col ">
+    <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col  ">
       <div className="flex items-center mb-6 ml-3 w-52">
         <img src="shop.png" alt="shop-image" className="w-9 h-9 mr-2 border rounded-full p-1" />
         <h1 className="text-white overflow-hidden ml-2">Famous Radiators</h1>
@@ -30,10 +30,10 @@ const Sidebar = () => {
         </li>
 
         <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <button onClick={() => toggleItem('parties')} className="w-full h-full flex items-center justify-between">
+          <Link to="/parties" onClick={() => toggleItem('parties')} className="w-full h-full flex items-center justify-between">
             <span>Parties</span>
             {expandedItem === 'parties' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
-          </button>
+          </Link>
         </li>
 
         <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">

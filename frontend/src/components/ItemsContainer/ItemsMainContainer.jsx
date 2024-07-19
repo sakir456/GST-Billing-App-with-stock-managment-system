@@ -10,7 +10,7 @@ const ItemsMainContainer = () => {
    
 
   return (
-    <div className="w-full ">
+    <div className="w-auto ">
     <div className="flex justify-around h-10 font-semibold text-gray-500">
      <button className={`bg-gray-100 w-1/2 ${isProducts === "products" ? "border border-y-2 border-b-customGreen" : ""}`}
      onClick={() => setIsProducts("products")}>Products</button>
