@@ -4,13 +4,18 @@ import { IoIosArrowUp } from "react-icons/io";
 import LogoutButton from "./LogoutButton";
 import useSidebarStore from "../zustand/useSidebarStore";
 import { Link } from "react-router-dom";
+import useItemStore from "../zustand/useItemStore";
+import usePartyStore from "../zustand/usePartyStore";
 
 const Sidebar = () => {
   const { expandedItem, setExpandedItem } = useSidebarStore();
+  const {isAddingItem} = useItemStore()
+  const {isParty} = usePartyStore();
 
   const toggleItem = (item) => {
     if (expandedItem === item) {
       setExpandedItem(null);
+      isParty(false)
     } else {
       setExpandedItem(item);
     }
@@ -30,14 +35,14 @@ const Sidebar = () => {
         </li>
 
         <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <Link to="/parties" onClick={() => toggleItem('parties')} className="w-full h-full flex items-center justify-between">
+          <Link to="/parties" onClick={() => toggleItem('parties')} className="w-full h-full flex items-center justify-between" >
             <span>Parties</span>
             {expandedItem === 'parties' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
           </Link>
         </li>
 
         <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <Link to="/items" className="w-full h-full flex items-center justify-between">
+          <Link to="/items" className="w-full h-full flex items-center justify-between" onClick={()=> isAddingItem(false)}>
             <span>Items</span>
             <FiPlus className="mr-2" />
           </Link>

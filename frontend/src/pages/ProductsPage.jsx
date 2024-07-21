@@ -30,7 +30,7 @@ const ProductsPage = () => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         await deleteItem(itemId);
-        fetchItems(); // Refetch items after successful deletion
+        fetchItems(); 
       } catch (error) {
         console.error('Error deleting item:', error);
       }
@@ -47,7 +47,7 @@ const ProductsPage = () => {
 
   return (
     <div className="relative ">
-      {loading || isDeleting ? ( // Show loading spinner if data is loading or an item is being deleted
+      {loading || isDeleting ? ( 
         <LoadingSpinnerNew />
       ) : (
         <div className="">

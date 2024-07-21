@@ -1,0 +1,37 @@
+import { useState } from "react";
+import toast from "react-hot-toast";
+
+
+const useUpdateParty = () => {
+    const [isLoading, setIsLoading] = useState(false)
+    const [data, setData] = useState()
+  const updateParty = async(itemId, updatedPartyData) => {
+    if (!updatedPartyData.partyName) {
+        toast.error("Name is required to update Party");
+        return;
+      }
+      setIsLoading(true);
+      try {
+        const res = await fetch(`/api/parties/updateparty/${itemId}`,{
+            method: 'PUT',
+            headers: {'Content-Type': 'application/json',},
+            body:JSON.stringify(updatedPartyData),
+           })
+           const data = res.json();
+           if (data.error) {
+            throw new Error(data.error || "failed to update items");
+          }
+          setData(data)
+          toast.success("Party Updated successfully")
+      } catch (error) {
+        toast.error(error.message);
+      } finally {
+        setIsLoading(false)
+     }
+  }
+
+  return {updateParty,isLoading,data}
+}
+
+
+export default useUpdateParty

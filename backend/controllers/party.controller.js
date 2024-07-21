@@ -1,4 +1,4 @@
-import Party from "../models/party.model"
+import Party from "../models/party.model.js"
 
 export const addParty = async(req,res) => {
     try {
