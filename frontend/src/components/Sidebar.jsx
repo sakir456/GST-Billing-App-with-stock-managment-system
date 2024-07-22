@@ -15,7 +15,7 @@ const Sidebar = () => {
   const toggleItem = (item) => {
     if (expandedItem === item) {
       setExpandedItem(null);
-      isParty(false)
+    
     } else {
       setExpandedItem(item);
     }
@@ -29,52 +29,60 @@ const Sidebar = () => {
       </div>
       <ul className="text-white">
         <li className="flex items-center justify-between py-2 pl-4 hover:bg-customLightGreen hover:border-l-4 hover:border-white cursor-pointer">
-        <Link to="/" className="w-full h-full flex items-center">
+        <Link to="/" 
+        className="w-full h-full flex items-center" onClick={() => isParty(false)}>
             <span>Home</span>
           </Link>
         </li>
-
-        <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <Link to="/parties" onClick={() => toggleItem('parties')} className="w-full h-full flex items-center justify-between" >
-            <span>Parties</span>
-            {expandedItem === 'parties' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
-          </Link>
+        <Link to="/parties" 
+         className="w-full  flex items-center py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen " >
+        <li className=" w-full h-full    ">
+        <span className="w-full h-full">Parties</span>
         </li>
-
-        <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <Link to="/items" className="w-full h-full flex items-center justify-between" onClick={()=> isAddingItem(false)}>
-            <span>Items</span>
+        </Link>
+          
+        <Link to="/items" 
+        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen" onClick={()=> isAddingItem(false)}>
+        <li className="w-full h-full flex  items-center">
+           <span className="w-full h-full">Items</span>
             <FiPlus className="mr-2" />
-          </Link>
-        </li>
-
-        <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <button onClick={() => toggleItem('sale')} className="w-full h-full flex items-center justify-between">
-            <span>Sale</span>
+          </li>
+        </Link>
+        
+        <Link to="/sales" onClick={() => toggleItem('sale')} 
+        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
+        <li className="w-full h-full flex  items-center">
+         <span className="w-full h-full">Sale</span>
             {expandedItem === 'sale' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
-          </button>
         </li>
-
-        <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <button onClick={() => toggleItem('purchase')} className="w-full h-full flex items-center justify-between">
-            <span>Purchase</span>
+        </Link>
+         
+        <Link to="/purchase" onClick={() => toggleItem('purchase')} 
+         className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
+        <li className="w-full h-full flex  items-center">
+         
+            <span className="w-full h-full">Purchase</span>
             {expandedItem === 'purchase' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
-          </button>
+         
         </li>
-
-        <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <button onClick={() => toggleItem('expenses')} className="w-full h-full flex items-center justify-between">
-            <span>Expenses</span>
+        </Link>
+          
+        <Link to="/expenses" onClick={() => toggleItem('expenses')}
+         className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
+        <li className="w-full h-full flex  items-center">
+           <span className="w-full h-full">Expenses</span>
             {expandedItem === 'expenses' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
-          </button>
-        </li>
+         </li>
+        </Link>
 
-        <li className="hover:bg-customLightGreen hover:border-l-4 hover:border-white py-2 pl-4">
-          <button onClick={() => toggleItem('cash')} className="w-full h-full flex items-center justify-between">
-            <span>Cash & Bank</span>
+        <Link to="/cash&bank" onClick={() => toggleItem('cash')} 
+        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
+        <li className="w-full h-full flex  items-center">
+         
+<span className="w-full h-full">Cash & Bank</span>
             {expandedItem === 'cash' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
-          </button>
         </li>
+        </Link>
 
         <li className="flex items-center justify-between py-2 pl-4 hover:bg-customLightGreen hover:border-l-4 hover:border-white cursor-pointer">
           <span>Reports</span>

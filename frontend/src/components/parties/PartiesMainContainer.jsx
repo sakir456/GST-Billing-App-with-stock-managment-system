@@ -5,12 +5,13 @@ import usePartyStore from "../../zustand/usePartyStore"
 import useGetParties from "../../hooks/parties/useGetParties"
 import LoadingSpinnerNew from "../LoadingSpinnerNew"
 import useDeleteParty from "../../hooks/parties/useDeleteParty"
-
+import { useState } from "react";
 
 const PartiesMainContainer = () => {
     const {setIsParty,  setIsUpdatePartyForm, setPartyData} = usePartyStore();
     const { parties, loading, fetchParties } = useGetParties();
     const { deleteParty, isLoading } = useDeleteParty()
+    const [searchQuery,setSearchQuery] = useState("")
 
     const handleAddPartyButton = () => {
       setIsParty(true)
@@ -33,6 +34,14 @@ const PartiesMainContainer = () => {
         }
       }
     }
+    const handleSearchInputChange = (e) => {
+      setSearchQuery(e.target.value)
+    }
+
+    const filteredItems = parties.filter(party => 
+      party.partyName.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+
   return (
     <div>
    {loading || isLoading ? (
@@ -45,7 +54,10 @@ const PartiesMainContainer = () => {
             <p className="font-medium">Parties List</p>
           </div>
           <div className="flex gap-5">
-            <input type="search" placeholder="Search" className="py-1 pl-3 bg-gray-100 outline-none text-sm"/>
+            <input type="search" placeholder="Search" className="py-1 pl-3 w-60 bg-gray-100 outline-none text-sm"
+             value={searchQuery}
+             onChange={handleSearchInputChange}
+            />
             <button className="flex items-center px-2 py-1 bg-customLightGreen text-white rounded-md" onClick={handleAddPartyButton} >
               + Add Party
             </button>
@@ -61,8 +73,8 @@ const PartiesMainContainer = () => {
 
           </div>
 
-          { 
-            parties.map((party) => (
+          { filteredItems &&
+            filteredItems.map((party) => (
               <div className="flex h-10 px-2 items-center border border-b-2 border-x-2 border-gray-300" key={party._id}>
                 <div className="w-1/4 text-center">{party.partyName}</div>
                 <div className="w-1/4 text-center"> To Collect</div>
@@ -70,11 +82,11 @@ const PartiesMainContainer = () => {
                 <div className="w-1/4 h-full flex justify-center gap-3 text-center relative">
                   <button className="text-center group" onClick={() => handleUpdatePartyButton(party)} >
                     <LuPencil />
-                    <span className="absolute hidden group-hover:block -bottom-4 left-14 bg-customLightGreen text-white text-xs rounded py-1 px-2">Edit</span>
+                    <span className="absolute hidden group-hover:block -bottom-4 left-24 bg-customLightGreen text-white text-xs rounded py-1 px-2">Edit</span>
                   </button>
                   <button className="text-center group" onClick={() => handleDeletePartyButton(party._id)} >
                     <FaRegTrashAlt />
-                    <span className="absolute hidden group-hover:block -bottom-4 right-9 bg-customLightGreen text-white text-xs rounded py-1 px-2">Delete</span>
+                    <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-customLightGreen text-white text-xs rounded py-1 px-2">Delete</span>
                   </button>
                 </div>
                 </div> 

@@ -2,6 +2,7 @@ import { RxCross1 } from "react-icons/rx"
 import usePartyStore from "../zustand/usePartyStore"
 import useAddParty from "../hooks/parties/useAddParty";
 import useUpdateParty from "../hooks/parties/useUpdateParty";
+import LoadingSpinnerNew from "../components/LoadingSpinnerNew";
 
 
 
@@ -39,9 +40,14 @@ const AddPartyForm = () => {
      setIsParty(false)
     
   }
+  const isSaveDisabled = !partyData.partyName || partyData.partyName.trim()==="";
 
   return (
-    <form className= "px-10 py-5 " onSubmit={isUpdatePartyForm ? handleUpdatePartyForm : handleSubmitForm}>
+    <div>
+    { loading || isLoading ? (
+      <LoadingSpinnerNew />
+    ) : (
+       <form className= "px-10 py-5 " onSubmit={isUpdatePartyForm ? handleUpdatePartyForm : handleSubmitForm}>
     <div className="flex justify-between text-lg font-medium  ">
     <div className="">{isUpdatePartyForm ? "Update Party" : "Add Party"}</div>
     <RxCross1 className="mr-3 cursor-pointer"  onClick={() => setIsParty(false)}/>
@@ -100,10 +106,15 @@ const AddPartyForm = () => {
         />
     </div>
     <div className="text-end mt-40">
-      <button className="  items-center px-4 py-2  bg-customLightGreen text-white rounded-md">{isUpdatePartyForm ? "Update" : "Save"}</button>
+      <button className={`mt-8 items-center px-4 py-2 text-white rounded-md 
+        ${isSaveDisabled ? "bg-gray-400" : "bg-customLightGreen"} `} disabled={isSaveDisabled}>
+      {isUpdatePartyForm ? "Update" : "Save"}
+      </button>
      </div>
      
     </form>
+    ) }
+  </div>
   )
 }
 

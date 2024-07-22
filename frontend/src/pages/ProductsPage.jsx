@@ -58,7 +58,7 @@ const ProductsPage = () => {
                 <p className="font-medium">Inventory Management</p>
               </div>
               <div className="flex gap-5">
-                <input type="search" placeholder="Search" className="py-1 pl-3 bg-gray-100 outline-none text-sm"
+                <input type="search" placeholder="Search" className="py-1 pl-3 w-60 bg-gray-100 outline-none text-sm"
                 value={searchQuery}
                 onChange={handleSearchInputChange}
                  />
