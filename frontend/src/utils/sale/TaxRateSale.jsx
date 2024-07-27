@@ -22,17 +22,18 @@ const TaxRateSale = ({onChange, value}) => {
       ];
     
       return (
-        <div className="w-1/6 flex  justify-center border-r-2 h-full  items-center text-right focus:outline-customLightGreen">
+        <div className="w-1/2 flex  justify-center border-r-2 h-full  items-center text-right focus:outline-customLightGreen">
           <select 
            
            
-            className="w-full py-2 px-5   focus:outline-customLightGreen" 
+            className="w-full py-2  focus:outline-customLightGreen" 
             value={value}
 
             onChange={onChange}
           >
             {taxRates.map((rate, index) => (
-              <option key={index} value={rate.toLowerCase().replace("@", "").replace(" ", "_")} className="focus:outline-customLightGreen">
+              <option key={index} value={rate.toLowerCase().replace("@", "").replace(" ", "_")} 
+              className="focus:outline-customLightGreen text-sm">
                 {rate}
               </option>
             ))}

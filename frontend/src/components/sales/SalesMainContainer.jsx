@@ -43,7 +43,7 @@ const SalesMainContainer = () => {
                 <div className="w-1/5 text-center">5000</div>
                 <div className="w-1/5 h-full flex justify-center gap-3 text-center relative">
                   <button className="text-center group"  >
-                    <LuPencil />
+                    <LuPencil  />
                     <span className="absolute hidden group-hover:block -bottom-4 left-24 bg-customLightGreen text-white text-xs rounded py-1 px-2">Edit</span>
                   </button>
                   <button className="text-center group"  >
