@@ -8,7 +8,7 @@ const PartiesContainer = () => {
   const {isParty} = usePartyStore();
   return (
     <div>
-        <Searchbar/>
+          <Searchbar/>
         {isParty ? <AddPartyForm/> : <PartiesMainContainer/>}
     </div>
   )

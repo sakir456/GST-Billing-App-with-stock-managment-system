@@ -1,8 +1,21 @@
 
+import Searchbar from "../Dashboard/Searchbar";
+import SalesMainContainer from "./SalesMainContainer";
 
 const SalesContainer = () => {
+
   return (
-    <div>SalesContainer</div>
+    <div>
+        
+     
+        <div>
+        <Searchbar/>
+        <SalesMainContainer/>  
+        </div>
+             
+      
+      
+    </div>
   )
 }
 

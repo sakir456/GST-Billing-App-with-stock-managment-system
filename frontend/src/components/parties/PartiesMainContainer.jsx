@@ -70,8 +70,7 @@ const PartiesMainContainer = () => {
              <div className="w-1/4 text-center">To Pay/Collect</div>
             <div className="w-1/4 text-center">Amount</div>
             <div className="w-1/4 text-center">Action</div>
-
-          </div>
+            </div>
 
           { filteredItems &&
             filteredItems.map((party) => (
