@@ -3,7 +3,8 @@ import Item from "../models/item.model.js";
 
 export const addItem  = async(req,res) => {
     try {
-        const {itemName, hsnCode, category,salePrice,purchasePrice,taxRate,openingQuantity,stockPrice,salePriceTax,purchasePriceTax,quantityUnit} = req.body;
+        const {itemName, hsnCode, category,salePrice,purchasePrice,taxRate,openingQuantity,
+            stockPrice,salePriceTax,purchasePriceTax,quantityUnit} = req.body;
         if(!itemName) {
            return res.status({error:"Name is required"})
         }
