@@ -1,28 +1,34 @@
 import Invoice from "../models/invoice.model.js";
 
-export const createInvoice  = async(req,res) => {
+export const createInvoice = async (req, res) => {
     try {
-        const {partyName,billingName,Email,poNo,poDate,ewayBillNo,invoiceNo, invoiceDate, items, pandfAmount,GrandTotal} = req.body;
+        const { saleItems, partyInfo, grandTotal } = req.body;
+        const {
+            partyName, billingName, email, poNo, poDate, ewayBillNo, invoiceNo, invoiceDate
+        } = partyInfo;
+        const { pandfAmount, grandTotal: totalAmount } = grandTotal;
+
         const newInvoice = new Invoice({
             partyName,
             billingName,
-            Email,
+            email,
             poNo,
             poDate,
             ewayBillNo,
-            invoiceNo, 
-            invoiceDate, 
-            items, 
+            invoiceNo,
+            invoiceDate,
+            saleItems,
             pandfAmount,
-            GrandTotal  
-        })
-        await newInvoice.save()
-        return res.status(201).json(newInvoice)
+            grandTotal: totalAmount
+        });
+        await newInvoice.save();
+        return res.status(201).json(newInvoice);
     } catch (error) {
-        console.error("error creating invoice", error)
-        return res.status(500).json({error: "Server error"})
+        console.error("Error creating invoice", error);
+        return res.status(500).json({ error: "Server error" });
     }
-}
+};
+
 
 export const getInvoices = async(req,res) => {
     try {
@@ -36,10 +42,10 @@ export const getInvoices = async(req,res) => {
 
 export const updateInvoice = async(req,res)=> {
    try {
-    const {partyName,billingName,Email,poNo,poDate,ewayBillNo,invoiceNo, invoiceDate, items, pandfAmount,GrandTotal} = req.body;
+    const {partyName,billingName,email,poNo,poDate,ewayBillNo,invoiceNo, invoiceDate,  saleItems, pandfAmount,grandTotal} = req.body;
     const updatedInvoice = await Invoice.findByIdAndUpdate(
         req.params.id,
-        {partyName,billingName,Email,poNo,poDate,ewayBillNo,invoiceNo, invoiceDate, items, pandfAmount,GrandTotal},
+        {partyName,billingName,email,poNo,poDate,ewayBillNo,invoiceNo, invoiceDate, saleItems, pandfAmount,grandTotal},
         {new:true, runValidators:true}
     )
     if(!updatedInvoice){

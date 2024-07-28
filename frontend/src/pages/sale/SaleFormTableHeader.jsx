@@ -2,7 +2,7 @@
 
 const SaleFormTableHeader = () => {
   return (
-    <div className="flex h-10   border-2 border-gray-300 font-normal items-center justify-between">
+    <div className="flex h-10  bg-gray-100  border-2 border-gray-300 font-normal items-center justify-between">
     <div className="w-1/12 flex pl-1 justify-center border-r-2 h-full  items-center ">#</div>
                 <div className="w-2/4 flex border-r-2 h-full items-center pl-2  ">Item</div>
                 <div className="w-1/12 flex  justify-center pl-1 border-r-2 h-full  items-center ">QTY</div>

@@ -8,46 +8,47 @@ const invoiveSchema = new mongoose.Schema({
     billingName:{
         type: String, 
     },
-    Email:{
+    email:{
         type:String
     },
     poNo:{
-       type:Number 
+       type:Number,
+      
     },
     poDate:{
       type:Date,
-      
+      default: Date.now(),
     },
     ewayBillNo:{
         type:Number
     },
     invoiceNo:{
         type:Number,
-        required:true
+       
     },
     invoiceDate:{
         type: Date, 
-        default: Date.now,
-        required:true
+        default: Date.now(),
+        
     },
-    items:[
+    saleItems:[
         {
-            itemName:{type:String, required:true},
-            qty:{type:Number, required:true},
-            price:{type:Number, required:true},
+            itemName:{type:String },
+            qty:{type:Number },
+            price:{type:Number },
             discountPercent:{type:Number},
             discountAmount:{type:Number},
-            TaxInPercent:{type:Number},
+            TaxInPercent:{type:String},
             TaxInAmount:{type:Number},
-            Amount:{type:Number, required:true},
+            Amount:{type:Number },
         }
     ],
     pandfAmount:{
         type:Number 
     },
-    GrandTotal:{
+    grandTotal:{
         type:Number,
-        required:true 
+        
     }
 
 },{timestamps:true})

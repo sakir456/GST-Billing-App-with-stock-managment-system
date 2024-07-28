@@ -14,6 +14,7 @@ const useGetItems = () => {
         throw new Error(data.error || "failed to fetch items");
       }
       setItems(data);
+      console.log(data)
     } catch (error) {
       toast.error(error.message);
     } finally {

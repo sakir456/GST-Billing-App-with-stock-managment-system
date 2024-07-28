@@ -2,13 +2,13 @@
 import useSaleStore from "../../zustand/useSaleStore";
 
 
-const SaleFormTableTotalValue = () => {
-  const {items, setItems} = useSaleStore()
+const SaleFormItemsTotal = () => {
+  const {saleItems, setSaleItems} = useSaleStore()
   const handleAddRowButton = () => {
-    setItems([
-      ...items,
+    setSaleItems([
+      ...saleItems,
       {
-        id: items.length + 1,
+        id:saleItems.length + 1,
         itemName: "",
         qty:0,
         price:0,
@@ -42,4 +42,4 @@ const SaleFormTableTotalValue = () => {
   )
 }
 
-export default SaleFormTableTotalValue
+export default SaleFormItemsTotal
