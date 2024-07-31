@@ -3,24 +3,71 @@ import DatePicker from "react-datepicker"
 
 import "react-datepicker/dist/react-datepicker.css";
 import useSaleStore from "../../zustand/useSaleStore";
+import useGetParties from "../../hooks/parties/useGetParties";
+import { useState } from "react";
+import usePartyStore from "../../zustand/usePartyStore";
 
 const SaleFormPartyData = () => {
+  const {fetchParties, parties} = useGetParties()
   
   const { partyInfo, setPartyInfo } = useSaleStore();
+  const [showPartiesList, setShowPartiesList] = useState(false)
+  const {setIsParty, setIsUpdatePartyForm} = usePartyStore()
   
  const handleChange = (field,value) => {
   setPartyInfo({...partyInfo, [field]:value})
+ }
+
+ const filteredParties =  parties.filter(party =>
+   party.partyName.toLowerCase().includes(partyInfo.partyName.toLowerCase())
+ )
+
+ const fetchPartiesList = async() => {
+    await fetchParties()
+    setShowPartiesList(true)
+ }
+
+ const handleBlur = () => {
+   setTimeout(()=>setShowPartiesList(false), 200)
+ }
+ const handlePartyClick = (partyName) => {
+  setPartyInfo({...partyInfo, partyName })
+  setShowPartiesList(false)
+ }
+
+ const handleAddParty = () => {
+  setIsParty(true)
+  setIsUpdatePartyForm(false)
  }
   
   return (
     <div className="flex justify-between mt-4">
     <div className="flex gap-3 ">
+    <div className=" w-56   relative">
     <input type="search" 
      value={partyInfo.partyName}
     onChange={(e) => handleChange("partyName", e.target.value)}
     placeholder="Party Name" 
-    className="h-8 py-1.5 pl-2 w-48 bg-gray-100 outline-none
-     text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium"/>
+    className=" py-1.5 pl-2 bg-gray-100 w-full  outline-none
+     text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium"
+     onFocus={fetchPartiesList}
+      onBlur={handleBlur}
+     />
+     {showPartiesList && (
+      <div className="absolute bg-gray-100  rounded-md w-full mt-1 flex flex-col gap-1 p-1">
+     <div className="text-sm hover:bg-green-100 py-1 text-customLightGreen cursor-pointer" 
+     onClick={handleAddParty}>
+     + Add Party
+     </div>
+     {filteredParties.map((party)=> (
+      <div key={party._id} className="text-sm hover:bg-green-100 flex items-center pl-2 py-1 cursor-pointer " 
+      onClick={() => handlePartyClick(party.partyName)}
+      >{party.partyName}</div>
+     ))}
+     </div>
+     )}
+     
+   </div>
      <input type="text"
     value={partyInfo.billingName}
      onChange={(e) => handleChange("billingName", e.target.value)}

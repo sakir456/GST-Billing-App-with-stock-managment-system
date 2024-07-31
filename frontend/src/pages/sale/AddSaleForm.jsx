@@ -5,13 +5,16 @@ import SaleFormItemData from "./SaleFormItemData";
 import SaleFormItemsTotal from "./SaleFormItemsTotal";
 import useSaleStore from "../../zustand/useSaleStore";
 import useAddInvoice from "../../hooks/invoices/useAddInvoice";
-
+import LoadingSpinnerNew from "../../components/LoadingSpinnerNew";
+import usePartyStore from "../../zustand/usePartyStore";
+import AddPartyForm from "../AddPartyForm";
 
 
 
 const AddSaleForm = () => {
-const { saleItems,partyInfo,grandTotal} = useSaleStore()
-const {addInvoice} = useAddInvoice()
+const { saleItems,partyInfo,grandTotal,resetForm,setIsSaleForm} = useSaleStore()
+const {addInvoice, loading} = useAddInvoice()
+const {isParty} = usePartyStore()
  
 const handleSubmit = async(e) => {
   e.preventDefault()
@@ -21,10 +24,20 @@ const handleSubmit = async(e) => {
     grandTotal
   }
   await addInvoice(invoiceData)
+   resetForm()
+   setIsSaleForm(false)
 }
   
   return (
-    <form className="m-2" onSubmit={handleSubmit}>
+    <div>
+    {isParty ? (
+      <AddPartyForm />
+    ) :  (
+      <div>
+    {loading ? (
+      <LoadingSpinnerNew  />
+    ):(
+      <form className="m-2" onSubmit={handleSubmit}>
     <div className="flex justify-between mx-2 ">
     <div className="text-xl font-medium text-customGreen">Sale Invoice</div>
     <div className="text-xl font-medium text-customGreen">A to Z Billing App</div>
@@ -37,6 +50,14 @@ const handleSubmit = async(e) => {
     </div>
       <SaleFormGrandTotal />
  </form>
+    )}
+    
+    
+ </div>
+
+    )}
+    </div>
+    
   )
 }
 

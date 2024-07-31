@@ -4,12 +4,15 @@ import TaxRateSale from "../../utils/sale/TaxRateSale"
 
 import useSaleStore from "../../zustand/useSaleStore"
 import { useState } from 'react'
+import useGetItems from '../../hooks/useGetItems'
 
 
 
 const SaleFormItemData= () => {
    const {saleItems, setSaleItems} = useSaleStore()
+   const { items,  fetchItems } = useGetItems()
    const[showFetchItems, setShowFetchItems] = useState(false)
+   const [showItemList, setShowItemList] = useState(false)
    
  
 
@@ -36,6 +39,7 @@ const SaleFormItemData= () => {
      ]);
    }
  };
+ 
 
  const handleDeleteButton = (index) => {
    const updatedItems = [...saleItems];
@@ -47,6 +51,23 @@ const SaleFormItemData= () => {
    setSaleItems(resetIds);
  };
 
+ const fetchItemList =  async(index) => {
+   await fetchItems()
+    setShowFetchItems(index)
+    setShowItemList(true)
+ }
+
+ const handleBlur = () => {
+setTimeout(()=>setShowItemList(false),200)
+  
+ }
+ const handleItemClick = (itemName, index) => {
+  const newItem = [...saleItems];
+  newItem[index].itemName = itemName;
+  setSaleItems(newItem);
+  setShowItemList(false);
+};
+ 
         
   return (
     <div>
@@ -61,16 +82,27 @@ const SaleFormItemData= () => {
                  <div  className="w-2/4 relative" >
                 <input type='text' className="w-full py-2  pl-1 bg-gray-50 flex border-r-2 h-full items-center focus:outline-customLightGreen" 
                 value={item.itemName}
-                
                 onChange={(e)=>handleItemChange(index,"itemName",e.target.value )}
-                placeholder="enter Item Name"/>
+                placeholder="enter Item Name"
+                  onFocus={() => fetchItemList(index)}
+                  onBlur={ handleBlur}
+                />
 
-               {showFetchItems && (
-                <div className='absolute bg-gray-200 flex w-full justify-between px-2 py-2 cursor-pointer hover:bg-gray-300 text-xs'>
-                  <div>G1014-6 26*21 core</div>
-                  <div>85</div>
-                </div>
-               )}
+               {showItemList && showFetchItems===index && (
+                 <div className='absolute bg-gray-100  rounded-md w-full mt-1 flex flex-col gap-1 p-1' style={{ zIndex: 10 }}>
+                 <div className="text-sm hover:bg-green-100 py-1 text-customLightGreen cursor-pointer" >
+                  + Add Item
+                  </div>
+                {items.map((item) => (
+                <div key={item._id} className='flex justify-between text-sm hover:bg-green-100  items-center pl-2 py-1 cursor-pointer'
+                onClick={() => handleItemClick(item.itemName,index)}
+                >
+                <div >{item.itemName}</div>
+               <div>85</div>
+               </div>
+                 ))}
+               </div> 
+              )}
                 </div>
                 <input type='number' className="w-1/12 flex pr-1 bg-gray-50 justify-center border-r-2 h-full  items-center text-right focus:outline-customLightGreen "
                  value={item.qty}
