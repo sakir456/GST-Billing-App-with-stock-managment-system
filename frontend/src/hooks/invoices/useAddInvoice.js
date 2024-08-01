@@ -1,10 +1,12 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
+import useSaleStore from "../../zustand/useSaleStore"
 
 
 const useAddInvoice = () => {
     const[loading, setLoading] = useState(false)
     const [data,setData] = useState()
+    const {setIsSaleForm} = useSaleStore()
  const addInvoice = async(invoiceData) => {
       if(!invoiceData.partyInfo.partyName){
        toast.error("Party Name is required to create invoice")
@@ -24,6 +26,7 @@ const useAddInvoice = () => {
        setData(data)
        console.log(data)
        toast.success("Invoice created Successfully")
+       setIsSaleForm(false)
       } catch (error) {
         toast.error(error.message)
       }finally{

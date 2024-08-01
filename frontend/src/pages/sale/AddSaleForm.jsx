@@ -12,7 +12,7 @@ import AddPartyForm from "../AddPartyForm";
 
 
 const AddSaleForm = () => {
-const { saleItems,partyInfo,grandTotal,resetForm,setIsSaleForm} = useSaleStore()
+const { saleItems,partyInfo,grandTotal,resetForm} = useSaleStore()
 const {addInvoice, loading} = useAddInvoice()
 const {isParty} = usePartyStore()
  
@@ -25,7 +25,7 @@ const handleSubmit = async(e) => {
   }
   await addInvoice(invoiceData)
    resetForm()
-   setIsSaleForm(false)
+   
 }
   
   return (
