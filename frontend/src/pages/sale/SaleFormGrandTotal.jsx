@@ -2,7 +2,7 @@ import useSaleStore from "../../zustand/useSaleStore";
 
 
 const SaleFormGrandTotal = () => {
-  const { grandTotal, setGrandTotal } = useSaleStore();
+  const { grandTotal, setGrandTotal,isUpdateForm } = useSaleStore();
 const handleChange = (field, value) => {
   setGrandTotal({...grandTotal, [field]:value})
 }
@@ -25,7 +25,7 @@ onChange={(e) =>handleChange("grandTotal", e.target.value)}
 text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium"/>
 </div>
 <button className=" mt-5 items-center px-4 py-2 text-white rounded-md bg-customLightGreen" >
- Save
+ {isUpdateForm ? "Update" : "Save"}
  </button>
     </div>
   )

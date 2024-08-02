@@ -3,6 +3,7 @@ import { IoMdTrash } from 'react-icons/io';
 import TaxRateSale from "../../utils/sale/TaxRateSale";
 import useSaleStore from "../../zustand/useSaleStore";
 import useGetItems from '../../hooks/useGetItems';
+import useItemStore from '../../zustand/useItemStore';
 
 const SaleFormItemData = () => {
   const { saleItems, setSaleItems } = useSaleStore();
@@ -10,6 +11,7 @@ const SaleFormItemData = () => {
   const [showFetchItems, setShowFetchItems] = useState(false);
   const [showItemList, setShowItemList] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const {setIsAddingItem, setIsUpdateForm} = useItemStore()
 
   const handleItemChange = (index, field, value) => {
     const newItem = [...saleItems];
@@ -50,7 +52,7 @@ const SaleFormItemData = () => {
       setSaleItems([
         ...saleItems,
         {
-          id: saleItems.length + 1,
+         id: saleItems.length + 1,
           itemName: "",
           qty: 0,
           price: 0,
@@ -102,6 +104,10 @@ const SaleFormItemData = () => {
     handleItemChange(index, "TaxInAmount", ((parseFloat(saleItems[index].qty) * parseFloat(saleItems[index].price) - parseFloat(saleItems[index].discountAmount)) * taxInPercent) / 100); // Update TaxInAmount
   };
 
+  const handleAddItemBtn = () => {
+    setIsAddingItem(true)
+    setIsUpdateForm(false)
+  }
   return (
     <div>
       {saleItems.map((item, index) => (
@@ -124,7 +130,7 @@ const SaleFormItemData = () => {
 
             {showItemList && showFetchItems === index && (
               <div className='absolute bg-gray-100 rounded-md w-full mt-1 flex flex-col gap-1 p-1' style={{ zIndex: 10 }}>
-                <div className="text-sm hover:bg-green-100 py-1 text-customLightGreen cursor-pointer">
+                <div className="text-sm hover:bg-green-100 py-1 text-customLightGreen cursor-pointer" onClick={handleAddItemBtn}>
                   + Add Item
                 </div>
                 {filteredItems.map((item) => (
@@ -187,7 +193,7 @@ const SaleFormItemData = () => {
   );
 }
 
-export default SaleFormItemData;
+export default SaleFormItemData
 
 
 

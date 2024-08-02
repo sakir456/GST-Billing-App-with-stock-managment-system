@@ -26,7 +26,9 @@ const useSaleStore = create((set) => ({
     saleItems: [{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }],
     partyInfo: { partyName: "", billingName: "", email: "", poNo: "", poDate: new Date(), ewayBillNo: "", invoiceNo: "", invoiceDate: new Date() },
     grandTotal: { pandfAmount: 0, grandTotal: 0 }
-  })
+  }),
+  isUpdateForm : false,
+  setIsUpdateForm: (value) => set({isUpdateForm: value})
 }));
 
 export default useSaleStore;

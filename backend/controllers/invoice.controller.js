@@ -30,15 +30,20 @@ export const createInvoice = async (req, res) => {
 };
 
 
-export const getInvoices = async(req,res) => {
-    try {
-       const invoices = await Invoice.find()
-       return res.status(200).json(invoices); 
-    } catch (error) {
-       console.error("error fetching invoices", error) 
-       return res.status(500).json({error: "Server error"})
+
+export const getInvoices = async (req, res) => {
+  try {
+    const invoices = await Invoice.find();
+    if (!invoices) {
+      return res.status(404).json({ error: "No invoices found" });
     }
-}
+    return res.status(200).json(invoices);
+  } catch (error) {
+    console.error("Error fetching invoices:", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
+
 
 export const updateInvoice = async(req,res)=> {
    try {

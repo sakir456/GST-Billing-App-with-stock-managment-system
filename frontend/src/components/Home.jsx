@@ -8,12 +8,19 @@ import Sidebar from "./Sidebar"
 import AddSaleForm from "../pages/sale/AddSaleForm";
 import { Routes, Route } from 'react-router-dom';
 import useSaleStore from "../zustand/useSaleStore";
+import useItemStore from "../zustand/useItemStore";
+import ProductForm from "../pages/ItemForm/ProductForm";
 
 
 const Home = () => {
   const { isSaleForm} = useSaleStore()
+  const {isAddingItem, isUpdateForm} = useItemStore()
   return (
     <div>
+      {isAddingItem && !isUpdateForm ? (
+        <ProductForm /> 
+      ) : (
+        <div>
     {isSaleForm ?
     (<AddSaleForm/>) : 
      (
@@ -32,6 +39,9 @@ const Home = () => {
      )}
     
     </div>
+      )}
+    </div>
+    
   );
 };
 
