@@ -12,23 +12,23 @@ const invoiveSchema = new mongoose.Schema({
         type:String
     },
     poNo:{
-       type:Number,
+       type:String,
       
     },
     poDate:{
       type:Date,
-      default: Date.now(),
+      default: new Date(),
     },
     ewayBillNo:{
-        type:Number
+        type:String
     },
     invoiceNo:{
-        type:Number,
+        type:String,
        
     },
     invoiceDate:{
         type: Date, 
-        default: Date.now(),
+        default: new Date(),
         
     },
     saleItems:[
@@ -36,7 +36,7 @@ const invoiveSchema = new mongoose.Schema({
             itemName:{type:String },
             qty:{type:Number },
             price:{type:Number },
-            discountPercent:{type:Number},
+            discountPercent:{type:String},
             discountAmount:{type:Number},
             TaxInPercent:{type:String},
             TaxInAmount:{type:Number},

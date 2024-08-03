@@ -8,7 +8,7 @@ const useUpdateInvoice = () => {
   const [data, setData] = useState()
   const {setIsSaleForm} = useSaleStore()
   const updateInvoice = async(invoiceId, updatedInvoiceData) => {
-        if(updatedInvoiceData.partyInfo.partyName){
+        if(!updatedInvoiceData.partyInfo.partyName){
           toast.error("Name is required to update item");
          return
         }

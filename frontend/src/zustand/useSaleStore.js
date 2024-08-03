@@ -27,6 +27,9 @@ const useSaleStore = create((set) => ({
     partyInfo: { partyName: "", billingName: "", email: "", poNo: "", poDate: new Date(), ewayBillNo: "", invoiceNo: "", invoiceDate: new Date() },
     grandTotal: { pandfAmount: 0, grandTotal: 0 }
   }),
+ invoiceId:null,
+ setInvoiceId:(id) => set({invoiceId: id}),
+
   isUpdateForm : false,
   setIsUpdateForm: (value) => set({isUpdateForm: value})
 }));

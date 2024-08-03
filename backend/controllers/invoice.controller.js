@@ -45,22 +45,42 @@ export const getInvoices = async (req, res) => {
 };
 
 
-export const updateInvoice = async(req,res)=> {
-   try {
-    const {partyName,billingName,email,poNo,poDate,ewayBillNo,invoiceNo, invoiceDate,  saleItems, pandfAmount,grandTotal} = req.body;
-    const updatedInvoice = await Invoice.findByIdAndUpdate(
+export const updateInvoice = async (req, res) => {
+    try {
+      const { saleItems, partyInfo, grandTotal } = req.body;
+      const {
+        partyName, billingName, email, poNo, poDate, ewayBillNo, invoiceNo, invoiceDate
+      } = partyInfo;
+      const { pandfAmount, grandTotal: totalAmount } = grandTotal;
+  
+      const updatedInvoice = await Invoice.findByIdAndUpdate(
         req.params.id,
-        {partyName,billingName,email,poNo,poDate,ewayBillNo,invoiceNo, invoiceDate, saleItems, pandfAmount,grandTotal},
-        {new:true, runValidators:true}
-    )
-    if(!updatedInvoice){
-        return res.status(404).json({error: "Invoice not found"})
+        {
+          partyName,
+          billingName,
+          email,
+          poNo,
+          poDate,
+          ewayBillNo,
+          invoiceNo,
+          invoiceDate,
+          saleItems,
+          pandfAmount,
+          grandTotal: totalAmount
+        },
+        { new: true, runValidators: true }
+      );
+  
+      if (!updatedInvoice) {
+        return res.status(404).json({ error: "Invoice not found" });
+      }
+  
+      return res.status(200).json(updatedInvoice);
+    } catch (error) {
+      console.error("Error updating invoice", error);
+      return res.status(500).json({ error: "Server error" });
     }
-    return res.status(200).json(updatedInvoice)
-   } catch (error) {
-      return res.status(500).json({error: "Server error"})
-   } 
-}
+  };
 
 export const deleteInvoice = async(req,res) => {
     try {

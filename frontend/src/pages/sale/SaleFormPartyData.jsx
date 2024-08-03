@@ -1,6 +1,5 @@
 
 import DatePicker from "react-datepicker"
-
 import "react-datepicker/dist/react-datepicker.css";
 import useSaleStore from "../../zustand/useSaleStore";
 import useGetParties from "../../hooks/parties/useGetParties";
@@ -54,7 +53,7 @@ const SaleFormPartyData = () => {
       onBlur={handleBlur}
      />
      {showPartiesList && (
-      <div className="absolute bg-gray-100  rounded-md w-full mt-1 flex flex-col gap-1 p-1">
+      <div className="absolute bg-gray-100  rounded-md w-full mt-1 flex flex-col gap-1 p-1 z-10">
      <div className="text-sm hover:bg-green-100 py-1 text-customLightGreen cursor-pointer" 
      onClick={handleAddParty}>
      + Add Party
@@ -69,7 +68,7 @@ const SaleFormPartyData = () => {
      
    </div>
      <input type="text"
-    value={partyInfo.billingName}
+    value={partyInfo?.billingName}
      onChange={(e) => handleChange("billingName", e.target.value)}
       placeholder="Billing Name (optional)" className=" h-8 py-1.5 pl-2 w-48 bg-gray-100 outline-none
      text-sm rounded-md border border-gray-300  focus:outline-customLightGreen placeholder:font-medium" />
@@ -78,20 +77,20 @@ const SaleFormPartyData = () => {
      <div className="flex  gap-14">
       <input type="text"
       name="email"
-     value={partyInfo.email}
+     value={partyInfo?.email}
      onChange={(e) => handleChange("email", e.target.value)}
        placeholder="Email" className="py-1.5 pl-2 w-48 bg-gray-100 outline-none
      text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium"/>
      <input type="text" 
      name="ewayBillNo"
-     value={partyInfo.ewayBillNo}
+     value={partyInfo?.ewayBillNo}
      onChange={(e) => handleChange("ewayBillNo", e.target.value)}
      placeholder="Eway Bill No" className="py-1.5 pl-2 w-48 bg-gray-100 outline-none
      text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium"/>
      </div>
      <input type="text"
      name="poNo"
-     value={partyInfo.poNo}
+     value={partyInfo?.poNo}
      onChange={(e) => handleChange("poNo", e.target.value)}
       placeholder="PO No." className="py-1.5 pl-2 w-48 bg-gray-100 outline-none
      text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium "/>
@@ -99,7 +98,7 @@ const SaleFormPartyData = () => {
           <DatePicker
         id="date-picker"
         className="py-1.5 pl-2 pr-8 w-48 bg-white outline-none text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium"
-        selected={partyInfo.poDate}
+        selected={partyInfo?.poDate}
         onChange={(Date) => handleChange("poDate", Date )}
         popperPlacement="bottom-end"
         dateFormat="dd/MM/yyyy"
@@ -112,7 +111,7 @@ const SaleFormPartyData = () => {
         <div>
         <span className="text-sm text-gray-600">Invoice Number:</span>
         <input type="text" 
-        value={partyInfo.invoiceNo}
+        value={partyInfo?.invoiceNo}
         onChange={(e) => handleChange("invoiceNo", e.target.value)}
         className=" ml-2 px-1 bg-gray-100 outline-none
      text-xs rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium"/>
@@ -125,7 +124,7 @@ const SaleFormPartyData = () => {
         id="date-picker"
         className="ml-8 px-1 bg-gray-100 outline-none
      text-xs rounded-md border border-gray-300 focus:outline-customLightGreen"
-        selected={partyInfo.invoiceDate}
+        selected={partyInfo?.invoiceDate}
         onChange={(Date) => handleChange("invoiceDate", Date)}
         popperPlacement="bottom-end"
         dateFormat="dd/MM/yyyy"

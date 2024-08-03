@@ -15,7 +15,7 @@ const useDeleteItem = () => {
       });
   const data = await response.json();
   if (data.error) {
-    throw new Error(data.error || "failed to fetch items");
+    throw new Error(data.error || "failed to delete items");
   }
   toast.success("Item deleted successfully")
       return data;

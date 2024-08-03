@@ -10,6 +10,7 @@ import usePartyStore from "../../zustand/usePartyStore";
 import AddPartyForm from "../AddPartyForm";
 import { RxCross1 } from "react-icons/rx";
 import useUpdateInvoice from "../../hooks/invoices/useUpdateInvoice";
+import useGetInvoices from "../../hooks/invoices/useGetInvoices";
 
 
 
@@ -17,8 +18,9 @@ const AddSaleForm = () => {
 const { saleItems,partyInfo,grandTotal,resetForm} = useSaleStore()
 const {addInvoice, loading} = useAddInvoice()
 const {isParty} = usePartyStore()
-const {setIsSaleForm,isUpdateForm} = useSaleStore()
-const {updateInvoice,isLoading,data} = useUpdateInvoice()
+const {setIsSaleForm,isUpdateForm, invoiceId} = useSaleStore()
+const {updateInvoice,isLoading} = useUpdateInvoice()
+
  
 const handleSubmit = async(e) => {
   e.preventDefault()
@@ -39,8 +41,8 @@ const handleUpdate  = async(e) => {
     partyInfo,
     grandTotal
   }
-  await updateInvoice(saleItems._id,updatedInvoiceData)
-
+   await updateInvoice(invoiceId,updatedInvoiceData)
+   resetForm()
 }
   
   return (
@@ -49,7 +51,7 @@ const handleUpdate  = async(e) => {
       <AddPartyForm />
     ) :  (
       <div>
-    {loading ? (
+    {loading || isLoading ? (
       <LoadingSpinnerNew  />
     ):(
       <form className="m-2" onSubmit={isUpdateForm ? handleUpdate : handleSubmit}>
