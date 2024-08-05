@@ -14,6 +14,7 @@ const SaleFormItemData = () => {
   const {setIsAddingItem, setIsUpdateForm} = useItemStore()
 
   const handleItemChange = (index, field, value) => {
+    
     const newItem = [...saleItems];
     newItem[index][field] = value;
 
@@ -31,7 +32,7 @@ const SaleFormItemData = () => {
       newItem[index].discountPercent = (discountAmount / total) * 100;
     }
 
-    // Tax calculation only if TaxInPercent is not "Select" or "Exempted"
+    
     if (field === "TaxInPercent") {
       if (value === "Select" || value === "Exempted") {
         newItem[index].TaxInAmount = 0;
@@ -79,6 +80,7 @@ const SaleFormItemData = () => {
   const fetchItemList = async (index) => {
     await fetchItems();
     setShowFetchItems(index);
+    setSearchKeyword("");
     setShowItemList(true);
   };
 
@@ -129,7 +131,7 @@ const SaleFormItemData = () => {
             />
 
             {showItemList && showFetchItems === index && (
-              <div className='absolute bg-gray-100 rounded-md w-full mt-1 flex flex-col gap-1 p-1' style={{ zIndex: 10 }}>
+              <div className='absolute h-80 bg-gray-100 rounded-md w-full mt-1 flex flex-col gap-1 p-1 overflow-y-scroll' style={{ zIndex: 10 }} >
                 <div className="text-sm hover:bg-green-100 py-1 text-customLightGreen cursor-pointer" onClick={handleAddItemBtn}>
                   + Add Item
                 </div>

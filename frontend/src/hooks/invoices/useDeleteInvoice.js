@@ -2,7 +2,7 @@ import { useState } from "react"
 import toast from "react-hot-toast"
 
 const useDeleteInvoice = () => {
-    const [loading, setIsLoading]  = useState(false)
+    const [isLoading, setIsLoading]  = useState(false)
   const deleteInvoice =  async(invoiceId) => {
     setIsLoading(true)
     try {
@@ -26,7 +26,7 @@ const useDeleteInvoice = () => {
       }
 
   }
-  return {deleteInvoice,loading}
+  return {deleteInvoice,isLoading}
 }
 
 export default useDeleteInvoice

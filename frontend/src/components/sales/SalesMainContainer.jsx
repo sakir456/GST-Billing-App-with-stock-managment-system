@@ -7,10 +7,9 @@ import LoadingSpinnerNew from "../LoadingSpinnerNew";
 import useDeleteInvoice from "../../hooks/invoices/useDeleteInvoice";
 
 const SalesMainContainer = () => {
-  const { setIsSaleForm, setIsUpdateForm, setSaleItems,  setPartyInfo, setGrandTotal,setInvoiceId } = useSaleStore();
-  const { invoices, loading } = useGetInvoices();
-  const {deleteInvoice} = useDeleteInvoice()
-  const {fetchInvoices} = useGetInvoices()
+  const { setIsSaleForm, setIsUpdateForm, setSaleItems, setPartyInfo, setGrandTotal, setInvoiceId } = useSaleStore();
+  const { invoices, loading, fetchInvoices } = useGetInvoices();
+  const { deleteInvoice, isLoading } = useDeleteInvoice();
 
   const formatInvoiceDate = (dateString) => {
     const date = new Date(dateString);
@@ -23,23 +22,22 @@ const SalesMainContainer = () => {
   const handleUpdateBtn = (invoice) => {
     setIsSaleForm(true);
     setIsUpdateForm(true);
-    setSaleItems(invoice.saleItems)
-    setPartyInfo(invoice)
-    setGrandTotal(invoice)
-    setInvoiceId(invoice._id)
-     
+    setSaleItems(invoice.saleItems);
+    setPartyInfo(invoice);
+    setGrandTotal(invoice);
+    setInvoiceId(invoice._id);
   };
 
-  const handleDeletebtn = async(invoiceId) => {
+  const handleDeleteBtn = async (invoiceId) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         await deleteInvoice(invoiceId);
-        fetchInvoices(); 
+        await fetchInvoices(); // Fetch invoices after deletion
       } catch (error) {
         console.error('Error deleting invoice:', error);
       }
     }
-  }
+  };
 
   const handleAddSaleBtn = () => {
     setIsSaleForm(true);
@@ -49,7 +47,7 @@ const SalesMainContainer = () => {
 
   return (
     <div>
-      {loading ? (
+      {loading || isLoading ? (
         <LoadingSpinnerNew />
       ) : (
         <div className="m-4">
@@ -103,8 +101,9 @@ const SalesMainContainer = () => {
                       Edit
                     </span>
                   </button>
-                  <button className="text-center group"
-                  onClick={() => handleDeletebtn(invoice._id)}
+                  <button
+                    className="text-center group"
+                    onClick={() => handleDeleteBtn(invoice._id)}
                   >
                     <FaRegTrashAlt />
                     <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-customLightGreen text-white text-xs rounded py-1 px-2">
