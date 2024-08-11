@@ -95,3 +95,13 @@ export const deleteInvoice = async(req,res) => {
     }
     
 }
+
+export const highestInvoice = async(req,res) => {
+  try {
+    const highestInvoice = await Invoice.findOne().sort('-invoiceNo').exec();
+    
+    res.json({highestInvoiceNo:highestInvoice ? highestInvoice.invoiceNo : 0})
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred while fetching the highest invoice number.' });
+  }
+}

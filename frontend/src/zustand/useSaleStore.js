@@ -14,7 +14,7 @@ const useSaleStore = create((set) => ({
     poNo: "",
     poDate: new Date(),
     ewayBillNo: "",
-    invoiceNo: "",
+    invoiceNo:1,
     invoiceDate: new Date()
   },
   setPartyInfo: (info) => set({ partyInfo: info }),
@@ -22,11 +22,22 @@ const useSaleStore = create((set) => ({
   grandTotal: { pandfAmount: 0, grandTotal: 0 },
   setGrandTotal: (value) => set({ grandTotal: value }),
 
-  resetForm: () => set({
+  resetForm: async() => {
+    let highestInvoiceNo =  0;
+    try {
+      const res = await fetch("/api/invoice/highestinvoice");
+      const data = await res.json();
+      highestInvoiceNo = data.highestInvoiceNo;
+      console.log(highestInvoiceNo)
+
+    } catch (error) {
+      console.error("Error fetching highest invoice number:", error);
+    }
+    set({
     saleItems: [{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }],
-    partyInfo: { partyName: "", billingName: "", email: "", poNo: "", poDate: new Date(), ewayBillNo: "", invoiceNo: "", invoiceDate: new Date() },
+    partyInfo: { partyName: "", billingName: "", email: "", poNo: "", poDate: new Date(), ewayBillNo: "", invoiceNo: highestInvoiceNo + 1, invoiceDate: new Date() },
     grandTotal: { pandfAmount: 0, grandTotal: 0 }
-  }),
+  })},
  invoiceId:null,
  setInvoiceId:(id) => set({invoiceId: id}),
 

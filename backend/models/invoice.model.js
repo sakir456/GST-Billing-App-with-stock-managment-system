@@ -23,7 +23,7 @@ const invoiveSchema = new mongoose.Schema({
         type:String
     },
     invoiceNo:{
-        type:String,
+        type:Number,
        
     },
     invoiceDate:{

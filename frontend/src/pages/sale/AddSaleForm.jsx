@@ -30,7 +30,7 @@ const handleSubmit = async(e) => {
     grandTotal
   }
   await addInvoice(invoiceData)
-   resetForm()
+   await resetForm()
    
 }
 
@@ -42,7 +42,7 @@ const handleUpdate  = async(e) => {
     grandTotal
   }
    await updateInvoice(invoiceId,updatedInvoiceData)
-   resetForm()
+  await resetForm()
 }
   
   return (
