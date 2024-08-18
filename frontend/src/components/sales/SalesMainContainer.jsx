@@ -5,11 +5,16 @@ import useSaleStore from "../../zustand/useSaleStore";
 import useGetInvoices from "../../hooks/invoices/useGetInvoices";
 import LoadingSpinnerNew from "../LoadingSpinnerNew";
 import useDeleteInvoice from "../../hooks/invoices/useDeleteInvoice";
+import NoTranscation from "../NoTranscation";
+import { useState } from "react";
 
 const SalesMainContainer = () => {
-  const { setIsSaleForm, setIsUpdateForm, setSaleItems, setPartyInfo, setGrandTotal, setInvoiceId } = useSaleStore();
+  const { setIsSaleForm, setIsUpdateForm, setSaleItems, setPartyInfo, setGrandTotal, setInvoiceId, resetForm } = useSaleStore();
   const { invoices, loading, fetchInvoices } = useGetInvoices();
   const { deleteInvoice, isLoading } = useDeleteInvoice();
+  const [searchQuery,setSearchQuery] = useState("")
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const formatInvoiceDate = (dateString) => {
     const date = new Date(dateString);
@@ -28,11 +33,18 @@ const SalesMainContainer = () => {
     setInvoiceId(invoice._id);
   };
 
+  const handleDateChange = async(start, end) => {
+    setStartDate(start);
+    setEndDate(end);
+    await fetchInvoices(start, end);
+  };
+
   const handleDeleteBtn = async (invoiceId) => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         await deleteInvoice(invoiceId);
         await fetchInvoices(); // Fetch invoices after deletion
+        await resetForm();
       } catch (error) {
         console.error('Error deleting invoice:', error);
       }
@@ -44,6 +56,16 @@ const SalesMainContainer = () => {
     setIsUpdateForm(false);
     setSaleItems([{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }]); // Reset sale items when adding a new sale
   };
+  const handleSearchInputChange = (e) => {
+    setSearchQuery(e.target.value)
+  }
+
+  const filteredInvoices = invoices.filter(invoice => (
+    String(formatInvoiceDate(invoice.invoiceDate)).includes(searchQuery) ||
+    invoice.partyName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+    String(invoice.invoiceNo).includes(searchQuery) || 
+    String(invoice.grandTotal).includes(searchQuery)
+  ))
 
   return (
     <div>
@@ -56,11 +78,30 @@ const SalesMainContainer = () => {
               <FiBox className="text-customLightGreen bg-green-100 rounded-full" />
               <p className="font-medium">Sales Invoices</p>
             </div>
+            <div className="flex items-center">
+              <div className="px-2 py-1.5  text-sm bg-gray-200  rounded-md rounded-r-none">Between</div>
+              <input 
+                type="Date"
+                className="text-gray-300 border border-gray-300 px-2 py-1 text-sm border-x-0 outline-none cursor-pointer  "
+                value={startDate}
+                onChange={(e) => handleDateChange(e.target.value, endDate)}
+              />
+              <div className="text-sm px-1 py-[5px] border border-gray-300 border-x-0">To</div>
+              <input 
+                type="Date"
+                className="text-gray-300 border border-gray-300 px-2 py-1 text-sm border-l-0 outline-none 
+                 cursor-pointer rounded-md rounded-l-none"
+                 value={endDate}
+                 onChange={(e) => handleDateChange(startDate, e.target.value)}
+              />
+            </div>
             <div className="flex gap-5">
               <input
                 type="search"
                 placeholder="Search"
                 className="py-1 pl-3 w-60 bg-gray-100 outline-none text-sm"
+                value={searchQuery}
+                onChange={handleSearchInputChange}
               />
               <button
                 className="flex items-center px-2 py-1 bg-customLightGreen text-white rounded-md"
@@ -71,7 +112,7 @@ const SalesMainContainer = () => {
             </div>
           </div>
 
-          <div className="mt-3">
+          <div className="mt-3 relative">
             <div className="flex h-10 px-2 items-center bg-gray-100 border-2 border-gray-300 font-medium">
               <div className="w-1/5 text-center">Date</div>
               <div className="w-1/5 text-center">Invoice No.</div>
@@ -80,39 +121,45 @@ const SalesMainContainer = () => {
               <div className="w-1/5 text-center">Action</div>
             </div>
 
-            {invoices.map((invoice) => (
-              <div
-                className="flex h-10 px-2 items-center border border-b-2 border-x-2 border-gray-300"
-                key={invoice._id}
-              >
-                <div className="w-1/5 text-center">
-                  {formatInvoiceDate(invoice.invoiceDate)}
-                </div>
-                <div className="w-1/5 text-center">{invoice.invoiceNo}</div>
-                <div className="w-1/5 text-center">{invoice.partyName}</div>
-                <div className="w-1/5 text-center">{invoice.grandTotal}</div>
-                <div className="w-1/5 h-full flex justify-center gap-3 text-center relative">
-                  <button
-                    className="text-center group"
-                    onClick={() => handleUpdateBtn(invoice)}
+            <div>
+              {!invoices || invoices.length === 0 ? (
+                <NoTranscation />
+              ) : (
+                filteredInvoices.map((invoice) => (
+                  <div
+                    className="flex h-10 px-2 items-center border border-b-2 border-x-2 border-gray-300"
+                    key={invoice._id}
                   >
-                    <LuPencil />
-                    <span className="absolute hidden group-hover:block -bottom-4 left-24 bg-customLightGreen text-white text-xs rounded py-1 px-2">
-                      Edit
-                    </span>
-                  </button>
-                  <button
-                    className="text-center group"
-                    onClick={() => handleDeleteBtn(invoice._id)}
-                  >
-                    <FaRegTrashAlt />
-                    <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-customLightGreen text-white text-xs rounded py-1 px-2">
-                      Delete
-                    </span>
-                  </button>
-                </div>
-              </div>
-            ))}
+                    <div className="w-1/5 text-center">
+                    {invoice.invoiceDate ? formatInvoiceDate(invoice.invoiceDate) : formatInvoiceDate(new Date())}
+                    </div>
+                    <div className="w-1/5 text-center">{invoice.invoiceNo}</div>
+                    <div className="w-1/5 text-center">{invoice.partyName}</div>
+                    <div className="w-1/5 text-center">{invoice.grandTotal}</div>
+                    <div className="w-1/5 h-full flex justify-center gap-3 text-center relative">
+                      <button
+                        className="text-center group"
+                        onClick={() => handleUpdateBtn(invoice)}
+                      >
+                        <LuPencil />
+                        <span className="absolute hidden group-hover:block -bottom-4 left-24 bg-customLightGreen text-white text-xs rounded py-1 px-2">
+                          Edit
+                        </span>
+                      </button>
+                      <button
+                        className="text-center group"
+                        onClick={() => handleDeleteBtn(invoice._id)}
+                      >
+                        <FaRegTrashAlt />
+                        <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-customLightGreen text-white text-xs rounded py-1 px-2">
+                          Delete
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
       )}
@@ -121,3 +168,4 @@ const SalesMainContainer = () => {
 };
 
 export default SalesMainContainer;
+

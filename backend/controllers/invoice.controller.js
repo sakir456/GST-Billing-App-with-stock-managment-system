@@ -33,7 +33,19 @@ export const createInvoice = async (req, res) => {
 
 export const getInvoices = async (req, res) => {
   try {
-    const invoices = await Invoice.find();
+    const { startDate, endDate } = req.query;
+
+    const query = {};
+
+    if (startDate && endDate) {
+      query.invoiceDate = {
+        $gte: new Date(new Date(startDate).setHours(0, 0, 0, 0)),
+        $lte: new Date(new Date(endDate).setHours(23, 59, 59, 999))
+      };
+    }
+
+    const invoices = await Invoice.find(query);
+
     if (!invoices) {
       return res.status(404).json({ error: "No invoices found" });
     }
@@ -43,6 +55,20 @@ export const getInvoices = async (req, res) => {
     return res.status(500).json({ error: "Server error" });
   }
 };
+
+
+// export const getInvoices = async (req, res) => {
+//   try {
+//     const invoices = await Invoice.find();
+//     if (!invoices) {
+//       return res.status(404).json({ error: "No invoices found" });
+//     }
+//     return res.status(200).json(invoices);
+//   } catch (error) {
+//     console.error("Error fetching invoices:", error);
+//     return res.status(500).json({ error: "Server error" });
+//   }
+// };
 
 
 export const updateInvoice = async (req, res) => {

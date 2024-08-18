@@ -1,6 +1,12 @@
+
 import create from "zustand";
 
+
+
+
 const useSaleStore = create((set) => ({
+
+  
   isSaleForm: false,
   setIsSaleForm: (value) => set({ isSaleForm: value }),
 
@@ -42,7 +48,12 @@ const useSaleStore = create((set) => ({
  setInvoiceId:(id) => set({invoiceId: id}),
 
   isUpdateForm : false,
-  setIsUpdateForm: (value) => set({isUpdateForm: value})
+  setIsUpdateForm: (value) => set({isUpdateForm: value}),
+ 
+  itemsTotal:{totalQnty: 0, totalDiscountAmount: 0, totalTaxAmount: 0, totalAmount: 0 },
+  setItemsTotal: (value) => set({ itemsTotal: value }),
+ 
+ 
 }));
 
 export default useSaleStore;

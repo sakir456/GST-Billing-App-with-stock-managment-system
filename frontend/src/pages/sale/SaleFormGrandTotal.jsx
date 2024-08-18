@@ -9,7 +9,7 @@ const SaleFormGrandTotal = () => {
     const totalItemAmount = saleItems.reduce((accumulator, item) => {
       return accumulator + parseFloat(item.Amount || 0);
     }, 0);
-    const totalAmount = totalItemAmount + parseFloat(grandTotal.pandfAmount || 0);
+    const totalAmount = parseFloat((totalItemAmount + parseFloat(grandTotal.pandfAmount || 0)).toFixed(2));
     
     setGrandTotal({ ...grandTotal, grandTotal: totalAmount });
   }, [saleItems, grandTotal.pandfAmount, setGrandTotal]);
