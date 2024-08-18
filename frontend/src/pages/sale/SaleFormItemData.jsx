@@ -18,6 +18,10 @@ const SaleFormItemData = () => {
   };
 
   const handleItemChange = (index, field, value) => {
+
+    const isValidInput = value === "" || /^\d*\.?\d*$/.test(value);
+
+    if (!isValidInput) return; 
     const newItem = [...saleItems];
     newItem[index][field] = value;
 
@@ -126,28 +130,32 @@ const SaleFormItemData = () => {
   const handleItemClick = (itemName, index, salePrice) => {
     const newItem = [...saleItems];
     newItem[index].itemName = itemName;
-    newItem[index].price = salePrice;
+    newItem[index].price = salePrice || 0; 
     newItem[index].qty = 1;
+    
     const total = newItem[index].qty * newItem[index].price;
-    newItem[index].Amount = total - newItem[index].discountAmount + newItem[index].TaxInAmount;
-
+    const discountAmount = safeParseFloat(newItem[index].discountAmount);
+    const taxInAmount = safeParseFloat(newItem[index].TaxInAmount);
+    
+    newItem[index].Amount = parseFloat((total - discountAmount + taxInAmount).toFixed(2)) || 0;
     setSaleItems(newItem);
     setShowItemList(false);
     setSaleItems([
-      ...saleItems,
-      {
-        id:saleItems.length + 1,
-        itemName: "",
-        qty:0,
-        price:0,
-        discountPercent: "",
-        discountAmount:0,
-       TaxInPercent: "", 
-       TaxInAmount:0,
-        Amount: 0,
-      },
+        ...saleItems,
+        {
+            id: saleItems.length + 1,
+            itemName: "",
+            qty: 0,
+            price: 0,
+            discountPercent: "",
+            discountAmount: 0,
+            TaxInPercent: "",
+            TaxInAmount: 0,
+            Amount: 0,
+        },
     ]);
-  };
+};
+
 
   const filteredItems = items.filter(item => item.itemName.toLowerCase().includes(searchKeyword.toLowerCase()));
 
@@ -207,7 +215,7 @@ const SaleFormItemData = () => {
             className="w-1/12 flex pr-1 bg-gray-50 justify-center border-r-2 h-full items-center text-right focus:outline-customLightGreen"
             value={item.qty}
             onChange={(e) => handleItemChange(index, "qty", e.target.value)}
-            pattern="^\d*\.?\d*$"
+            pattern="^[0-9]*\.?[0-9]*$"
           />
           <input
             type='text'
@@ -215,7 +223,7 @@ const SaleFormItemData = () => {
             className="w-1/6 flex pr-1 bg-gray-50 justify-center border-r-2 h-full items-center text-right focus:outline-customLightGreen"
             value={item.price}
             onChange={(e) => handleItemChange(index, "price", e.target.value)}
-            pattern="^\d*\.?\d*$"
+           pattern="^[0-9]*\.?[0-9]*$"
           />
           <div className="w-1/6 flex bg-gray-50 justify-center border-r-2 h-full items-center text-right focus:outline-customLightGreen">
             <input
@@ -224,7 +232,7 @@ const SaleFormItemData = () => {
               className="w-1/2 pr-1 bg-gray-50 border-r-2 h-full text-right focus:outline-customLightGreen"
               value={item.discountPercent}
               onChange={(e) => handleItemChange(index, "discountPercent", e.target.value)}
-              pattern="^\d*\.?\d*$"
+              pattern="^[0-9]*\.?[0-9]*$"
             />
             <input
               type='text'
@@ -232,7 +240,7 @@ const SaleFormItemData = () => {
               className="w-1/2 pr-1 bg-gray-50 h-full text-right focus:outline-customLightGreen"
               value={item.discountAmount}
               onChange={(e) => handleItemChange(index, "discountAmount", e.target.value)}
-              pattern="^\d*\.?\d*$"
+              pattern="^[0-9]*\.?[0-9]*$"
             />
           </div>
           <div className="w-1/6 flex bg-gray-50 justify-center border-r-2 h-full items-center text-right focus:outline-customLightGreen">
@@ -246,7 +254,7 @@ const SaleFormItemData = () => {
               className="w-1/2 pr-1 bg-gray-50 h-full text-right focus:outline-customLightGreen"
               value={item.TaxInAmount}
               onChange={(e) => handleItemChange(index, "TaxInAmount", e.target.value)}
-              pattern="^\d*\.?\d*$"
+             pattern="^[0-9]*\.?[0-9]*$"
             />
           </div>
           <input
@@ -255,7 +263,7 @@ const SaleFormItemData = () => {
             className="w-1/6 flex pr-1 bg-gray-50 justify-center border-r-2 h-full items-center text-right focus:outline-customLightGreen"
             value={item.Amount}
             onChange={(e) => handleItemChange(index, "Amount", e.target.value)}
-            pattern="^\d*\.?\d*$"
+            pattern="^[0-9]*\.?[0-9]*$"
           />
         </div>
       ))}
