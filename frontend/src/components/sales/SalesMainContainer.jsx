@@ -9,7 +9,7 @@ import NoTranscation from "../NoTranscation";
 import { useState } from "react";
 
 const SalesMainContainer = () => {
-  const { setIsSaleForm, setIsUpdateForm, setSaleItems, setPartyInfo, setGrandTotal, setInvoiceId, resetForm } = useSaleStore();
+  const { setIsSaleForm, setIsUpdateForm, setSaleItems, setPartyInfo, setGrandTotal, setInvoiceId, resetForm  } = useSaleStore();
   const { invoices, loading, fetchInvoices } = useGetInvoices();
   const { deleteInvoice, isLoading } = useDeleteInvoice();
   const [searchQuery,setSearchQuery] = useState("")
@@ -43,7 +43,7 @@ const SalesMainContainer = () => {
     if (window.confirm("Are you sure you want to delete this item?")) {
       try {
         await deleteInvoice(invoiceId);
-        await fetchInvoices(); // Fetch invoices after deletion
+        await fetchInvoices();
         await resetForm();
       } catch (error) {
         console.error('Error deleting invoice:', error);
@@ -54,7 +54,8 @@ const SalesMainContainer = () => {
   const handleAddSaleBtn = () => {
     setIsSaleForm(true);
     setIsUpdateForm(false);
-    setSaleItems([{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }]); // Reset sale items when adding a new sale
+    setSaleItems([{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }]); 
+    
   };
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value)
@@ -127,7 +128,8 @@ const SalesMainContainer = () => {
               ) : (
                 filteredInvoices.map((invoice) => (
                   <div
-                    className="flex h-10 px-2 items-center border border-b-2 border-x-2 border-gray-300"
+                    className="flex h-10 px-2 items-center border border-b-2 border-x-2
+                     border-gray-300 hover:bg-customLightGreen hover:text-white cursor-pointer"
                     key={invoice._id}
                   >
                     <div className="w-1/5 text-center">
@@ -142,7 +144,7 @@ const SalesMainContainer = () => {
                         onClick={() => handleUpdateBtn(invoice)}
                       >
                         <LuPencil />
-                        <span className="absolute hidden group-hover:block -bottom-4 left-24 bg-customLightGreen text-white text-xs rounded py-1 px-2">
+                        <span className="absolute hidden group-hover:block -bottom-4 left-24 bg-gray-300 text-black text-xs rounded py-1 px-2">
                           Edit
                         </span>
                       </button>
@@ -151,7 +153,7 @@ const SalesMainContainer = () => {
                         onClick={() => handleDeleteBtn(invoice._id)}
                       >
                         <FaRegTrashAlt />
-                        <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-customLightGreen text-white text-xs rounded py-1 px-2">
+                        <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-gray-300  text-black  text-xs rounded py-1 px-2">
                           Delete
                         </span>
                       </button>

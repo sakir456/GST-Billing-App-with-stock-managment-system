@@ -19,7 +19,7 @@ const SaleFormItemData = () => {
 
   const handleItemChange = (index, field, value) => {
 
-    const isValidInput = value === "" || /^\d*\.?\d*$/.test(value);
+    const isValidInput =field === "TaxInPercent" || value === "" || /^\d*\.?\d*$/.test(value);
 
     if (!isValidInput) return; 
     const newItem = [...saleItems];
@@ -165,7 +165,7 @@ const SaleFormItemData = () => {
     const taxInPercent = match ? parseFloat(match[1]) : 0;
 
     handleItemChange(index, "TaxInPercent", selectedRate); 
-    handleItemChange(index, "TaxInAmount", ((safeParseFloat(saleItems[index].qty) * safeParseFloat(saleItems[index].price) - safeParseFloat(saleItems[index].discountAmount)) * taxInPercent) / 100); 
+    handleItemChange(index, "TaxInAmount", parseFloat(((safeParseFloat(saleItems[index].qty) * safeParseFloat(saleItems[index].price) - safeParseFloat(saleItems[index].discountAmount)) * taxInPercent) / 100).toFixed(2)); 
   };
 
   const handleAddItemBtn = () => {

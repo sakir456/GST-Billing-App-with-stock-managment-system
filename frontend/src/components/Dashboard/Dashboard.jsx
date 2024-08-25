@@ -3,9 +3,11 @@ import Searchbar from "./Searchbar"
 
 
 const Dashboard = () => {
+  
   return (
     <div className="w-auto">
     <Searchbar />
+
     <DashboardMain />
       
     </div>

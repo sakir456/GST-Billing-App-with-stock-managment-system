@@ -8,7 +8,7 @@ import useItemStore from "../zustand/useItemStore";
 import usePartyStore from "../zustand/usePartyStore";
 
 const Sidebar = () => {
-  const { expandedItem, setExpandedItem } = useSidebarStore();
+  const { expandedItem, setExpandedItem  } = useSidebarStore();
   const {isAddingItem} = useItemStore()
   const {isParty} = usePartyStore();
 
@@ -23,10 +23,12 @@ const Sidebar = () => {
 
   return (
     <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col  ">
-      <div className="flex items-center mb-6 ml-3 w-52">
+    <Link to="/FirmInfo">
+      <div className="flex items-center mb-6 ml-3 w-52" >
         <img src="shop.png" alt="shop-image" className="w-9 h-9 mr-2 border rounded-full p-1" />
         <h1 className="text-white overflow-hidden ml-2">Famous Radiators</h1>
       </div>
+      </Link>
       <ul className="text-white">
         <li className="flex items-center justify-between py-2 pl-4 hover:bg-customLightGreen hover:border-l-4 hover:border-white cursor-pointer">
         <Link to="/" 

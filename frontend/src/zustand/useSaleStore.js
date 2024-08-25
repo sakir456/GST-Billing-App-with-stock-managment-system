@@ -52,6 +52,9 @@ const useSaleStore = create((set) => ({
  
   itemsTotal:{totalQnty: 0, totalDiscountAmount: 0, totalTaxAmount: 0, totalAmount: 0 },
   setItemsTotal: (value) => set({ itemsTotal: value }),
+
+  saleInvoicePrintPage:false,
+  setSaleInvoicePrintPage:(value) => set({saleInvoicePrintPage: value})
  
  
 }));

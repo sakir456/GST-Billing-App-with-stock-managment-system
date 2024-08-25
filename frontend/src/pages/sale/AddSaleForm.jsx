@@ -15,7 +15,7 @@ import useUpdateInvoice from "../../hooks/invoices/useUpdateInvoice";
 
 
 const AddSaleForm = () => {
-const { saleItems,partyInfo,grandTotal,resetForm} = useSaleStore()
+const { saleItems,partyInfo,grandTotal,resetForm, setSaleInvoicePrintPage} = useSaleStore()
 const {addInvoice, loading} = useAddInvoice()
 const {isParty} = usePartyStore()
 const {setIsSaleForm,isUpdateForm, invoiceId} = useSaleStore()
@@ -31,6 +31,7 @@ const handleSubmit = async(e) => {
   }
   await addInvoice(invoiceData)
    await resetForm()
+   setSaleInvoicePrintPage(true)
    
 }
 

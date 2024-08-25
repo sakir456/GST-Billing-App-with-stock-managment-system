@@ -1,10 +1,14 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useSaleStore from "../../zustand/useSaleStore";
+import { MdKeyboardArrowDown } from "react-icons/md";
 
 
 const SaleFormGrandTotal = () => {
   const { grandTotal, setGrandTotal,isUpdateForm,saleItems  } = useSaleStore();
-  const [isRoundOffChecked, setIsRoundOffChecked] = useState(true)
+  const [isRoundOffChecked, setIsRoundOffChecked] = useState(true);
+  const [dropDownToggle, setDropDownToggle] = useState(false)
+  const dropdownRef = useRef(null);
+  
   
 
   useEffect(() => {
@@ -33,6 +37,25 @@ const totalItemAmount = saleItems.reduce((accumulator, item) => {
 const totalAmount = parseFloat((totalItemAmount + parseFloat(grandTotal.pandfAmount || 0)).toFixed(2));
   const roundedTotalAmount = Math.round(totalAmount);
   const RoundedValue = (totalAmount - roundedTotalAmount).toFixed(2);
+
+  const handleDropdownToggle = () => {
+    setDropDownToggle(!dropDownToggle);
+  };
+  const handleClickOutside = (event) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      setDropDownToggle(false);
+    }
+  };
+
+  useEffect(() => {
+    if (dropDownToggle) {
+      document.addEventListener("mousedown", handleClickOutside);
+    } else {
+      document.removeEventListener("mousedown", handleClickOutside);
+    } return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropDownToggle]);
 
   return (
     <div className="flex flex-col gap-6 mt-8 items-end">
@@ -68,11 +91,25 @@ onChange={(e) =>handleChange("grandTotal", e.target.value)}
  className="py-1.5 pl-2 w-48 bg-gray-100 outline-none
 text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeholder:font-medium text-right"/>
 </div>
-<div className="flex gap-3">
-<div className=" mt-5  px-4 py-2 text-white rounded-md bg-customLightGreen" >
+<div className="flex gap-9">
+<div className="flex items-end justify-center">
+<div className=" mt-5  gap-1  px-5 py-2 cursor-pointer text-customLightGreen border border-customGreen rounded-md rounded-r-none " >
  Print
  </div>
-<button className=" mt-5  px-4 py-2 text-white rounded-md bg-customLightGreen" >
+ <div className="relative" ref={dropdownRef}>
+ <MdKeyboardArrowDown className=" h-[42px] w-8 text-2xl text-customGreen 
+ border border-customGreen border-l-0 rounded-r-md cursor-pointer"
+ onClick={handleDropdownToggle}/>
+ </div>
+ {dropDownToggle && (
+  <div className="absolute text-customGreen bg-gray-200 rounded-md  ">
+  <div className="px-5 py-2 hover:bg-customGreen hover:text-white rounded-md cursor-pointer">Print</div>
+  <div className="px-5 py-2 hover:bg-customGreen hover:text-white rounded-md cursor-pointer">Download as PDF</div>
+ </div>
+ )}
+ </div>
+
+<button className=" mt-5  px-8 py-2 text-white rounded-md bg-customLightGreen" >
  {isUpdateForm ? "Update" : "Save"}
  </button>
  

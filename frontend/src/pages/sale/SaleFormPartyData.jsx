@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker"
 import "react-datepicker/dist/react-datepicker.css";
 import useSaleStore from "../../zustand/useSaleStore";
 import useGetParties from "../../hooks/parties/useGetParties";
-import { useState } from "react";
+import {  useState } from "react";
 import usePartyStore from "../../zustand/usePartyStore";
 
 const SaleFormPartyData = () => {
@@ -12,6 +12,7 @@ const SaleFormPartyData = () => {
   const { partyInfo, setPartyInfo } = useSaleStore();
   const [showPartiesList, setShowPartiesList] = useState(false)
   const {setIsParty, setIsUpdatePartyForm} = usePartyStore()
+
   
  const handleChange = (field,value) => {
   setPartyInfo({...partyInfo, [field]:value})
