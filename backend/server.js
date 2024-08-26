@@ -7,6 +7,7 @@ import authRoutes from "./routes/auth.routes.js";
 import itemRoutes from "./routes/item.routes.js";
 import partyRoutes from "./routes/party.routes.js";
 import invoiceRoutes from "./routes/invoice.routes.js";
+import firmRoutes from "./routes/firm.routes.js"
 
 dotenv.config();  // This line loads the environment variables
 
@@ -23,6 +24,7 @@ app.use("/api/auth", authRoutes)
 app.use("/api/item",itemRoutes)
 app.use("/api/parties", partyRoutes)
 app.use("/api/invoice", invoiceRoutes)
+app.use("/api/firm",firmRoutes)
 
 
 

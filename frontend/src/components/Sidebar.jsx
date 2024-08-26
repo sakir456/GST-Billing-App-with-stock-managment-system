@@ -77,11 +77,11 @@ const Sidebar = () => {
          </li>
         </Link>
 
-        <Link to="/cash&bank" onClick={() => toggleItem('cash')} 
+        <Link to="/bank" onClick={() => toggleItem('cash')} 
         className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
         <li className="w-full h-full flex  items-center">
          
-<span className="w-full h-full">Cash & Bank</span>
+<span className="w-full h-full"> Bank</span>
             {expandedItem === 'cash' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
         </li>
         </Link>

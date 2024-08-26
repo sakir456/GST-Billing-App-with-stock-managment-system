@@ -11,6 +11,7 @@ import useSaleStore from "../zustand/useSaleStore";
 import useItemStore from "../zustand/useItemStore";
 import ProductForm from "../pages/ItemForm/ProductForm";
 import FirmInfoForm from "../pages/FirmInfo/FirmInfoForm";
+import BankInfoForm from "../pages/BankInfoForm";
 
 
 
@@ -39,6 +40,7 @@ const Home = () => {
         <Route path="/items" element={<ItemsContainer />} />
         <Route path="/parties" element={<PartiesContainer />} />
         <Route path="/sales" element={<SalesContainer />} />
+        <Route path="/bank" element={<BankInfoForm />} />
       </Routes>
     </div>
   </div>
