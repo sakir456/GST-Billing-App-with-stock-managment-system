@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 
 
-const firmSchema = new mongoose.model({
+const firmSchema = new mongoose.Schema({
     logoUrl: {
         type: String,
     },
     businessName:{
         type: String,
-        required:true
+        
     },
     gstin: {
         type: String,

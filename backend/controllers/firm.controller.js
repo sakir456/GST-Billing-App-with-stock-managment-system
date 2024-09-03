@@ -1,43 +1,70 @@
+// controllers/firmController.js
 
-import Firm from "../models/firm.model.js";
-import { uploadToCloudinary } from "../utils/cloudinaryUtils.js";
+import Firm from '../models/firm.model.js';
+import { uploadToCloudinary } from '../utils/cloudinaryUtils.js';
 
+/**
+ * Saves firm details to the database, including uploading a logo image to Cloudinary if provided.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
+export const saveFirmDetails = async (req, res) => {
+  try {
+    const {
+      businessName,
+      gstin,
+      phoneNo,
+      email,
+      address,
+      pincode,
+      state,
+      description,
+      businessType,
+      businessCategory,
+    } = req.body;
 
-export const saveFirmDetails = async(req,res) => {
-    try {
-        const {
-            businessName,  gstin,   phoneNo, email, address,pincode,state, description, businessType,businessCategory,} = req.body;
-
-            if(!businessName){
-                return res.status({error:"Business Name is required to save Firm"})
-            }
-            
-            let logoUrl;
-
-            if(req.file){
-                logoUrl = await uploadToCloudinary(req.file.buffer);
-            }
-
-            const newFirm = new Firm({
-                logoUrl, // This will be undefined if no logo was uploaded
-                businessName,
-                gstin,
-                phoneNo,
-                email,
-                address,
-                pincode,
-                state,
-                description,
-                businessType,
-                businessCategory,
-              });
-              await newFirm.save();
-              res.status(201).json({ message: 'Firm information saved successfully', firm: newFirm });
-        } catch (error) {
-            console.error("Error while saving FirmDetails", error);
-            return res.status(500).json({error: "Server error"})
+    // Validate required fields
+    if (!businessName) {
+      return res.status(400).json({ error: 'Business Name is required to save Firm' });
     }
-}
+
+    let logoUrl;
+
+    // Handle logo file upload if present
+    if (req.file) {
+      try {
+        logoUrl = await uploadToCloudinary(req.file.buffer, { folder: 'firm_logos' });
+      } catch (error) {
+        return res.status(500).json({ error: 'Failed to upload logo image' });
+      }
+    }
+
+    // Create new Firm document
+    const newFirm = new Firm({
+      businessName,
+      gstin,
+      phoneNo,
+      email,
+      address,
+      pincode,
+      state,
+      description,
+      businessType,
+      businessCategory,
+      logoUrl, // Will be undefined if no logo was uploaded
+    });
+
+    // Save to database
+    await newFirm.save();
+
+    // Respond with success
+    res.status(201).json({ message: 'Firm information saved successfully', firm: newFirm });
+  } catch (error) {
+    console.error('Error while saving FirmDetails:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 
 export const updateFirmDetails =  async(req,res) => {
       try {

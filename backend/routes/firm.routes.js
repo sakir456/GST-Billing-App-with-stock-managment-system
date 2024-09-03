@@ -1,10 +1,25 @@
-import express from "express";
-import { saveFirmDetails, updateFirmDetails } from "../controllers/firm.controller.js";
+
+
+import express from 'express';
+import multer from 'multer';
+import { saveFirmDetails } from '../controllers/firm.controller.js';
 
 
 const router = express.Router();
 
-router.post("/savefirmdetails",saveFirmDetails)
-router.put("/updatefirmdetails",updateFirmDetails)
+// Configure multer for handling multipart/form-data
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 
-export default router
+// Define route for saving firm details
+router.post("/savefirmdetails",upload.single('logo'),saveFirmDetails);
+
+export default router;
+
+
+
+
+
+
+// router.post("/savefirmdetails",saveFirmDetails)
+// router.put("/updatefirmdetails",updateFirmDetails)

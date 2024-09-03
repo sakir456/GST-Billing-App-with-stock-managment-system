@@ -8,6 +8,7 @@ const SaleInvoicePrintPage = () => {
    }
    return (
    <div>
+   PrintPAge
     <button onClick={handleCrossButton}>
       <RxCross1/>
     </button>
