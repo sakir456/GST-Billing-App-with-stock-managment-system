@@ -10,9 +10,13 @@ import useSaveFirmDetails from "../../hooks/firm/useSaveFirmDetails";
 const FirmInfoForm = () => {
   const {isFirmPersonalData, isFirmAddressData,logo} = useSidebarStore();
   const {saveFirmDetails} = useSaveFirmDetails()
+ 
 
   const handleSubmit = async(e) => {
     e.preventDefault()
+
+    
+    
     const firmData = new FormData();
 
     firmData.append("businessName", isFirmPersonalData.businessName);
@@ -26,11 +30,12 @@ const FirmInfoForm = () => {
     firmData.append("businessType", isFirmAddressData.businessType);
     firmData.append("businessCategory", isFirmAddressData.businessCategory);
     
-    // If the logo is a file, append it
+    
     if (logo) {
       firmData.append("logo", logo);
     }
     await saveFirmDetails(firmData)
+  
     
 
   }

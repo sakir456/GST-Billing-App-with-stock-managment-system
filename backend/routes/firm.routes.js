@@ -2,7 +2,7 @@
 
 import express from 'express';
 import multer from 'multer';
-import { saveFirmDetails } from '../controllers/firm.controller.js';
+import { getFirmDetails, saveFirmDetails, updateFirmDetails } from '../controllers/firm.controller.js';
 
 
 const router = express.Router();
@@ -13,6 +13,8 @@ const upload = multer({ storage });
 
 // Define route for saving firm details
 router.post("/savefirmdetails",upload.single('logo'),saveFirmDetails);
+router.put("/updatefirmdetails/:id", upload.single('logo'), updateFirmDetails);
+router.get("/getfirmdetails/:id", getFirmDetails);
 
 export default router;
 

@@ -26,7 +26,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/item', itemRoutes);
 app.use('/api/parties', partyRoutes);
 app.use('/api/invoice', invoiceRoutes);
-app.use('/api/firm', firmRoutes); // Include firm routes
+app.use('/api/firm', firmRoutes); 
 
 // Health check route
 app.get('/', (req, res) => {

@@ -15,9 +15,14 @@ import useSidebarStore from "../zustand/useSidebarStore";
 
 
 
+
+
 const Home = () => {
   const { isSaleForm} = useSaleStore()
  const {isFirmForm} = useSidebarStore()
+
+
+
   return (
   <div>
     {isSaleForm ?

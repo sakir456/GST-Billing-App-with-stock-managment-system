@@ -104,3 +104,20 @@ export const updateFirmDetails =  async(req,res) => {
       }
 }
 
+export const getFirmDetails = async (req, res) => {
+  try {
+    const firmId = req.params.id;
+    if (!firmId) {
+      return res.status(400).json({ error: 'Firm ID is required to get details' });
+    }
+    const firm = await Firm.findById(firmId);
+    if (!firm) {
+      return res.status(404).json({ error: 'Firm not found' });
+    }
+    res.status(200).json({ message: 'Firm details retrieved successfully', firm });
+  } catch (error) {
+    console.error('Error while retrieving FirmDetails:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+

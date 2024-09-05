@@ -30,6 +30,18 @@ const useSidebarStore = create((set) => ({
   logo:null,
   setLogo: (file) => set({logo:file}),
 
+  savedFirmData: JSON.parse(localStorage.getItem('savedFirmData')) || null, // Initial load from localStorage
+
+  setSavedFirmData: (data) => {
+    set({ savedFirmData: data });
+    localStorage.setItem('savedFirmData', JSON.stringify(data)); // Save to localStorage
+  },
+
+  clearSavedFirmData: () => {
+    set({ savedFirmData: null });
+    localStorage.removeItem('savedFirmData'); // Clear localStorage
+  },
+
   
 }));
 
