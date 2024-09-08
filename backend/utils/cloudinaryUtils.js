@@ -33,3 +33,5 @@ export const uploadToCloudinary = (fileBuffer, options = {}) => {
     uploadStream.end(fileBuffer);
   });
 };
+
+export default cloudinary;

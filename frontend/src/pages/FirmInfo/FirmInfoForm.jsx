@@ -5,18 +5,20 @@ import FirmPersonalDetails from "./FirmPersonalDetails";
 import FirmAddress from "./FirmAddress";
 import useSidebarStore from "../../zustand/useSidebarStore";
 import useSaveFirmDetails from "../../hooks/firm/useSaveFirmDetails";
+import LoadingSpinnerNew from "../../components/LoadingSpinnerNew";
+import useUpdateFirmDetails from "../../hooks/firm/useUpdateFirmDetails";
+
 
 
 const FirmInfoForm = () => {
-  const {isFirmPersonalData, isFirmAddressData,logo} = useSidebarStore();
-  const {saveFirmDetails} = useSaveFirmDetails()
+  const {isFirmPersonalData, isFirmAddressData,logo,    setIsFirmForm, firmInfo} = useSidebarStore();
+  const {saveFirmDetails, loading} = useSaveFirmDetails()
+  const {updateFirmDetails, loading:isLoading} = useUpdateFirmDetails()
+
  
 
   const handleSubmit = async(e) => {
     e.preventDefault()
-
-    
-    
     const firmData = new FormData();
 
     firmData.append("businessName", isFirmPersonalData.businessName);
@@ -34,28 +36,45 @@ const FirmInfoForm = () => {
     if (logo) {
       firmData.append("logo", logo);
     }
-    await saveFirmDetails(firmData)
-  
-    
 
+     if(firmInfo) {
+       await updateFirmDetails(firmInfo._id,firmData);
+       
+  }else{
+    await saveFirmDetails(firmData);
+    
+ }
+  }
+  const handlecrossbtn = ()=> {
+    setIsFirmForm(false)
   }
   
   return (
-    
-    <form className="px-10 py-5 " onSubmit={handleSubmit}>
+    <div>
+    {loading || isLoading ? (
+       <LoadingSpinnerNew/>
+    ) : (
+      <form className="px-10 py-5 " onSubmit={handleSubmit}>
+      
     <div className="flex justify-between text-lg font-medium">
     <div>Enter Firm Details</div>
-    <RxCross1 className="mr-3 cursor-pointer"  />
+    <RxCross1 className="mr-3 cursor-pointer"  onClick={handlecrossbtn} />
     </div>
      <div className="flex items-center gap-28 ">
       <FirmLogo/>
       <FirmPersonalDetails/>
       </div>
       <FirmAddress/>
-      <div  className=" flex justify-end">
-      <button className="mt-8 items-center px-4 py-2 text-white rounded-md bg-customLightGreen">Save</button>
+      <div  className=" flex gap-2 justify-end">
+      <button className="mt-8 items-center px-4 py-2 text-customLightGreen rounded-md 
+       border border-customLightGreen hover:bg-customGreen hover:text-white " onClick={handlecrossbtn}>Cancel</button>
+      <button className="mt-8 items-center px-4 py-2 text-white rounded-md bg-customLightGreen" >Save</button>
+      
       </div>
       </form>
+    )}
+    
+      </div>
    
   );
 };

@@ -17,6 +17,7 @@ import useSidebarStore from "../zustand/useSidebarStore";
 
 
 
+
 const Home = () => {
   const { isSaleForm} = useSaleStore()
  const {isFirmForm} = useSidebarStore()
@@ -28,17 +29,12 @@ const Home = () => {
     {isSaleForm ?
     (
    <AddSaleForm/>
-    ) : (
-      
+    ) : isFirmForm ? (
+      <FirmInfoForm/>
+    ) :(
       <div className="flex flex-row ">
     <Sidebar />
-       
-      {isFirmForm ? (
-        <div className="flex-1">
-        <FirmInfoForm/>
-        </div>
-      ) : (
-        <div className="flex-1">
+    <div className="flex-1">
       <Routes>
         <Route path="/" element={<Dashboard/>} />
         <Route path="/items" element={<ItemsContainer />} />
@@ -47,7 +43,7 @@ const Home = () => {
         <Route path="/bank" element={<BankInfoForm />} />
       </Routes>
     </div>
-      )}
+      
 
 
   </div>

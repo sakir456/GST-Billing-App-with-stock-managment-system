@@ -14,7 +14,7 @@ const upload = multer({ storage });
 // Define route for saving firm details
 router.post("/savefirmdetails",upload.single('logo'),saveFirmDetails);
 router.put("/updatefirmdetails/:id", upload.single('logo'), updateFirmDetails);
-router.get("/getfirmdetails/:id", getFirmDetails);
+
 
 export default router;
 

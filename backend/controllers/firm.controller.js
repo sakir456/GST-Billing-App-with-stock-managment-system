@@ -2,6 +2,8 @@
 
 import Firm from '../models/firm.model.js';
 import { uploadToCloudinary } from '../utils/cloudinaryUtils.js';
+import cloudinary from  '../utils/cloudinaryUtils.js';
+import mongoose from 'mongoose';
 
 /**
  * Saves firm details to the database, including uploading a logo image to Cloudinary if provided.
@@ -28,12 +30,12 @@ export const saveFirmDetails = async (req, res) => {
       return res.status(400).json({ error: 'Business Name is required to save Firm' });
     }
 
-    let logoUrl;
+    let logo;
 
     // Handle logo file upload if present
     if (req.file) {
       try {
-        logoUrl = await uploadToCloudinary(req.file.buffer, { folder: 'firm_logos' });
+        logo = await uploadToCloudinary(req.file.buffer, { folder: 'firm_logos' });
       } catch (error) {
         return res.status(500).json({ error: 'Failed to upload logo image' });
       }
@@ -51,7 +53,7 @@ export const saveFirmDetails = async (req, res) => {
       description,
       businessType,
       businessCategory,
-      logoUrl, // Will be undefined if no logo was uploaded
+      logo, // Will be undefined if no logo was uploaded
     });
 
     // Save to database
@@ -68,8 +70,17 @@ export const saveFirmDetails = async (req, res) => {
 
 export const updateFirmDetails =  async(req,res) => {
       try {
+        const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ error: "Firm ID is required" });
+    }
+
+    // Validate that the firm ID is a valid MongoDB ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({ error: "Invalid Firm ID" });
+    }
         const {
-            businessName,  gstin,   phoneNo, email, address,pincode,state, description, businessType,businessCategory,} = req.body;
+            businessName,  gstin,   phoneNo, email, address,pincode,state, description, businessType,businessCategory} = req.body;
 
             if(!businessName){
                 return res.status({error:"Business Name is required to save Firm"})
@@ -81,22 +92,22 @@ export const updateFirmDetails =  async(req,res) => {
                     return res.status(404).json({ error: "Firm not found" });
                   }
 
-                  if (firm.logoUrl) {
-                    const publicId = firm.logoUrl.split('/').pop().split('.')[0];
+                  if (firm.logo) {
+                    const publicId = firm.logo.split('/').pop().split('.')[0];
                     await cloudinary.uploader.destroy(publicId);
                   }
-                  updateFirmData.logoUrl = await uploadToCloudinary(req.file.buffer);
+                  updateFirmData.logo = await uploadToCloudinary(req.file.buffer);
              }
              const updatedFirm = await Firm.findByIdAndUpdate(
                 req.params.id,
-                updateData,
+                updateFirmData,
                 { new: true, runValidators: true }
               );
               if (!updatedFirm) {
                 return res.status(404).json({ error: "Firm not found" });
               }
-              return res.status(200).json(updatedFirm);
-
+              return res.status(200).json({message:"Firm Updated Successfully",firm:updatedFirm});
+              
 
       } catch (error) {
         console.error("Error while updating FirmDetails", error);
@@ -104,20 +115,4 @@ export const updateFirmDetails =  async(req,res) => {
       }
 }
 
-export const getFirmDetails = async (req, res) => {
-  try {
-    const firmId = req.params.id;
-    if (!firmId) {
-      return res.status(400).json({ error: 'Firm ID is required to get details' });
-    }
-    const firm = await Firm.findById(firmId);
-    if (!firm) {
-      return res.status(404).json({ error: 'Firm not found' });
-    }
-    res.status(200).json({ message: 'Firm details retrieved successfully', firm });
-  } catch (error) {
-    console.error('Error while retrieving FirmDetails:', error);
-    res.status(500).json({ error: 'Server error' });
-  }
-};
 

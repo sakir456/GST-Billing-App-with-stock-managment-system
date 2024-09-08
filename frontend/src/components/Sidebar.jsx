@@ -10,7 +10,7 @@ import usePartyStore from "../zustand/usePartyStore";
 
 
 const Sidebar = () => {
-  const { expandedItem, setExpandedItem, setIsFirmForm,savedFirmData  } = useSidebarStore();
+  const { expandedItem, setExpandedItem, setIsFirmForm,  firmInfo  } = useSidebarStore();
   const {isAddingItem} = useItemStore()
   const {isParty} = usePartyStore();
 
@@ -31,8 +31,8 @@ const Sidebar = () => {
     <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col  ">
    
       <div className="flex items-center mb-6 ml-3 w-52 cursor-pointer" onClick={() => setIsFirmForm(true)} >
-        <img src={savedFirmData ? savedFirmData.firm.logoUrl :"shop.png"} alt="shop-image" className="w-10 h-10 mr-2  rounded-full p-1" />
-        <h1 className="text-white overflow-hidden"> {savedFirmData ? savedFirmData.firm.businessName : "your company Name"}</h1>
+        <img src={firmInfo ? firmInfo.logo :"shop.png"} alt="shop-image" className="w-10 h-10 mr-2  rounded-full p-1" />
+        <h1 className="text-white overflow-hidden"> {firmInfo ? firmInfo.businessName : "your company Name"}</h1>
       </div>
     
       <ul className="text-white">

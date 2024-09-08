@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 
 const firmSchema = new mongoose.Schema({
-    logoUrl: {
+    logo: {
         type: String,
     },
     businessName:{
