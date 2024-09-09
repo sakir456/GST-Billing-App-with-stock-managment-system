@@ -6,16 +6,19 @@ import useSidebarStore from "../zustand/useSidebarStore";
 import { Link } from "react-router-dom";
 import useItemStore from "../zustand/useItemStore";
 import usePartyStore from "../zustand/usePartyStore";
+import useBankStore from "../zustand/useBankStore";
 
 
 
 const Sidebar = () => {
   const { expandedItem, setExpandedItem, setIsFirmForm,  firmInfo  } = useSidebarStore();
+  const {setIsBankForm }  = useBankStore()
   const {isAddingItem} = useItemStore()
   const {isParty} = usePartyStore();
 
 
   const toggleItem = (item) => {
+    setIsBankForm(true)
     if (expandedItem === item) {
       setExpandedItem(null);
     
@@ -31,7 +34,7 @@ const Sidebar = () => {
     <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col  ">
    
       <div className="flex items-center mb-6 ml-3 w-52 cursor-pointer" onClick={() => setIsFirmForm(true)} >
-        <img src={firmInfo ? firmInfo.logo :"shop.png"} alt="shop-image" className="w-10 h-10 mr-2  rounded-full p-1" />
+        <img src={!firmInfo || !firmInfo.logo  ? "shop.png" : firmInfo.logo} alt="shop-image" className="w-10 h-10 mr-2  rounded-full p-1" />
         <h1 className="text-white overflow-hidden"> {firmInfo ? firmInfo.businessName : "your company Name"}</h1>
       </div>
     
@@ -84,14 +87,14 @@ const Sidebar = () => {
          </li>
         </Link>
 
-        <Link to="/bank" onClick={() => toggleItem('cash')} 
-        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
+        <div  onClick={() => toggleItem('cash')} 
+        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen cursor-pointer">
         <li className="w-full h-full flex  items-center">
          
 <span className="w-full h-full"> Bank</span>
             {expandedItem === 'cash' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
         </li>
-        </Link>
+        </div>
 
         <li className="flex items-center justify-between py-2 pl-4 hover:bg-customLightGreen hover:border-l-4 hover:border-white cursor-pointer">
           <span>Reports</span>

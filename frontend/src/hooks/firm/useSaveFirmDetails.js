@@ -15,15 +15,16 @@ const useSaveFirmDetails = () => {
         body: firmData,
       });
       const data = await res.json();
+      console.log(data)
 
       if (data.error) {
         throw new Error(data.error);
       }
 
-      // Update Zustand store with the API response data
+      
       const firm = data.firm;
 
-      setSavedFirmData(firm); // Save the whole firm data
+      setSavedFirmData(firm); 
       setFirmInfo(firm)
 
       // Update individual fields

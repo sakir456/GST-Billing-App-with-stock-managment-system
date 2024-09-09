@@ -12,6 +12,7 @@ import useSaleStore from "../zustand/useSaleStore";
 import FirmInfoForm from "../pages/FirmInfo/FirmInfoForm";
 import BankInfoForm from "../pages/BankInfoForm";
 import useSidebarStore from "../zustand/useSidebarStore";
+import useBankStore from "../zustand/useBankStore";
 
 
 
@@ -21,6 +22,7 @@ import useSidebarStore from "../zustand/useSidebarStore";
 const Home = () => {
   const { isSaleForm} = useSaleStore()
  const {isFirmForm} = useSidebarStore()
+ const {isBankForm }  = useBankStore()
 
 
 
@@ -31,7 +33,9 @@ const Home = () => {
    <AddSaleForm/>
     ) : isFirmForm ? (
       <FirmInfoForm/>
-    ) :(
+    ) : isBankForm ? (
+      <BankInfoForm/>
+    ):(
       <div className="flex flex-row ">
     <Sidebar />
     <div className="flex-1">
@@ -41,6 +45,8 @@ const Home = () => {
         <Route path="/parties" element={<PartiesContainer />} />
         <Route path="/sales" element={<SalesContainer />} />
         <Route path="/bank" element={<BankInfoForm />} />
+       
+        
       </Routes>
     </div>
       

@@ -2,7 +2,7 @@
 
 import express from 'express';
 import multer from 'multer';
-import { getFirmDetails, saveFirmDetails, updateFirmDetails } from '../controllers/firm.controller.js';
+import {  saveFirmDetails, updateFirmDetails } from '../controllers/firm.controller.js';
 
 
 const router = express.Router();

@@ -49,6 +49,7 @@ const FirmInfoForm = () => {
     setIsFirmForm(false)
   }
   
+  const isSaveDisabled = !isFirmPersonalData.businessName || isFirmPersonalData.businessName.trim()==="";
   return (
     <div>
     {loading || isLoading ? (
@@ -57,7 +58,7 @@ const FirmInfoForm = () => {
       <form className="px-10 py-5 " onSubmit={handleSubmit}>
       
     <div className="flex justify-between text-lg font-medium">
-    <div>Enter Firm Details</div>
+    <div>{firmInfo ? "Edit Firm Details" : "Enter Firm Details"}</div>
     <RxCross1 className="mr-3 cursor-pointer"  onClick={handlecrossbtn} />
     </div>
      <div className="flex items-center gap-28 ">
@@ -68,7 +69,9 @@ const FirmInfoForm = () => {
       <div  className=" flex gap-2 justify-end">
       <button className="mt-8 items-center px-4 py-2 text-customLightGreen rounded-md 
        border border-customLightGreen hover:bg-customGreen hover:text-white " onClick={handlecrossbtn}>Cancel</button>
-      <button className="mt-8 items-center px-4 py-2 text-white rounded-md bg-customLightGreen" >Save</button>
+      <button className={`mt-8 items-center px-4 py-2 text-white rounded-md 
+      ${isSaveDisabled ? "bg-gray-400" : "bg-customLightGreen"}`} 
+      disabled={isSaveDisabled} >{firmInfo ? "Update" : "Save"}</button>
       
       </div>
       </form>
