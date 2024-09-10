@@ -1,16 +1,17 @@
 
-import useSaleStore from "../../zustand/useSaleStore";
+import useGeneralStore from "../../zustand/useGeneralStore";
 import Searchbar from "../Dashboard/Searchbar";
-import SaleInvoicePrintPage from "./SaleInvoicePrintPage";
+import InvoicePrintPage from "./InvoicePrintPage";
+
 import SalesMainContainer from "./SalesMainContainer";
 
 const SalesContainer = () => {
 
-  const {saleInvoicePrintPage} = useSaleStore()
+  const {invoicePrintPage} = useGeneralStore();
   return (
     <div>
-      {saleInvoicePrintPage ? (
-        <SaleInvoicePrintPage />
+      {invoicePrintPage ? (
+        <InvoicePrintPage />
       ) : (
         <div>
         <div>

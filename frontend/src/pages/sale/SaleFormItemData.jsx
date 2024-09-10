@@ -19,9 +19,10 @@ const SaleFormItemData = () => {
 
   const handleItemChange = (index, field, value) => {
 
-    const isValidInput =field === "TaxInPercent" || value === "" || /^\d*\.?\d*$/.test(value);
-
-    if (!isValidInput) return; 
+    if (field !== "itemName") {
+      const isValidInput = field === "TaxInPercent" || value === "" || /^\d*\.?\d*$/.test(value);
+      if (!isValidInput) return;
+    } 
     const newItem = [...saleItems];
     newItem[index][field] = value;
 

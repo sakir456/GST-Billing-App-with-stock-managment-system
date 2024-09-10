@@ -51,11 +51,11 @@ const SalesMainContainer = () => {
     }
   };
 
-  const handleAddSaleBtn = () => {
+  const handleAddSaleBtn = async() => {
     setIsSaleForm(true);
     setIsUpdateForm(false);
-    setSaleItems([{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }]); 
-    
+    // setSaleItems([{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }]); 
+    await resetForm()
   };
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value)

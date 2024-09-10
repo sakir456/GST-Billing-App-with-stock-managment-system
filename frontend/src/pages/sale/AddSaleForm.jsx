@@ -12,17 +12,19 @@ import { RxCross1 } from "react-icons/rx";
 import useUpdateInvoice from "../../hooks/invoices/useUpdateInvoice";
 import ProductForm from "../ItemForm/ProductForm";
 import useItemStore from "../../zustand/useItemStore";
+import useGeneralStore from "../../zustand/useGeneralStore";
 
 
 
 
 const AddSaleForm = () => {
-const { saleItems,partyInfo,grandTotal,resetForm, setSaleInvoicePrintPage} = useSaleStore()
+const { saleItems,partyInfo,grandTotal,resetForm} = useSaleStore()
 const {addInvoice, loading} = useAddInvoice()
 const {isParty} = usePartyStore()
 const {isAddingItem, isUpdateForm:isItemUpdateForm} = useItemStore();
 const {setIsSaleForm,isUpdateForm, invoiceId} = useSaleStore()
 const {updateInvoice,isLoading} = useUpdateInvoice()
+const {setInvoicePrintPage} = useGeneralStore();
 
  
 const handleSubmit = async(e) => {
@@ -34,7 +36,7 @@ const handleSubmit = async(e) => {
   }
   await addInvoice(invoiceData)
    await resetForm()
-   setSaleInvoicePrintPage(true)
+   setInvoicePrintPage(true)
    
 }
 

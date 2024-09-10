@@ -4,7 +4,7 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 
 
 const SaleFormGrandTotal = () => {
-  const { grandTotal, setGrandTotal,isUpdateForm,saleItems  } = useSaleStore();
+  const { grandTotal, setGrandTotal,isUpdateForm,saleItems, partyInfo  } = useSaleStore();
   const [isRoundOffChecked, setIsRoundOffChecked] = useState(true);
   const [dropDownToggle, setDropDownToggle] = useState(false)
   const dropdownRef = useRef(null);
@@ -46,6 +46,9 @@ const totalAmount = parseFloat((totalItemAmount + parseFloat(grandTotal.pandfAmo
       setDropDownToggle(false);
     }
   };
+
+  const isSaveDisabled = !partyInfo.partyName || partyInfo.partyName.trim()==="";
+
 
   useEffect(() => {
     if (dropDownToggle) {
@@ -109,8 +112,10 @@ text-sm rounded-md border border-gray-300 focus:outline-customLightGreen placeho
  )}
  </div>
 
-<button className=" mt-5  px-8 py-2 text-white rounded-md bg-customLightGreen" >
- {isUpdateForm ? "Update" : "Save"}
+<button className={` mt-5  px-8 py-2 text-white rounded-md 
+${isSaveDisabled ? "bg-gray-400" : "bg-customLightGreen"}`} 
+disabled={isSaveDisabled} >
+{isUpdateForm ? "Update" : "Save"}
  </button>
  
  </div>

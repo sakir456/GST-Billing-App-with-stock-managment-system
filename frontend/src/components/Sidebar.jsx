@@ -18,7 +18,7 @@ const Sidebar = () => {
 
 
   const toggleItem = (item) => {
-    setIsBankForm(true)
+    
     if (expandedItem === item) {
       setExpandedItem(null);
     
@@ -87,12 +87,12 @@ const Sidebar = () => {
          </li>
         </Link>
 
-        <div  onClick={() => toggleItem('cash')} 
+        <div   onClick={()=> setIsBankForm(true)} 
         className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen cursor-pointer">
         <li className="w-full h-full flex  items-center">
          
-<span className="w-full h-full"> Bank</span>
-            {expandedItem === 'cash' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
+        <span className="w-full h-full"> Bank</span>
+            
         </li>
         </div>
 

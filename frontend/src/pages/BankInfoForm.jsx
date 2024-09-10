@@ -2,12 +2,13 @@ import { RxCross1 } from "react-icons/rx"
 import useBankStore from "../zustand/useBankStore"
 import useSaveBankDetails from "../hooks/Bank/useSaveBankDetails"
 import useUpdateBankDetails from "../hooks/Bank/useUpdateBankDetails"
+import LoadingSpinnerNew from "../components/LoadingSpinnerNew"
 
 
 const BankInfoForm = () => {
   const {bankData, setBankData,setIsBankForm, savedBankDetails }  = useBankStore()
-  const {saveBankdetails} = useSaveBankDetails()
-  const {updateBankDetails} = useUpdateBankDetails()
+  const {saveBankdetails, loading} = useSaveBankDetails()
+  const {updateBankDetails, loading:isLoading} = useUpdateBankDetails()
 
   const handleInputChange = (field, value)=> {
 
@@ -34,6 +35,12 @@ const BankInfoForm = () => {
 
   const isSaveDisabled = !bankData.bankName || bankData.bankName.trim()==="";
   return (
+    <div>
+    {loading || isLoading ? (
+      <LoadingSpinnerNew/>
+    ) : (
+      
+   
     <div>
         <form className="px-10 py-5" onSubmit={handleSubmit}>
         <div className="flex justify-between text-lg font-medium">
@@ -104,6 +111,8 @@ const BankInfoForm = () => {
     
 
         </form>
+    </div>
+  )}
     </div>
   )
 }
