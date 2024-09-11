@@ -42,6 +42,9 @@ const useItemStore = create((set) => ({
       quantityUnit: "none",
     },
   }),
+  itemInfo:null,
+  setItemInfo:(data)=> set({itemInfo:data}),
+ 
 }));
 
 export default useItemStore;

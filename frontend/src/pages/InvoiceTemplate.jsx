@@ -1,22 +1,59 @@
 
 
+import useItemStore from "../zustand/useItemStore";
+import useSaleStore from "../zustand/useSaleStore";
+import useSidebarStore from "../zustand/useSidebarStore";
+
+
 const InvoiceTemplate = () => {
+  const {firmInfo} = useSidebarStore();
+  const { savedInvoiceData, itemsTotal} = useSaleStore();
+  const {  itemInfo } = useItemStore();
+
+  const formatInvoiceDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    const year = date.getFullYear();
+    return `${day}-${month}-${year}`;
+  };
+
+  function extractNumberAndFormat(inputString) {
+    
+    const number = inputString.replace(/\D/g, ''); 
+    return number ? `(${parseInt(number)}%)` : '0%';
+  }
+
+  const invoiceItems = savedInvoiceData?.saleItems
+  
   return (
     <div className="p-3 bg-gray-50">
       <div className="max-w-4xl mx-auto bg-white p-5 rounded-md shadow-md">
         {/* Header Section */}
         <div className="flex justify-between items-center border-b pb-4">
+        {firmInfo.logo && (
+        <div>
+          <img src={firmInfo?.logo} className="w-20 h-20"/>
+        </div>
+      )}
           <div>
-            <h1 className="text-3xl font-bold text-blue-600">FAMOUS RADIATORS</h1>
-            <p className="text-sm">04, shreeji complex beside ramada hotel NH no 8 asdeerhwar bharuch</p>
-            <p className="text-sm">Phone: 9091719995/9094741661</p>
-            <p className="text-sm">Email: famous.radiators@gmail.com</p>
-            <p className="text-sm">GSTIN: 24AUGPS1596B1ZR</p>
+            <h1 className="text-3xl font-bold text-customLightGreen">{firmInfo?.businessName}</h1>
+            <p className="text-sm">{firmInfo?.address}</p>
+            <p className="text-sm">{firmInfo?.phoneNo}</p>
+            <p className="text-sm">{firmInfo?.email}</p>
+            <p className="text-sm">{firmInfo?.gstin}</p>
           </div>
           <div className="text-right">
             <h2 className="text-xl font-bold">Tax Invoice</h2>
-            <p className="text-sm">Invoice No: GST/2024-25/287</p>
-            <p className="text-sm">Date: 20-08-2024</p>
+            <div className="flex justify-center items-center">
+            <p>Invoice No:</p>
+            <p className="text-sm">{savedInvoiceData?.invoiceNo}</p>
+            </div>
+            <div className="flex justify-center items-center">
+            <p>Date:</p>
+            <p className="text-sm">{savedInvoiceData?.invoiceDate ? formatInvoiceDate(savedInvoiceData?.invoiceDate)
+            : formatInvoiceDate(new Date())}</p>
+            </div>
           </div>
         </div>
 
@@ -31,28 +68,34 @@ const InvoiceTemplate = () => {
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 border-b">
-                <th className="p-2 text-left text-sm font-semibold">#</th>
-                <th className="p-2 text-left text-sm font-semibold">Item Name</th>
-                <th className="p-2 text-left text-sm font-semibold">HSN/SAC</th>
-                <th className="p-2 text-left text-sm font-semibold">Quantity</th>
-                <th className="p-2 text-left text-sm font-semibold">Price/unit</th>
-                <th className="p-2 text-left text-sm font-semibold">Discount</th>
-                <th className="p-2 text-left text-sm font-semibold">Tax</th>
-                <th className="p-2 text-left text-sm font-semibold">Amount</th>
+                <th className="p-2 text-sm font-semibold ">#</th>
+                <th className="p-2  text-sm font-semibold">Item Name</th>
+                <th className="p-2  text-sm font-semibold">HSN/SAC</th>
+                <th className="p-2  text-sm font-semibold">Quantity</th>
+                <th className="p-2  text-sm font-semibold">Price/unit</th>
+                <th className="p-2  text-sm font-semibold">Discount</th>
+                <th className="p-2  text-sm font-semibold">GST</th>
+                <th className="p-2  text-sm font-semibold">Amount</th>
               </tr>
             </thead>
             <tbody>
               {/* Replace with dynamic rows */}
-              <tr className="border-b">
-                <td className="p-2 text-sm">1</td>
-                <td className="p-2 text-sm">Item 1</td>
-                <td className="p-2 text-sm">1234</td>
-                <td className="p-2 text-sm">10</td>
-                <td className="p-2 text-sm">₹100.00</td>
-                <td className="p-2 text-sm">₹100.00</td>
-                <td className="p-2 text-sm">₹100.00</td>
-                <td className="p-2 text-sm">₹1000.00</td>
+              {invoiceItems.map((item)=> (
+                <tr className="border-b" key={item.index}>
+                <td className="p-2 text-sm text-center ">1</td>
+                <td className="p-2 text-sm text-center">{item?.itemName}</td>
+                <td className="p-2 text-sm text-center">8708</td>
+                <td className="p-2 text-sm text-center">{item?.qty}</td>
+                <td className="p-2 text-sm text-center">{item?.price}</td>
+                <td className="p-2 text-sm text-center">{item?.discountAmount}</td>
+                <td className="p-2 text-sm flex items-center">
+                {item?.TaxInAmount}
+                <div className="">{extractNumberAndFormat(item?.TaxInPercent)}</div>
+                </td>
+                <td className="p-2 text-sm text-center">{item?.Amount}</td>
               </tr>
+              ))}
+              
               {/* More rows... */}
             </tbody>
           </table>
@@ -61,18 +104,32 @@ const InvoiceTemplate = () => {
         {/* Total Section */}
         <div className="flex justify-end mt-6">
           <div className="w-1/2">
+          <div className="flex justify-between py-1">
+              <span className="font-semibold">Total Amount:</span>
+              <span>{itemsTotal.totalAmount}</span>
+            </div>
+          <div className="flex justify-between py-1">
+              <span className="font-semibold">SGST%</span>
+              <span>{(itemsTotal.totalTaxAmount)/2}</span>
+            </div>
+            <div className="flex justify-between py-1">
+              <span className="font-semibold">CGST%</span>
+              <span>{(itemsTotal.totalTaxAmount)/2}</span>
+            </div>
+            <div className="flex justify-between py-1">
+              <span className="font-semibold">P&F</span>
+              <span>{savedInvoiceData?.pandfAmount}</span>
+            </div>
+
             <div className="flex justify-between py-1">
               <span className="font-semibold">Total:</span>
-              <span>₹1000.00</span>
+              <span>{savedInvoiceData?.grandTotal}(Rounded off)</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="font-semibold">Invoice Amount in Words:</span>
-              <span>Zero</span>
+              <span>One thousand one rupees only</span>
             </div>
-            <div className="flex justify-between py-1">
-              <span className="font-semibold">Payment Mode:</span>
-              <span>Credit</span>
-            </div>
+            
           </div>
         </div>
 

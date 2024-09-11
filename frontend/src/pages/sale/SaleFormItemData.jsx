@@ -11,8 +11,8 @@ const SaleFormItemData = () => {
   const [showFetchItems, setShowFetchItems] = useState(false);
   const [showItemList, setShowItemList] = useState(false);
   const [searchKeyword, setSearchKeyword] = useState("");
-  const { setIsAddingItem, setIsUpdateForm } = useItemStore();
-
+  const { setIsAddingItem, setIsUpdateForm, setItemInfo } = useItemStore();
+  
   const safeParseFloat = (value) => {
     return isNaN(parseFloat(value)) ? 0 : parseFloat(value);
   };
@@ -128,7 +128,7 @@ const SaleFormItemData = () => {
     setTimeout(() => setShowItemList(false), 200);
   };
 
-  const handleItemClick = (itemName, index, salePrice) => {
+  const handleItemClick = (itemName, index, salePrice,item) => {
     const newItem = [...saleItems];
     newItem[index].itemName = itemName;
     newItem[index].price = salePrice || 0; 
@@ -155,6 +155,7 @@ const SaleFormItemData = () => {
             Amount: 0,
         },
     ]);
+    setItemInfo(item)
 };
 
 
@@ -201,7 +202,7 @@ const SaleFormItemData = () => {
                 </div>
                 {filteredItems.map((item) => (
                   <div key={item._id} className='flex justify-between text-sm hover:bg-green-100 items-center pl-2 py-1 cursor-pointer'
-                    onClick={() => handleItemClick(item.itemName, index, item.salePrice)}>
+                    onClick={() => handleItemClick(item.itemName, index, item.salePrice,item)}>
                     <div>{item.itemName}</div>
                     <div>85</div>
                   </div>
