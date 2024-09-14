@@ -49,7 +49,7 @@ const ProductForm = () => {
       quantityUnit: itemData.quantityUnit === "none" ? undefined : itemData.quantityUnit
     };
     await updateItem (itemData._id,formattedItemData);
-    resetItemData();
+   
   }
 
   const handleTaxRateChange = (value) => {

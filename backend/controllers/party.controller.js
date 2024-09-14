@@ -6,6 +6,7 @@ export const addParty = async(req,res) => {
         if(!partyName) {
             return res.status({error:"Party name is required"})
         }
+       
 
         const newParty = new Party({
             partyName, 
@@ -39,6 +40,7 @@ export const updateParty = async(req,res) => {
     if(!partyName) {
         return res.status({error:"Party name is required"})
     }
+    
     const updatedParty = await Party.findByIdAndUpdate(
         req.params.id,
         {partyName, GSTIN,billingAddress,shippingAddress, openingBalance,asOfDate},

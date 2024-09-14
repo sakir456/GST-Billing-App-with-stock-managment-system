@@ -17,7 +17,7 @@ const useUpdateParty = () => {
             headers: {'Content-Type': 'application/json',},
             body:JSON.stringify(updatedPartyData),
            })
-           const data = res.json();
+           const data = await res.json();
            if (data.error) {
             throw new Error(data.error || "failed to update items");
           }

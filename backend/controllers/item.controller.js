@@ -8,6 +8,10 @@ export const addItem  = async(req,res) => {
         if(!itemName) {
            return res.status({error:"Name is required"})
         }
+        const existingItem = await Item.findOne({ itemName });
+        if (existingItem) {
+            return res.status(400).json({ error: "Item with the same name already exists" });
+        }
 
         const newItem = new Item({
             itemName,
@@ -58,6 +62,12 @@ export const getItem = async (req,res) => {
 export const updateItem = async (req,res) => {
     try {
         const {itemName, hsnCode, category,salePrice,purchasePrice,taxRate,openingQuantity,stockPrice,salePriceTax,purchasePriceTax,quantityUnit} = req.body;
+         
+        const existingItem = await Item.findOne({ itemName });
+        if (existingItem) {
+            return res.status(400).json({ error: "Item with the same name already exists" });
+        }
+
         const updatedItem = await Item.findByIdAndUpdate(
             req.params.id,
             {itemName, hsnCode, category,salePrice,purchasePrice, taxRate,openingQuantity,stockPrice,salePriceTax,purchasePriceTax,quantityUnit},

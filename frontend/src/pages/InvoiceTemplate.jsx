@@ -1,5 +1,6 @@
 
 
+import { numberToWords } from "../utils/ConvertToWord";
 import useItemStore from "../zustand/useItemStore";
 import useSaleStore from "../zustand/useSaleStore";
 import useSidebarStore from "../zustand/useSidebarStore";
@@ -21,7 +22,7 @@ const InvoiceTemplate = () => {
   function extractNumberAndFormat(inputString) {
     
     const number = inputString.replace(/\D/g, ''); 
-    return number ? `(${parseInt(number)}%)` : '0%';
+    return number ? `(${parseInt(number)}%)` : '';
   }
 
   const invoiceItems = savedInvoiceData?.saleItems
@@ -31,17 +32,17 @@ const InvoiceTemplate = () => {
       <div className="max-w-4xl mx-auto bg-white p-5 rounded-md shadow-md">
         {/* Header Section */}
         <div className="flex justify-between items-center border-b pb-4">
-        {firmInfo.logo && (
+        {firmInfo?.logo && (
         <div>
           <img src={firmInfo?.logo} className="w-20 h-20"/>
         </div>
       )}
           <div>
-            <h1 className="text-3xl font-bold text-customLightGreen">{firmInfo?.businessName}</h1>
-            <p className="text-sm">{firmInfo?.address}</p>
-            <p className="text-sm">{firmInfo?.phoneNo}</p>
-            <p className="text-sm">{firmInfo?.email}</p>
-            <p className="text-sm">{firmInfo?.gstin}</p>
+            <h1 className="text-3xl font-bold text-customLightGreen">{firmInfo?.businessName || "Your Company Name"}</h1>
+            <p className="text-sm">{firmInfo?.address || "Your Company Address"}</p>
+            <p className="text-sm">{firmInfo?.phoneNo || "PhoneNo"}</p>
+            <p className="text-sm">{firmInfo?.email || "Email"}</p>
+            <p className="text-sm">{firmInfo?.gstin }</p>
           </div>
           <div className="text-right">
             <h2 className="text-xl font-bold">Tax Invoice</h2>
@@ -79,20 +80,20 @@ const InvoiceTemplate = () => {
               </tr>
             </thead>
             <tbody>
-              {/* Replace with dynamic rows */}
+              
               {invoiceItems.map((item)=> (
                 <tr className="border-b" key={item.index}>
                 <td className="p-2 text-sm text-center ">1</td>
-                <td className="p-2 text-sm text-center">{item?.itemName}</td>
+                <td className="p-2 text-sm text-center">{item?.itemName || ""}</td>
                 <td className="p-2 text-sm text-center">8708</td>
-                <td className="p-2 text-sm text-center">{item?.qty}</td>
-                <td className="p-2 text-sm text-center">{item?.price}</td>
-                <td className="p-2 text-sm text-center">{item?.discountAmount}</td>
+                <td className="p-2 text-sm text-center">{item?.qty || ""}</td>
+                <td className="p-2 text-sm text-center">{item?.price || ""}</td>
+                <td className="p-2 text-sm text-center">{item?.discountAmount || ""}</td>
                 <td className="p-2 text-sm flex items-center">
-                {item?.TaxInAmount}
-                <div className="">{extractNumberAndFormat(item?.TaxInPercent)}</div>
+                {item?.TaxInAmount || ""}
+                <div className="">{extractNumberAndFormat(item?.TaxInPercent) || ""}</div>
                 </td>
-                <td className="p-2 text-sm text-center">{item?.Amount}</td>
+                <td className="p-2 text-sm text-center">{item?.Amount || ""}</td>
               </tr>
               ))}
               
@@ -110,24 +111,24 @@ const InvoiceTemplate = () => {
             </div>
           <div className="flex justify-between py-1">
               <span className="font-semibold">SGST%</span>
-              <span>{(itemsTotal.totalTaxAmount)/2}</span>
+              <span>{((itemsTotal.totalTaxAmount)/2) || ""}</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="font-semibold">CGST%</span>
-              <span>{(itemsTotal.totalTaxAmount)/2}</span>
+              <span>{((itemsTotal.totalTaxAmount)/2) || ""}</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="font-semibold">P&F</span>
-              <span>{savedInvoiceData?.pandfAmount}</span>
+              <span>{savedInvoiceData?.pandfAmount || 0.00 }</span>
             </div>
 
             <div className="flex justify-between py-1">
               <span className="font-semibold">Total:</span>
-              <span>{savedInvoiceData?.grandTotal}(Rounded off)</span>
+              <span>{savedInvoiceData?.grandTotal || ""}(Rounded off)</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="font-semibold">Invoice Amount in Words:</span>
-              <span>One thousand one rupees only</span>
+              <span>{numberToWords(savedInvoiceData?.grandTotal) || ""}</span>
             </div>
             
           </div>

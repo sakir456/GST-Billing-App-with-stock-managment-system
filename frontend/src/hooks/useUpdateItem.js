@@ -4,7 +4,7 @@ import useItemStore from "../zustand/useItemStore";
 
 
 const useUpdateItem = () => {
-    const { setIsAddingItem, setIsProducts } = useItemStore();
+    const { setIsAddingItem, setIsProducts, resetItemData } = useItemStore();
    const [isLoading, setIsLoading] = useState(false)
    const [data, setData] = useState()
   
@@ -21,7 +21,7 @@ const useUpdateItem = () => {
         headers: {'Content-Type': 'application/json',},
         body:JSON.stringify(updatedItemData),
        })
-       const data = res.json();
+       const data = await res.json();
 
        if (data.error) {
         throw new Error(data.error || "failed to update items");
@@ -30,7 +30,9 @@ const useUpdateItem = () => {
       setData(data)
       setIsAddingItem(false);
       setIsProducts("products");
-      toast.success("Item Updated successfully")
+      toast.success("Item Updated successfully");
+      resetItemData()
+
       
      
 } catch (error) {

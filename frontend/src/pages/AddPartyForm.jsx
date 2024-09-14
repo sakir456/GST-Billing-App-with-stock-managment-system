@@ -40,6 +40,10 @@ const AddPartyForm = () => {
      setIsParty(false)
     
   }
+  const handleCross = () => {
+    setIsParty(false)
+    resetPartyData()
+  }
   const isSaveDisabled = !partyData.partyName || partyData.partyName.trim()==="";
 
   return (
@@ -50,7 +54,7 @@ const AddPartyForm = () => {
        <form className= "px-10 py-5 " onSubmit={isUpdatePartyForm ? handleUpdatePartyForm : handleSubmitForm}>
     <div className="flex justify-between text-lg font-medium  ">
     <div className="">{isUpdatePartyForm ? "Update Party" : "Add Party"}</div>
-    <RxCross1 className="mr-3 cursor-pointer"  onClick={() => setIsParty(false)}/>
+    <RxCross1 className="mr-3 cursor-pointer"  onClick={handleCross}/>
     </div>
     <div className="flex items-center gap-5 my-5 ">
         <input placeholder="Party Name" className="py-1 px-2 border-2 border-gray-300

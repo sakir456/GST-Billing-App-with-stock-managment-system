@@ -11,10 +11,10 @@ import useBankStore from "../zustand/useBankStore";
 
 
 const Sidebar = () => {
-  const { expandedItem, setExpandedItem, setIsFirmForm,  firmInfo  } = useSidebarStore();
+  const { expandedItem, setExpandedItem, setIsFirmForm,  firmInfo } = useSidebarStore();
   const {setIsBankForm }  = useBankStore()
-  const {isAddingItem} = useItemStore()
-  const {isParty} = usePartyStore();
+  const { setIsAddingItem} = useItemStore()
+  const { setIsParty} = usePartyStore();
 
 
   const toggleItem = (item) => {
@@ -47,26 +47,25 @@ const Sidebar = () => {
           </Link>
         </li>
         <Link to="/parties" 
-         className="w-full  flex items-center py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen " onClick={() => isParty(false)} >
+         className="w-full  flex items-center py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen " onClick={() => setIsParty(false)} >
         <li className=" w-full h-full    ">
         <span className="w-full h-full">Parties</span>
         </li>
         </Link>
           
         <Link to="/items" 
-        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen" onClick={()=> isAddingItem(false)}>
+        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen" onClick={()=> setIsAddingItem(false)}>
         <li className="w-full h-full flex  items-center">
            <span className="w-full h-full">Items</span>
             <FiPlus className="mr-2" />
           </li>
         </Link>
         
-        <Link to="/sales" onClick={() => toggleItem('sale')} 
+        <Link to="/sales" 
         className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
         <li className="w-full h-full flex  items-center">
          <span className="w-full h-full">Sale</span>
-            {expandedItem === 'sale' ? <IoIosArrowUp className="mr-2" /> : <IoIosArrowDown className="mr-2" />}
-        </li>
+          </li>
         </Link>
          
         <Link to="/purchase" onClick={() => toggleItem('purchase')} 
