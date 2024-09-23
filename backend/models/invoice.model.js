@@ -49,7 +49,9 @@ const invoiveSchema = new mongoose.Schema({
     grandTotal:{
         type:Number,
         
-    }
+    },
+
+    
 
 },{timestamps:true})
 

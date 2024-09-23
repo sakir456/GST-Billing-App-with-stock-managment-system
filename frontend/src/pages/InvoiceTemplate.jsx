@@ -1,15 +1,16 @@
 
 
+import useGetInvoice from "../hooks/invoices/useGetInvoice";
 import { numberToWords } from "../utils/ConvertToWord";
-import useItemStore from "../zustand/useItemStore";
-import useSaleStore from "../zustand/useSaleStore";
+import useBankStore from "../zustand/useBankStore";
 import useSidebarStore from "../zustand/useSidebarStore";
 
 
 const InvoiceTemplate = () => {
   const {firmInfo} = useSidebarStore();
-  const { savedInvoiceData, itemsTotal} = useSaleStore();
-  const {  itemInfo } = useItemStore();
+  const {bankData} = useBankStore()
+  const { fetchInvoice, invoice} = useGetInvoice()
+  
 
   const formatInvoiceDate = (dateString) => {
     const date = new Date(dateString);
@@ -19,13 +20,31 @@ const InvoiceTemplate = () => {
     return `${day}-${month}-${year}`;
   };
 
-  function extractNumberAndFormat(inputString) {
+   function extractNumberAndFormat(inputString) {
     
-    const number = inputString.replace(/\D/g, ''); 
+      const number = inputString.replace(/\D/g, ''); 
     return number ? `(${parseInt(number)}%)` : '';
+   }
+
+  const getHSNCode = (itemName) => {
+    const item = invoice?.itemDetails?.find((itemDetail) => itemDetail.itemName ===itemName)
+    return item ? item.hsnCode : ""
   }
 
-  const invoiceItems = savedInvoiceData?.saleItems
+  const saleItems = invoice?.invoice?.saleItems || []
+  
+  const TotalTaxInAmount  = saleItems.reduce((sum,item) => {
+    return sum + (item?.TaxInAmount || 0)
+  }, 0)
+  const formattedTotalTaxInAmount =  (TotalTaxInAmount).toFixed(2)
+
+  const TotalAmount = saleItems.reduce((sum, item) => {
+    return sum + ((item?.Amount -item?.TaxInAmount) || 0)
+  }, 0)
+
+
+
+  
   
   return (
     <div className="p-3 bg-gray-50">
@@ -48,11 +67,11 @@ const InvoiceTemplate = () => {
             <h2 className="text-xl font-bold">Tax Invoice</h2>
             <div className="flex justify-center items-center">
             <p>Invoice No:</p>
-            <p className="text-sm">{savedInvoiceData?.invoiceNo}</p>
+            <p className="text-sm">{invoice?.invoice?.invoiceNo}</p>
             </div>
             <div className="flex justify-center items-center">
             <p>Date:</p>
-            <p className="text-sm">{savedInvoiceData?.invoiceDate ? formatInvoiceDate(savedInvoiceData?.invoiceDate)
+            <p className="text-sm">{invoice?.invoice?.invoiceDate ? formatInvoiceDate(invoice?.invoice?.invoiceDate )
             : formatInvoiceDate(new Date())}</p>
             </div>
           </div>
@@ -61,7 +80,10 @@ const InvoiceTemplate = () => {
         {/* Bill To Section */}
         <div className="mt-6">
           <h3 className="text-lg font-semibold">Bill To:</h3>
-          <p className="text-sm">AAKASH</p>
+          <p className="text-sm">{invoice?.partyDetails?.partyName}</p>
+          <p className="text-sm">{invoice?.partyDetails?.GSTIN}</p>
+          <p className="text-sm">{invoice?.partyDetails?.billingAddress}</p>
+
         </div>
 
         {/* Table Section */}
@@ -81,19 +103,19 @@ const InvoiceTemplate = () => {
             </thead>
             <tbody>
               
-              {invoiceItems.map((item)=> (
-                <tr className="border-b" key={item.index}>
-                <td className="p-2 text-sm text-center ">1</td>
-                <td className="p-2 text-sm text-center">{item?.itemName || ""}</td>
-                <td className="p-2 text-sm text-center">8708</td>
-                <td className="p-2 text-sm text-center">{item?.qty || ""}</td>
-                <td className="p-2 text-sm text-center">{item?.price || ""}</td>
-                <td className="p-2 text-sm text-center">{item?.discountAmount || ""}</td>
+              {saleItems.map((saleItem, index)=> (
+                <tr className="border-b" key={index}>
+                <td className="p-2 text-sm text-center ">{index+1}</td>
+                <td className="p-2 text-sm text-center">{saleItem?.itemName}</td>
+                <td className="p-2 text-sm text-center">{getHSNCode(saleItem?.itemName)}</td>
+                <td className="p-2 text-sm text-center">{saleItem?.qty || ""}</td>
+                <td className="p-2 text-sm text-center">{saleItem?.price || ""}</td>
+                <td className="p-2 text-sm text-center">{saleItem?.discountAmount || ""}</td>
                 <td className="p-2 text-sm flex items-center">
-                {item?.TaxInAmount || ""}
-                <div className="">{extractNumberAndFormat(item?.TaxInPercent) || ""}</div>
+                {saleItem?.TaxInAmount || ""}
+                <div className="">{extractNumberAndFormat(saleItem?.TaxInPercent) || ""}</div>
                 </td>
-                <td className="p-2 text-sm text-center">{item?.Amount || ""}</td>
+                <td className="p-2 text-sm text-center">{saleItem?.Amount || ""}</td>
               </tr>
               ))}
               
@@ -107,28 +129,28 @@ const InvoiceTemplate = () => {
           <div className="w-1/2">
           <div className="flex justify-between py-1">
               <span className="font-semibold">Total Amount:</span>
-              <span>{itemsTotal.totalAmount}</span>
+              <span>{TotalAmount}</span>
             </div>
           <div className="flex justify-between py-1">
               <span className="font-semibold">SGST%</span>
-              <span>{((itemsTotal.totalTaxAmount)/2) || ""}</span>
+              <span>{((formattedTotalTaxInAmount )/2) || ""}</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="font-semibold">CGST%</span>
-              <span>{((itemsTotal.totalTaxAmount)/2) || ""}</span>
+              <span>{((formattedTotalTaxInAmount )/2) || ""}</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="font-semibold">P&F</span>
-              <span>{savedInvoiceData?.pandfAmount || 0.00 }</span>
+              <span>{invoice?.invoice?.pandfAmount || 0.00 }</span>
             </div>
 
             <div className="flex justify-between py-1">
               <span className="font-semibold">Total:</span>
-              <span>{savedInvoiceData?.grandTotal || ""}(Rounded off)</span>
+              <span>{invoice?.invoice?.grandTotal || ""}(Rounded off)</span>
             </div>
             <div className="flex justify-between py-1">
               <span className="font-semibold">Invoice Amount in Words:</span>
-              <span>{numberToWords(savedInvoiceData?.grandTotal) || ""}</span>
+              <span>{numberToWords(invoice?.invoice?.grandTotal) || ""}</span>
             </div>
             
           </div>
@@ -139,11 +161,23 @@ const InvoiceTemplate = () => {
           <div className="flex justify-between">
             <div>
               <p className="text-sm font-semibold">Bank Details:</p>
-              <p className="text-sm">ICICI BANK LIMITED, BHARUCH</p>
-              <p className="text-sm">Account No.: 017805601706</p>
-              <p className="text-sm">IFSC Code: ICIC0000176</p>
-              <p className="text-sm">Account Holders Name: FAMOUS RADIATORS</p>
-            </div>
+              <div className="flex items-center gap-1">
+              <p>Bank Name:</p>
+              <p className="text-sm">{bankData.bankName}</p>
+              </div>
+              <div className="flex items-center gap-1">
+              <p>Account No:</p>
+              <p className="text-sm">{bankData.accountNO}</p>
+              </div>
+              <div className="flex items-center gap-1">
+              <p>Bank Ifsc:</p>
+              <p className="text-sm">{bankData.bankIfsc}</p>
+              </div>
+              <div className="flex items-center gap-1">
+              <p>Branch:</p>
+              <p className="text-sm">{bankData.address}</p>
+              </div>
+              </div>
             <div className="text-right">
               <p className="text-sm">Authorized Signatory</p>
             </div>

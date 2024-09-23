@@ -43,8 +43,8 @@ const BankInfoForm = () => {
    
     <div>
         <form className="px-10 py-5" onSubmit={handleSubmit}>
-        <div className="flex justify-between text-lg font-medium">
-        <div>{savedBankDetails ? "Edit Bank Details" : "Enter Bank Details "}</div>
+        <div className="flex justify-between text-lg font-medium ">
+        <div className="text-customGreen">{savedBankDetails ? "Edit Bank Details" : "Enter Bank Details "}</div>
         <RxCross1 className="mr-3 cursor-pointer" onClick={handleCross}  />
         </div>
          

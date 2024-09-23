@@ -7,11 +7,13 @@ import { Link } from "react-router-dom";
 import useItemStore from "../zustand/useItemStore";
 import usePartyStore from "../zustand/usePartyStore";
 import useBankStore from "../zustand/useBankStore";
+import useSettingsStore from "../zustand/useSettingsStore";
 
 
 
 const Sidebar = () => {
   const { expandedItem, setExpandedItem, setIsFirmForm,  firmInfo } = useSidebarStore();
+  const {setIsSettings} = useSettingsStore()
   const {setIsBankForm }  = useBankStore()
   const { setIsAddingItem} = useItemStore()
   const { setIsParty} = usePartyStore();
@@ -98,10 +100,12 @@ const Sidebar = () => {
         <li className="flex items-center justify-between py-2 pl-4 hover:bg-customLightGreen hover:border-l-4 hover:border-white cursor-pointer">
           <span>Reports</span>
         </li>
-
+          
+          <div onClick={()=> setIsSettings(true)}>
         <li className="flex items-center justify-between py-2 pl-4 hover:bg-customLightGreen hover:border-l-4 hover:border-white cursor-pointer">
           <span>Settings</span>
         </li>
+        </div>
       </ul>
       <LogoutButton />
     </div>

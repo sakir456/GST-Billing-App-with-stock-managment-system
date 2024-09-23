@@ -17,6 +17,7 @@ import useGeneralStore from "../../zustand/useGeneralStore";
 
 
 
+
 const AddSaleForm = () => {
 const { saleItems,partyInfo,grandTotal,resetForm} = useSaleStore()
 const {addInvoice, loading} = useAddInvoice()
@@ -35,8 +36,11 @@ const handleSubmit = async(e) => {
     grandTotal
   }
   await addInvoice(invoiceData)
+  
    await resetForm()
    setInvoicePrintPage(true)
+
+ 
    
 }
 

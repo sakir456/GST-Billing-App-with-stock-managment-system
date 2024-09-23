@@ -3,11 +3,14 @@ import Party from "../models/party.model.js"
 export const addParty = async(req,res) => {
     try {
         const {partyName, GSTIN,billingAddress,shippingAddress, openingBalance,asOfDate} = req.body
+        
         if(!partyName) {
             return res.status({error:"Party name is required"})
         }
-       
-
+        const existingParty= await Party.findOne({ partyName });
+        if (existingParty) {
+            return res.status(400).json({ error: "Party with the same name already exists" });
+        }
         const newParty = new Party({
             partyName, 
             GSTIN,
@@ -40,6 +43,11 @@ export const updateParty = async(req,res) => {
     if(!partyName) {
         return res.status({error:"Party name is required"})
     }
+    const existingParty= await Party.findOne({ partyName });
+        if (existingParty) {
+            return res.status(400).json({ error: "Party with the same name already exists" });
+        }
+
     
     const updatedParty = await Party.findByIdAndUpdate(
         req.params.id,

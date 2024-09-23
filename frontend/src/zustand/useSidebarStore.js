@@ -39,6 +39,8 @@ const useSidebarStore = create((set) => ({
 
   firmInfo: null,
   setFirmInfo : (data) => set({ firmInfo: data }),
+
+  
    
   
 

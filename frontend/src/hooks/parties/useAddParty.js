@@ -1,9 +1,11 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import usePartyStore from "../../zustand/usePartyStore";
 
 const useAddParty = () => {
     const [loading,setLoading] = useState(false);
     const [data, setData] = useState();
+    const {setIsParty, resetPartyData} = usePartyStore();
 
  const addParty = async(formattedPartyData) => {
      if(!formattedPartyData.partyName){
@@ -23,6 +25,8 @@ const useAddParty = () => {
           console.log(data)
           setData(data);
           toast.success("Party added successfully");
+          resetPartyData()
+         setIsParty(false)
      } catch (error) {
         toast.error(error.message);
      }finally {

@@ -1,10 +1,12 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
+import usePartyStore from "../../zustand/usePartyStore";
 
 
 const useUpdateParty = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [data, setData] = useState()
+    const {setIsParty, resetPartyData} = usePartyStore();
   const updateParty = async(itemId, updatedPartyData) => {
     if (!updatedPartyData.partyName) {
         toast.error("Name is required to update Party");
@@ -22,7 +24,9 @@ const useUpdateParty = () => {
             throw new Error(data.error || "failed to update items");
           }
           setData(data)
-          toast.success("Party Updated successfully")
+          toast.success("Party Updated successfully");
+          resetPartyData()
+         setIsParty(false)
       } catch (error) {
         toast.error(error.message);
       } finally {

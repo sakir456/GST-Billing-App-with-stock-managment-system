@@ -3,7 +3,7 @@ import toast from "react-hot-toast";
 import useItemStore from "../zustand/useItemStore";
 
 const useAddItem = () => {
-  const { setIsAddingItem, setIsProducts } = useItemStore();
+  const { setIsAddingItem, setIsProducts, resetItemData } = useItemStore();
   const [data, setData] = useState();
   const [loading,setLoading] = useState(false)
 
@@ -27,11 +27,10 @@ const useAddItem = () => {
       }
       console.log(data)
       setData(data);
-     
+     toast.success("Item added successfully");
       setIsAddingItem(false);
       setIsProducts("products");
- 
-      toast.success("Item added successfully");
+      resetItemData();
 
     } catch (error) {
       toast.error(error.message);

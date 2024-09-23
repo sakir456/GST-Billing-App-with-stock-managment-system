@@ -1,4 +1,6 @@
 import Invoice from "../models/invoice.model.js";
+import Item from "../models/item.model.js";
+import Party from "../models/party.model.js";
 
 export const createInvoice = async (req, res) => {
     try {
@@ -59,16 +61,27 @@ export const getInvoices = async (req, res) => {
 export const getInvoice = async(req,res) => {
   const {invoiceId} = req.params
     try {
-      const invoice = await Invoice.findById(invoiceId)
+      const invoice = await Invoice.findById(req.params.id)
       if(!invoice){
         return res.status(404).json({error: "Invoice not found "})
       }
-      return res.status(200).json(invoice)
+      const partyDetails = await Party.findOne({ partyName: invoice.partyName });
+      const itemDetails = await Promise.all(
+        invoice.saleItems.map(async(saleItem)=> {
+          return await Item.findOne({itemName: saleItem.itemName})
+        }) 
+      )
+      const foundItemDetails = itemDetails.filter(item => item!==null)
+      return res.status(200).json({invoice, partyDetails: partyDetails || null, itemDetails: foundItemDetails})
     } catch (error) {
        console.error("Error fetching invoice ", error);
        return res.status(500).json({ error: "Server error" });
     }
 }
+
+     
+
+
 
 
 // export const getInvoices = async (req, res) => {

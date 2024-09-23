@@ -20,8 +20,7 @@ const AddPartyForm = () => {
      asOfDate:partyData.asOfDate ? parseFloat(partyData.asOfDate) : undefined,
      }
      await addParty(formattedPartyData)
-     resetPartyData()
-     setIsParty(false)
+     
   }
 
   const handleChange = (e) => {

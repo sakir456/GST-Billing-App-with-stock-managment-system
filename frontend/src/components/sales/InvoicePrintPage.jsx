@@ -11,8 +11,9 @@ const InvoicePrintPage = () => {
    return (
     <div>
    <div className="flex justify-end">
-    <button onClick={handleCrossButton}>
-      <RxCross1/>
+    <button onClick={handleCrossButton} className="mt-4 mr-4">
+      <RxCross1 
+      />
     </button>
     </div>
     <div>

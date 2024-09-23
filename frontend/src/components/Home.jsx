@@ -13,6 +13,8 @@ import FirmInfoForm from "../pages/FirmInfo/FirmInfoForm";
 import BankInfoForm from "../pages/BankInfoForm";
 import useSidebarStore from "../zustand/useSidebarStore";
 import useBankStore from "../zustand/useBankStore";
+import SettingsPage from "../pages/SettingsPage";
+import useSettingsStore from "../zustand/useSettingsStore";
 
 
 
@@ -23,6 +25,7 @@ const Home = () => {
   const { isSaleForm} = useSaleStore()
  const {isFirmForm} = useSidebarStore()
  const {isBankForm }  = useBankStore()
+ const { isSettings}  = useSettingsStore()
 
 
 
@@ -35,6 +38,8 @@ const Home = () => {
       <FirmInfoForm/>
     ) : isBankForm ? (
       <BankInfoForm/>
+    ): isSettings ? (
+       <SettingsPage/>
     ):(
       <div className="flex flex-row ">
     <Sidebar />

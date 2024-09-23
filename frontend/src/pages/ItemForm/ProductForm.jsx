@@ -7,7 +7,7 @@ import LoadingSpinnerNew from "../../components/LoadingSpinnerNew";
 import useUpdateItem from "../../hooks/useUpdateItem";
 
 const ProductForm = () => {
-  const { setIsAddingItem, setIsProducts, isUpdateForm,  itemData, setItemData, resetItemData} = useItemStore();
+  const { setIsAddingItem, setIsProducts, isUpdateForm,  itemData, setItemData} = useItemStore();
   const { addItem, loading } = useAddItem();
   const {updateItem, isLoading} = useUpdateItem()
   
@@ -31,7 +31,7 @@ const ProductForm = () => {
       quantityUnit: itemData.quantityUnit === "none" ? undefined : itemData.quantityUnit
     };
     await addItem(formattedItemData);
-    resetItemData();
+    
   };
 
   const handleUpdateForm = async(e) => {
