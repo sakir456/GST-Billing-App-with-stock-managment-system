@@ -3,6 +3,7 @@
 import useGetInvoice from "../hooks/invoices/useGetInvoice";
 import { numberToWords } from "../utils/ConvertToWord";
 import useBankStore from "../zustand/useBankStore";
+import useSettingsStore from "../zustand/useSettingsStore";
 import useSidebarStore from "../zustand/useSidebarStore";
 
 
@@ -10,6 +11,7 @@ const InvoiceTemplate = () => {
   const {firmInfo} = useSidebarStore();
   const {bankData} = useBankStore()
   const { fetchInvoice, invoice} = useGetInvoice()
+  const {termsAndConditionsData} = useSettingsStore()
   
 
   const formatInvoiceDate = (dateString) => {
@@ -42,12 +44,14 @@ const InvoiceTemplate = () => {
     return sum + ((item?.Amount -item?.TaxInAmount) || 0)
   }, 0)
 
+  const shipDetails = invoice?.partyDetails?.shippingAddress
+
 
 
   
   
   return (
-    <div className="p-3 bg-gray-50">
+    <div className="  p-1 bg-gray-50">
       <div className="max-w-4xl mx-auto bg-white p-5 rounded-md shadow-md">
         {/* Header Section */}
         <div className="flex justify-between items-center border-b pb-4">
@@ -78,12 +82,22 @@ const InvoiceTemplate = () => {
         </div>
 
         {/* Bill To Section */}
-        <div className="mt-6">
+        <div className="mt-6 flex justify-between">
+        <div>
           <h3 className="text-lg font-semibold">Bill To:</h3>
           <p className="text-sm">{invoice?.partyDetails?.partyName}</p>
-          <p className="text-sm">{invoice?.partyDetails?.GSTIN}</p>
+          <p className="text-sm ">{invoice?.partyDetails?.GSTIN}</p>
           <p className="text-sm">{invoice?.partyDetails?.billingAddress}</p>
-
+          </div>
+          <div>
+        { shipDetails && (
+          <div>
+          <h3 className="text-lg font-semibold">Ship To:</h3>
+          <p className="text-sm">{invoice?.partyDetails?.shippingAddress}</p>
+          </div>
+        )}
+          
+          </div>
         </div>
 
         {/* Table Section */}
@@ -132,11 +146,11 @@ const InvoiceTemplate = () => {
               <span>{TotalAmount}</span>
             </div>
           <div className="flex justify-between py-1">
-              <span className="font-semibold">SGST%</span>
+              <span className="font-semibold">SGST</span>
               <span>{((formattedTotalTaxInAmount )/2) || ""}</span>
             </div>
             <div className="flex justify-between py-1">
-              <span className="font-semibold">CGST%</span>
+              <span className="font-semibold">CGST</span>
               <span>{((formattedTotalTaxInAmount )/2) || ""}</span>
             </div>
             <div className="flex justify-between py-1">
@@ -183,9 +197,9 @@ const InvoiceTemplate = () => {
             </div>
           </div>
           <div className="mt-4 text-sm">
-            <p>Terms and Conditions:</p>
-            <p> Subject to Bharuch Jurisdiction only.</p>
-            <p>2 Any complaint of the goods should be informed within 24 hours.</p>
+            <p >Terms and Conditions:</p>
+            <p className="w-1/3" >{termsAndConditionsData?.termsAndConditions}</p>
+            
           </div>
         </div>
       </div>

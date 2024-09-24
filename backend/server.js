@@ -11,6 +11,7 @@ import partyRoutes from './routes/party.routes.js';
 import invoiceRoutes from './routes/invoice.routes.js';
 import firmRoutes from './routes/firm.routes.js';
 import bankRoutes from './routes/bank.routes.js';
+import settingRoutes from './routes/setting.routes.js'
 
 dotenv.config(); // Load environment variables
 
@@ -29,6 +30,7 @@ app.use('/api/parties', partyRoutes);
 app.use('/api/invoice', invoiceRoutes);
 app.use('/api/firm', firmRoutes); 
 app.use('/api/bank',bankRoutes)
+app.use('/api/settings',settingRoutes)
 
 // Health check route
 app.get('/', (req, res) => {

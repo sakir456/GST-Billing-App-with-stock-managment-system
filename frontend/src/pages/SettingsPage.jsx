@@ -1,21 +1,36 @@
 import { RxCross1 } from "react-icons/rx"
 import useSettingsStore from "../zustand/useSettingsStore"
+import useSaveSetting from "../hooks/settings/useSaveSetting";
+import useUpdateSetting from "../hooks/settings/useUpdateSetting";
 
 
 const SettingsPage = () => {
-    const {setIsSettings, setTermsAndConditions, termsAndConditions} = useSettingsStore();
+    const {setIsSettings, setTermsAndConditions, termsAndConditions, termsAndConditionsData} = useSettingsStore();
+    const {saveSetting} = useSaveSetting()
+    const {updateSetting} = useUpdateSetting()
 
     const handleInputChange = (e)=> {
       setTermsAndConditions(e.target.value)
     }
 
-    const handleSubmit  = (e)=> {
+    const handleSubmit  = async(e)=> {
         e.preventDefault()
+        const TermsAndConditions = termsAndConditions
+
+        if(termsAndConditionsData){
+           updateSetting(termsAndConditionsData._id, TermsAndConditions)
+        }else{
+          await saveSetting(TermsAndConditions)
+        }
+       
+        
     }
     
     const handleCross = () => {
        setIsSettings(false)
     }
+
+    const isSaveDisabled = !termsAndConditions || termsAndConditions.trim()===""
   return (
     <form className="px-10 py-5" onSubmit={handleSubmit}>
     <div className="flex justify-between text-lg font-medium">
@@ -41,7 +56,9 @@ const SettingsPage = () => {
         <div  className=" flex gap-3 justify-end">
         <button className="mt-8 items-center px-4 py-2 text-customLightGreen rounded-md 
        border border-customLightGreen hover:bg-customGreen hover:text-white " onClick={handleCross}>Cancel</button>
-      <button className={`mt-8 items-center px-4 py-2 text-white rounded-md bg-customLightGreen `}  >Save</button>
+      <button className={`mt-8 items-center px-4 py-2 text-white rounded-md 
+      ${isSaveDisabled ? "bg-gray-400": "bg-customLightGreen"} `} disabled={isSaveDisabled}  >
+      {termsAndConditionsData ? "Update" : "Save"} </button>
       </div>
         </form>
    
