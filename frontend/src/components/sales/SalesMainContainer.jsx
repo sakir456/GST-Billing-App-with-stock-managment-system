@@ -73,7 +73,7 @@ const SalesMainContainer = () => {
       {loading || isLoading ? (
         <LoadingSpinnerNew />
       ) : (
-        <div className="m-4">
+        <div className="m-4 ">
           <div className="flex justify-between">
             <div className="flex items-center gap-2">
               <FiBox className="text-customLightGreen bg-green-100 rounded-full" />

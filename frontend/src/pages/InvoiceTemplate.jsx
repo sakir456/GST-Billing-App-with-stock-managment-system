@@ -44,6 +44,8 @@ const InvoiceTemplate = () => {
     return sum + ((item?.Amount -item?.TaxInAmount) || 0)
   }, 0)
 
+  const formattedTotalAmount = (TotalAmount).toFixed(2)
+
   const shipDetails = invoice?.partyDetails?.shippingAddress
 
 
@@ -51,24 +53,24 @@ const InvoiceTemplate = () => {
   
   
   return (
-    <div className="  p-1 bg-gray-50">
+    <div className="w-3/4  bg-gray-50 " id="invoice-template">
       <div className="max-w-4xl mx-auto bg-white p-5 rounded-md shadow-md">
         {/* Header Section */}
-        <div className="flex justify-between items-center border-b pb-4">
+        <div className="flex justify-between items-center border-b pb-1 ">
         {firmInfo?.logo && (
         <div>
           <img src={firmInfo?.logo} className="w-20 h-20"/>
         </div>
       )}
           <div>
-            <h1 className="text-3xl font-bold text-customLightGreen">{firmInfo?.businessName || "Your Company Name"}</h1>
+            <h1 className="text-xl font-bold text-customLightGreen">{firmInfo?.businessName || "Your Company Name"}</h1>
             <p className="text-sm">{firmInfo?.address || "Your Company Address"}</p>
             <p className="text-sm">{firmInfo?.phoneNo || "PhoneNo"}</p>
             <p className="text-sm">{firmInfo?.email || "Email"}</p>
             <p className="text-sm">{firmInfo?.gstin }</p>
           </div>
           <div className="text-right">
-            <h2 className="text-xl font-bold">Tax Invoice</h2>
+            <h2 className="text-lg font-bold">Tax Invoice</h2>
             <div className="flex justify-center items-center">
             <p>Invoice No:</p>
             <p className="text-sm">{invoice?.invoice?.invoiceNo}</p>
@@ -82,9 +84,9 @@ const InvoiceTemplate = () => {
         </div>
 
         {/* Bill To Section */}
-        <div className="mt-6 flex justify-between">
+        <div className="mt-2 flex justify-between">
         <div>
-          <h3 className="text-lg font-semibold">Bill To:</h3>
+          <h3 className=" font-semibold">Bill To:</h3>
           <p className="text-sm">{invoice?.partyDetails?.partyName}</p>
           <p className="text-sm ">{invoice?.partyDetails?.GSTIN}</p>
           <p className="text-sm">{invoice?.partyDetails?.billingAddress}</p>
@@ -92,7 +94,7 @@ const InvoiceTemplate = () => {
           <div>
         { shipDetails && (
           <div>
-          <h3 className="text-lg font-semibold">Ship To:</h3>
+          <h3 className=" font-semibold">Ship To:</h3>
           <p className="text-sm">{invoice?.partyDetails?.shippingAddress}</p>
           </div>
         )}
@@ -101,7 +103,7 @@ const InvoiceTemplate = () => {
         </div>
 
         {/* Table Section */}
-        <div className="mt-4">
+        <div className="mt-2">
           <table className="w-full border-collapse">
             <thead>
               <tr className="bg-gray-100 border-b">
@@ -118,19 +120,22 @@ const InvoiceTemplate = () => {
             <tbody>
               
               {saleItems.map((saleItem, index)=> (
-                <tr className="border-b" key={index}>
+                saleItem.itemName && (
+                  <tr className="border-b" key={index}>
                 <td className="p-2 text-sm text-center ">{index+1}</td>
                 <td className="p-2 text-sm text-center">{saleItem?.itemName}</td>
                 <td className="p-2 text-sm text-center">{getHSNCode(saleItem?.itemName)}</td>
                 <td className="p-2 text-sm text-center">{saleItem?.qty || ""}</td>
-                <td className="p-2 text-sm text-center">{saleItem?.price || ""}</td>
-                <td className="p-2 text-sm text-center">{saleItem?.discountAmount || ""}</td>
-                <td className="p-2 text-sm flex items-center">
-                {saleItem?.TaxInAmount || ""}
+                <td className="p-2 text-sm text-center">₹{saleItem?.price || ""}</td>
+                <td className="p-2 text-sm text-center">₹{saleItem?.discountAmount || ""}</td>
+                <td className="p-2 text-sm flex items-center justify-center">
+                ₹{saleItem?.TaxInAmount || ""}
                 <div className="">{extractNumberAndFormat(saleItem?.TaxInPercent) || ""}</div>
                 </td>
-                <td className="p-2 text-sm text-center">{saleItem?.Amount || ""}</td>
+                <td className="p-2 text-sm text-center">₹{saleItem?.Amount || ""}</td>
               </tr>
+                )
+                
               ))}
               
               {/* More rows... */}
@@ -139,44 +144,13 @@ const InvoiceTemplate = () => {
         </div>
 
         {/* Total Section */}
-        <div className="flex justify-end mt-6">
-          <div className="w-1/2">
-          <div className="flex justify-between py-1">
-              <span className="font-semibold">Total Amount:</span>
-              <span>{TotalAmount}</span>
-            </div>
-          <div className="flex justify-between py-1">
-              <span className="font-semibold">SGST</span>
-              <span>{((formattedTotalTaxInAmount )/2) || ""}</span>
-            </div>
-            <div className="flex justify-between py-1">
-              <span className="font-semibold">CGST</span>
-              <span>{((formattedTotalTaxInAmount )/2) || ""}</span>
-            </div>
-            <div className="flex justify-between py-1">
-              <span className="font-semibold">P&F</span>
-              <span>{invoice?.invoice?.pandfAmount || 0.00 }</span>
-            </div>
-
-            <div className="flex justify-between py-1">
-              <span className="font-semibold">Total:</span>
-              <span>{invoice?.invoice?.grandTotal || ""}(Rounded off)</span>
-            </div>
-            <div className="flex justify-between py-1">
-              <span className="font-semibold">Invoice Amount in Words:</span>
-              <span>{numberToWords(invoice?.invoice?.grandTotal) || ""}</span>
-            </div>
-            
-          </div>
-        </div>
-
-        {/* Footer Section */}
-        <div className="mt-8 border-t pt-4">
+        <div className="flex justify-between mt-1 gap-5">
+        <div className="mt-1 w-1/2  ">
           <div className="flex justify-between">
             <div>
               <p className="text-sm font-semibold">Bank Details:</p>
               <div className="flex items-center gap-1">
-              <p>Bank Name:</p>
+              <p className="">Bank Name:</p>
               <p className="text-sm">{bankData.bankName}</p>
               </div>
               <div className="flex items-center gap-1">
@@ -192,16 +166,53 @@ const InvoiceTemplate = () => {
               <p className="text-sm">{bankData.address}</p>
               </div>
               </div>
-            <div className="text-right">
-              <p className="text-sm">Authorized Signatory</p>
-            </div>
+            
           </div>
-          <div className="mt-4 text-sm">
-            <p >Terms and Conditions:</p>
-            <p className="w-1/3" >{termsAndConditionsData?.termsAndConditions}</p>
+          <div className="mt-2 text-sm">
+            <p className="font-semibold" >Terms and Conditions:</p>
+            <p className="mx-1" >{termsAndConditionsData?.termsAndConditions}</p>
             
           </div>
         </div>
+          <div className="w-1/2">
+          <div className="flex flex-col">
+          <div className="flex justify-between ">
+              <span className="font-semibold">Total Amount:</span>
+              <span>₹{formattedTotalAmount}</span>
+            </div>
+          <div className="flex justify-between ">
+              <span className="font-semibold">SGST:</span>
+              <span>₹{((formattedTotalTaxInAmount )/2) || ""}</span>
+            </div>
+            <div className="flex justify-between ">
+              <span className="font-semibold">CGST:</span>
+              <span>₹{((formattedTotalTaxInAmount )/2) || ""}</span>
+            </div>
+            <div className="flex justify-between ">
+              <span className="font-semibold">P&F:</span>
+              <span>{invoice?.invoice?.pandfAmount || 0.00 }</span>
+            </div>
+
+            <div className="flex justify-between ">
+              <span className="font-semibold">Total:</span>
+              <span>₹{invoice?.invoice?.grandTotal || ""}(Rounded off)</span>
+            </div>
+            <div className="flex justify-between ">
+              <span className="font-semibold">Invoice Amount in Words:</span>
+              <span>{invoice?.invoice?.grandTotal ? numberToWords(invoice.invoice.grandTotal) : "zero"}</span>
+            </div>
+            
+          </div>
+          <div className="flex mt-2 ml-40 pb-16 ">
+         <p className="font-semibold">Authorised signatory</p>
+        </div>
+          </div>
+          
+        </div>
+
+        {/* Footer Section */}
+        
+        
       </div>
     </div>
   );
