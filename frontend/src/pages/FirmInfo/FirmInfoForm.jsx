@@ -7,11 +7,12 @@ import useSidebarStore from "../../zustand/useSidebarStore";
 import useSaveFirmDetails from "../../hooks/firm/useSaveFirmDetails";
 import LoadingSpinnerNew from "../../components/LoadingSpinnerNew";
 import useUpdateFirmDetails from "../../hooks/firm/useUpdateFirmDetails";
+import { useEffect } from "react";
 
 
 
 const FirmInfoForm = () => {
-  const {isFirmPersonalData, isFirmAddressData,logo,    setIsFirmForm, firmInfo} = useSidebarStore();
+  const {isFirmPersonalData, isFirmAddressData,logo,    setIsFirmForm, firmInfo, setIsFirmPersonalData, setIsFirmAddressData} = useSidebarStore();
   const {saveFirmDetails, loading} = useSaveFirmDetails()
   const {updateFirmDetails, loading:isLoading} = useUpdateFirmDetails()
 
@@ -38,6 +39,9 @@ const FirmInfoForm = () => {
     }
 
      if(firmInfo) {
+      
+      
+
        await updateFirmDetails(firmInfo._id,firmData);
        
   }else{
@@ -48,6 +52,29 @@ const FirmInfoForm = () => {
   const handlecrossbtn = ()=> {
     setIsFirmForm(false)
   }
+
+
+  useEffect(() => {
+    if (firmInfo) {
+      // Set personal data
+      setIsFirmPersonalData({
+        businessName: firmInfo.businessName,
+        gstin: firmInfo.gstin,
+        phoneNo: firmInfo.phoneNo,
+        email: firmInfo.email,
+      });
+
+      // Set address data
+      setIsFirmAddressData({
+        address: firmInfo.address,
+        pincode: firmInfo.pincode,
+        state: firmInfo.state,
+        description: firmInfo.description,
+        businessType: firmInfo.businessType,
+        businessCategory: firmInfo.businessCategory,
+      });
+    }
+  }, [firmInfo, setIsFirmPersonalData, setIsFirmAddressData]);
   
   const isSaveDisabled = !isFirmPersonalData.businessName || isFirmPersonalData.businessName.trim()==="";
   return (

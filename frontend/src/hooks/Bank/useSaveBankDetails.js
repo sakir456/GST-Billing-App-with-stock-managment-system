@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 
 const useSaveBankDetails = () => {
     const [loading, setLoading] = useState(false);
-    const {setSavedBankDetails, setBankData,setIsBankForm } = useBankStore()
+    const {setSavedBankDetails,setIsBankForm,  clearBankData } = useBankStore()
     
 
     const saveBankdetails = async(BankData) => {
@@ -15,6 +15,7 @@ const useSaveBankDetails = () => {
         }
         setLoading(true)
         try {
+            clearBankData()
            const res = await fetch("/api/bank/savebankdetails", {
             method:"POST",
            headers: { 'Content-Type': 'application/json' },
@@ -28,14 +29,6 @@ const useSaveBankDetails = () => {
           
           console.log(data)
           setSavedBankDetails(data)
-          
-          const bankDetail  = {...data}
-          setBankData({
-           bankName: bankDetail.bankName,
-          accountNO:bankDetail.accountNO,
-          bankIfsc:bankDetail.bankIfsc,
-           address:bankDetail.address
-          })
           toast.success("Bank details Saved Successfully");
           setIsBankForm(false)
 

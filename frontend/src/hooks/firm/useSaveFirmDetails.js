@@ -4,12 +4,12 @@ import useSidebarStore from "../../zustand/useSidebarStore";
 
 const useSaveFirmDetails = () => {
   const [loading, setLoading] = useState(false);
-  const { setSavedFirmData, setIsFirmPersonalData, setIsFirmAddressData,  setFirmInfo } = useSidebarStore();
-  const { setIsFirmForm } = useSidebarStore();
+  const { setSavedFirmData,   setFirmInfo, setIsFirmForm, clearFirmData,   } = useSidebarStore();
 
   const saveFirmDetails = async (firmData) => {
     setLoading(true);
     try {
+        clearFirmData()
       const res = await fetch("/api/firm/savefirmdetails", {
         method: "POST",
         body: firmData,
@@ -27,22 +27,8 @@ const useSaveFirmDetails = () => {
       setSavedFirmData(firm); 
       setFirmInfo(firm)
 
-      // Update individual fields
-      setIsFirmPersonalData({
-        businessName: firm.businessName,
-        gstin: firm.gstin,
-        phoneNo: firm.phoneNo,
-        email: firm.email,
-      });
-
-      setIsFirmAddressData({
-        address: firm.address,
-        pincode: firm.pincode,
-        state: firm.state,
-        description: firm.description,
-        businessType: firm.businessType,
-        businessCategory: firm.businessCategory,
-      });
+     
+   
 
     //   setLogo(firm.logo || "shop.png"); // Set the logo URL
 

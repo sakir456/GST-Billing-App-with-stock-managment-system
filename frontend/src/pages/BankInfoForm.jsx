@@ -3,6 +3,7 @@ import useBankStore from "../zustand/useBankStore"
 import useSaveBankDetails from "../hooks/Bank/useSaveBankDetails"
 import useUpdateBankDetails from "../hooks/Bank/useUpdateBankDetails"
 import LoadingSpinnerNew from "../components/LoadingSpinnerNew"
+import { useEffect } from "react"
 
 
 const BankInfoForm = () => {
@@ -32,6 +33,19 @@ const BankInfoForm = () => {
   const handleCross = ()=> {
     setIsBankForm(false)
   }
+
+  useEffect(()=> {
+
+    if(savedBankDetails) {
+      setBankData({
+       bankName: savedBankDetails.bankName,
+       accountNO:savedBankDetails.accountNO,
+       bankIfsc:savedBankDetails.bankIfsc,
+        address:savedBankDetails.address
+       })
+    }
+    
+  },[savedBankDetails,setBankData ])
 
   const isSaveDisabled = !bankData.bankName || bankData.bankName.trim()==="";
   return (

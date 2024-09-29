@@ -5,10 +5,11 @@ import toast from "react-hot-toast"
 
 const useUpdateSetting = () => {
      const [loading, setLoading] = useState(false)
-     const {setTermsAndConditionsData,  setTermsAndConditions, setIsSettings} = useSettingsStore()
+     const {setTermsAndConditionsData,   setIsSettings, clearTermsAndConditions} = useSettingsStore()
      const updateSetting = async(id, termsAndConditions) => {
         setLoading(true)
         try {
+          clearTermsAndConditions()
           const res = await fetch(`/api/settings/updatesettings/${id}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
@@ -20,9 +21,7 @@ const useUpdateSetting = () => {
           }
           console.log(data)
           setTermsAndConditionsData(data)
-          const termsandConditionsdetail = {...data}
-            setTermsAndConditions(termsandConditionsdetail.termsAndConditions)
-            toast.success("Settings Updated successfully!");
+         toast.success("Settings Updated successfully!");
             setIsSettings(false)
         } catch(error){
            console.error("error updating settings", error)

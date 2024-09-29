@@ -3,17 +3,20 @@ import useSidebarStore from "../../zustand/useSidebarStore";
 
 
 const FirmLogo = () => {
-   const {logo, setLogo} = useSidebarStore()
-   const [displayedLogo, setDisplayedLogo] = useState("/shop.png");
+   const {logo, setLogo,displayedLogo, setDisplayedLogo } = useSidebarStore()
+   
     const [hovered, setHovered] = useState(false);
 
     useEffect(() => {
-      if (logo) {
+      if (logo && logo instanceof File) {
         const reader = new FileReader();
         reader.onload = () => {
           setDisplayedLogo(reader.result);
         };
         reader.readAsDataURL(logo);
+      } else if (typeof logo === "string") {
+        // If logo is a string (e.g., a URL), set it directly as the displayed image
+        setDisplayedLogo(logo);
       }
     }, [logo]);
   

@@ -5,12 +5,12 @@ import toast from "react-hot-toast"
 
 const useUpdateFirmDetails = () => {
   const [loading, setLoading] = useState(false)
-  const {setSavedFirmData, setIsFirmForm,setIsFirmPersonalData,setIsFirmAddressData,  setFirmInfo} = useSidebarStore()
+  const {setSavedFirmData, setIsFirmForm,  setFirmInfo, clearFirmData} = useSidebarStore()
   
 const updateFirmDetails = async(firmId, firmData) => {
     setLoading(true)
   try {
-    
+    clearFirmData()
     const res = await fetch(`/api/firm/updatefirmdetails/${firmId}`,{
         method:"PUT",
         body:firmData
@@ -25,21 +25,7 @@ const updateFirmDetails = async(firmId, firmData) => {
       setFirmInfo(firm)
 
       // Update individual fields
-      setIsFirmPersonalData({
-        businessName: firm.businessName,
-        gstin: firm.gstin,
-        phoneNo: firm.phoneNo,
-        email: firm.email,
-      });
-
-      setIsFirmAddressData({
-        address: firm.address,
-        pincode: firm.pincode,
-        state: firm.state,
-        description: firm.description,
-        businessType: firm.businessType,
-        businessCategory: firm.businessCategory,
-      });
+     
       console.log(data)
      toast.success("Firm updated successfully")
      setIsFirmForm(false)

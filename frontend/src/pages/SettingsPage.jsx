@@ -2,12 +2,14 @@ import { RxCross1 } from "react-icons/rx"
 import useSettingsStore from "../zustand/useSettingsStore"
 import useSaveSetting from "../hooks/settings/useSaveSetting";
 import useUpdateSetting from "../hooks/settings/useUpdateSetting";
+import { useEffect } from "react";
+import LoadingSpinnerNew from "../components/LoadingSpinnerNew";
 
 
 const SettingsPage = () => {
     const {setIsSettings, setTermsAndConditions, termsAndConditions, termsAndConditionsData} = useSettingsStore();
-    const {saveSetting} = useSaveSetting()
-    const {updateSetting} = useUpdateSetting()
+    const {saveSetting, loading} = useSaveSetting()
+    const {updateSetting, loading:isLoading} = useUpdateSetting()
 
     const handleInputChange = (e)=> {
       setTermsAndConditions(e.target.value)
@@ -30,9 +32,20 @@ const SettingsPage = () => {
        setIsSettings(false)
     }
 
+    useEffect(()=> {
+        if(termsAndConditionsData) {
+          setTermsAndConditions(termsAndConditionsData.termsAndConditions)
+        }
+    },[termsAndConditionsData, setTermsAndConditions])
+
     const isSaveDisabled = !termsAndConditions || termsAndConditions.trim()===""
   return (
-    <form className="px-10 py-5" onSubmit={handleSubmit}>
+    <div>
+      {
+        loading || isLoading ? (
+          <LoadingSpinnerNew/>
+        ) : (
+          <form className="px-10 py-5" onSubmit={handleSubmit}>
     <div className="flex justify-between text-lg font-medium">
         <div className=" ml-3 text-customGreen">Settings</div>
         <RxCross1 className="mr-3 cursor-pointer" onClick={handleCross}  />
@@ -61,6 +74,11 @@ const SettingsPage = () => {
       {termsAndConditionsData ? "Update" : "Save"} </button>
       </div>
         </form>
+        )
+      }
+    </div>
+
+    
    
   )
 }

@@ -1,5 +1,6 @@
 // controllers/firmController.js
 
+
 import Firm from '../models/firm.model.js';
 import { uploadToCloudinary } from '../utils/cloudinaryUtils.js';
 import cloudinary from  '../utils/cloudinaryUtils.js';
@@ -114,5 +115,25 @@ export const updateFirmDetails =  async(req,res) => {
             return res.status(500).json({error: "Server error"})
       }
 }
+
+// export const getFirmDetails = async(req,res) => {
+
+//   try {
+//     const {id} = req.params;
+//    if(!id) {
+//     return res.status(400).json({error: "id is required get firm Details"})
+//    }
+//    const firm = await Firm.findById(id);
+//    if(!firm){
+//     return res.status(404).json({error: "Firm not found"})
+//    }
+//    return res.status(200).json({message: "Firm Information retrieved successfully",firm})
+    
+//   } catch (error) {
+//      console.error("Error while retrieving firm details",error)
+//      return res.status(500).json({error: "Server error"}) 
+//   }
+  
+// }
 
 

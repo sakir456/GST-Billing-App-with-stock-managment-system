@@ -5,11 +5,12 @@ import useSettingsStore from "../../zustand/useSettingsStore"
 
 const useSaveSetting = () => {
      const [loading, setLoading] = useState(false)
-     const {setTermsAndConditionsData, setTermsAndConditions, setIsSettings} = useSettingsStore()
+     const {setTermsAndConditionsData,  setIsSettings, clearTermsAndConditions} = useSettingsStore()
 
     const saveSetting = async(termsAndConditions) => {
         setLoading(true)
         try {
+            clearTermsAndConditions()
             const res = await fetch("/api/settings/savesettings", {
                 method: "POST",
                 headers:{'Content-Type':'application/json'},
@@ -21,9 +22,7 @@ const useSaveSetting = () => {
             }
             console.log(data)
             setTermsAndConditionsData(data)
-            const termsandConditionsdetail = {...data}
-            setTermsAndConditions(termsandConditionsdetail.termsAndConditions)
-            toast.success("Settings saved successfully!");
+           toast.success("Settings saved successfully!");
             setIsSettings(false)
             
         } catch (error) {

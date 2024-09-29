@@ -104,7 +104,7 @@ const SaleFormItemData = () => {
     if (field === "itemName") {
       setSearchKeyword(value);
     }
-
+    //handling case where as soona s user enters input in itemName addition of extra row 
     if (index === saleItems.length - 1 && value && field === "itemName") {
       setSaleItems([
         ...saleItems,
