@@ -8,6 +8,7 @@ import useItemStore from "../zustand/useItemStore";
 import usePartyStore from "../zustand/usePartyStore";
 import useBankStore from "../zustand/useBankStore";
 import useSettingsStore from "../zustand/useSettingsStore";
+import useGeneralStore from "../zustand/useGeneralStore";
 
 
 
@@ -17,6 +18,7 @@ const Sidebar = () => {
   const {setIsBankForm }  = useBankStore()
   const { setIsAddingItem} = useItemStore()
   const { setIsParty} = usePartyStore();
+  const {setInvoicePrintPage} = useGeneralStore();
 
 
   const toggleItem = (item) => {
@@ -64,7 +66,7 @@ const Sidebar = () => {
         </Link>
         
         <Link to="/sales" 
-        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen">
+        className="w-full flex items-center  py-2 pl-4 hover:border-l-4 hover:border-white hover:bg-customLightGreen" onClick={()=> setInvoicePrintPage(false)}>
         <li className="w-full h-full flex  items-center">
          <span className="w-full h-full">Sale</span>
           </li>

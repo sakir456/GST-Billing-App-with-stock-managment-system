@@ -7,9 +7,12 @@ import LoadingSpinnerNew from "../LoadingSpinnerNew";
 import useDeleteInvoice from "../../hooks/invoices/useDeleteInvoice";
 import NoTranscation from "../NoTranscation";
 import { useState } from "react";
+import { LuPrinter } from "react-icons/lu";
+import useGeneralStore from "../../zustand/useGeneralStore";
 
 const SalesMainContainer = () => {
   const { setIsSaleForm, setIsUpdateForm, setSaleItems, setPartyInfo, setGrandTotal, setInvoiceId, resetForm  } = useSaleStore();
+  const {setInvoicePrintPage} = useGeneralStore();
   const { invoices, loading, fetchInvoices } = useGetInvoices();
   const { deleteInvoice, isLoading } = useDeleteInvoice();
   const [searchQuery,setSearchQuery] = useState("")
@@ -67,6 +70,11 @@ const SalesMainContainer = () => {
     String(invoice.invoiceNo).includes(searchQuery) || 
     String(invoice.grandTotal).includes(searchQuery)
   ))
+
+  const handlePrintbtn = (invoiceId) => {
+     setInvoiceId(invoiceId)
+     setInvoicePrintPage(true)
+  }
 
   return (
     <div>
@@ -155,6 +163,15 @@ const SalesMainContainer = () => {
                         <FaRegTrashAlt />
                         <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-gray-300  text-black  text-xs rounded py-1 px-2">
                           Delete
+                        </span>
+                      </button>
+                      <button
+                        className="text-center group"
+                        onClick={() => handlePrintbtn(invoice._id)}
+                      >
+                        <LuPrinter />
+                        <span className="absolute hidden group-hover:block -bottom-4 right-20 bg-gray-300  text-black  text-xs rounded py-1 px-2">
+                          Print
                         </span>
                       </button>
                     </div>

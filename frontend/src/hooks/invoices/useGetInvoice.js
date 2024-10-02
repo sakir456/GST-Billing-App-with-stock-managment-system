@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react"
-import useSaleStore from "../../zustand/useSaleStore";
+
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 
 const useGetInvoice = () => {
     const [loading, setLoading] = useState(false)
     const [invoice, setInvoice] =useState({invoice:null, partyDetails: null, itemDetails: null})
-     const { invoiceId } = useSaleStore();
+    
 
     const fetchInvoice = async(invoiceId) => {
         setLoading(true)
@@ -26,14 +26,7 @@ const useGetInvoice = () => {
         }
     }
 
-    useEffect(() => {
-        if (invoiceId) {
-          console.log("Fetching invoice with ID:", invoiceId);  // Debug log
-          fetchInvoice(invoiceId);
-        } else {
-          console.log("No invoiceId available");  // Debug log
-        }
-      }, []);
+    
     return {fetchInvoice, invoice,loading}
   
 }

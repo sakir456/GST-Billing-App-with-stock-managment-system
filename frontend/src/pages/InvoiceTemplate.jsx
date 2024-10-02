@@ -1,10 +1,12 @@
 
 
+import { useEffect } from "react";
 import useGetInvoice from "../hooks/invoices/useGetInvoice";
 import { numberToWords } from "../utils/ConvertToWord";
 import useBankStore from "../zustand/useBankStore";
 import useSettingsStore from "../zustand/useSettingsStore";
 import useSidebarStore from "../zustand/useSidebarStore";
+import useSaleStore from "../zustand/useSaleStore";
 
 
 const InvoiceTemplate = () => {
@@ -12,6 +14,7 @@ const InvoiceTemplate = () => {
   const {bankData} = useBankStore()
   const { fetchInvoice, invoice} = useGetInvoice()
   const {termsAndConditionsData} = useSettingsStore()
+  const { invoiceId } = useSaleStore();
   
 
   const formatInvoiceDate = (dateString) => {
@@ -48,7 +51,16 @@ const InvoiceTemplate = () => {
 
   const shipDetails = invoice?.partyDetails?.shippingAddress
 
+  useEffect(() => {
+    if (invoiceId) {
+      console.log("Fetching invoice with ID:", invoiceId);  // Debug log
+      fetchInvoice(invoiceId);
+    } else {
 
+      
+      console.log("No invoiceId available");  // Debug log
+    }
+  }, []);
 
   
   
