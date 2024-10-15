@@ -12,6 +12,7 @@ import invoiceRoutes from './routes/invoice.routes.js';
 import firmRoutes from './routes/firm.routes.js';
 import bankRoutes from './routes/bank.routes.js';
 import settingRoutes from './routes/setting.routes.js'
+import purchaseinvoiceRoutes from './routes/purchaseinvoice.routes.js';
 
 dotenv.config(); // Load environment variables
 
@@ -31,6 +32,7 @@ app.use('/api/invoice', invoiceRoutes);
 app.use('/api/firm', firmRoutes); 
 app.use('/api/bank',bankRoutes)
 app.use('/api/settings',settingRoutes)
+app.use('/api/purchaseinvoice', purchaseinvoiceRoutes);
 
 // Health check route
 app.get('/', (req, res) => {

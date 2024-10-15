@@ -58,6 +58,8 @@ const useSaleStore = create((set) => ({
 
   savedInvoiceData: null,
   setSavedInvoiceData:(data) => set({savedInvoiceData:data}),
+
+ 
  
  
 }));

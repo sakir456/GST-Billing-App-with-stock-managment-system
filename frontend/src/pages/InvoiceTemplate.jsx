@@ -7,6 +7,8 @@ import useBankStore from "../zustand/useBankStore";
 import useSettingsStore from "../zustand/useSettingsStore";
 import useSidebarStore from "../zustand/useSidebarStore";
 import useSaleStore from "../zustand/useSaleStore";
+import usePurchaseStore from  "../zustand/usePurchaseStore"
+import useGetPurchaseInvoice from "../hooks/purchaseinvoices/useGetPurchaseInvoice";
 
 
 const InvoiceTemplate = () => {
@@ -15,7 +17,8 @@ const InvoiceTemplate = () => {
   const { fetchInvoice, invoice} = useGetInvoice()
   const {termsAndConditionsData} = useSettingsStore()
   const { invoiceId } = useSaleStore();
-  
+  const {isPurchase, invoiceId:purchaseInvoiceId} = usePurchaseStore()
+  const {fetchPurchaseInvoice, invoice:purchaseInvoice} = useGetPurchaseInvoice()
 
   const formatInvoiceDate = (dateString) => {
     const date = new Date(dateString);
@@ -32,34 +35,50 @@ const InvoiceTemplate = () => {
    }
 
   const getHSNCode = (itemName) => {
+    if(isPurchase) {
+       const item = purchaseInvoice?.itemDetails?.find((itemDetail) => itemDetail.itemName ===itemName)
+       return item ? item.hsnCode : ""
+    } else {
     const item = invoice?.itemDetails?.find((itemDetail) => itemDetail.itemName ===itemName)
     return item ? item.hsnCode : ""
+    }
   }
 
   const saleItems = invoice?.invoice?.saleItems || []
+  const purchaseItems = purchaseInvoice?.invoice?.purchaseItems || []
   
-  const TotalTaxInAmount  = saleItems.reduce((sum,item) => {
+  const TotalTaxInAmount  = isPurchase ? (purchaseItems.reduce((sum,item) => {
     return sum + (item?.TaxInAmount || 0)
-  }, 0)
+  }, 0)) : ( saleItems.reduce((sum,item) => {
+    return sum + (item?.TaxInAmount || 0)
+  }, 0))
   const formattedTotalTaxInAmount =  (TotalTaxInAmount).toFixed(2)
 
-  const TotalAmount = saleItems.reduce((sum, item) => {
+  const TotalAmount = isPurchase ? (purchaseItems.reduce((sum, item) => {
     return sum + ((item?.Amount -item?.TaxInAmount) || 0)
-  }, 0)
+  }, 0)) :  ( saleItems.reduce((sum, item) => {
+    return sum + ((item?.Amount -item?.TaxInAmount) || 0)
+  }, 0))
 
   const formattedTotalAmount = (TotalAmount).toFixed(2)
 
   const shipDetails = invoice?.partyDetails?.shippingAddress
 
-  useEffect(() => {
-    if (invoiceId) {
-      console.log("Fetching invoice with ID:", invoiceId);  // Debug log
-      fetchInvoice(invoiceId);
-    } else {
+  const purchaseShipDetails = purchaseInvoice?.partyDetails?.shippingAddress
 
-      
-      console.log("No invoiceId available");  // Debug log
-    }
+  useEffect(() => {
+    if(!isPurchase){
+      if (invoiceId) {
+        console.log("Fetching invoice with ID:", invoiceId);  
+        fetchInvoice(invoiceId);
+    } 
+  } else {
+    
+    if (purchaseInvoiceId) {
+      console.log("Fetching invoice with purchaseID:", purchaseInvoiceId);  
+      fetchPurchaseInvoice(purchaseInvoiceId);
+  } 
+}
   }, []);
 
   
@@ -85,12 +104,13 @@ const InvoiceTemplate = () => {
             <h2 className="text-lg font-bold">Tax Invoice</h2>
             <div className="flex justify-center items-center">
             <p>Invoice No:</p>
-            <p className="text-sm">{invoice?.invoice?.invoiceNo}</p>
+            <p className="text-sm">{isPurchase ? (purchaseInvoice?.invoice?.invoiceNo):(invoice?.invoice?.invoiceNo)}</p>
             </div>
             <div className="flex justify-center items-center">
             <p>Date:</p>
-            <p className="text-sm">{invoice?.invoice?.invoiceDate ? formatInvoiceDate(invoice?.invoice?.invoiceDate )
-            : formatInvoiceDate(new Date())}</p>
+            <p className="text-sm">{isPurchase ? (purchaseInvoice?.invoice?.invoiceDate ? formatInvoiceDate(purchaseInvoice?.invoice?.invoiceDate )
+              : formatInvoiceDate(new Date())):(invoice?.invoice?.invoiceDate ? formatInvoiceDate(invoice?.invoice?.invoiceDate )
+            : formatInvoiceDate(new Date()))}</p>
             </div>
           </div>
         </div>
@@ -99,15 +119,15 @@ const InvoiceTemplate = () => {
         <div className="mt-2 flex justify-between">
         <div>
           <h3 className=" font-semibold">Bill To:</h3>
-          <p className="text-sm">{invoice?.partyDetails?.partyName}</p>
-          <p className="text-sm ">{invoice?.partyDetails?.GSTIN}</p>
-          <p className="text-sm">{invoice?.partyDetails?.billingAddress}</p>
+          <p className="text-sm">{isPurchase ? (purchaseInvoice?.partyDetails?.partyName) : (invoice?.partyDetails?.partyName)}</p>
+          <p className="text-sm ">{isPurchase ? (purchaseInvoice?.partyDetails?.GSTIN):(invoice?.partyDetails?.GSTIN)}</p>
+          <p className="text-sm">{isPurchase ? (purchaseInvoice?.partyDetails?.billingAddress):(invoice?.partyDetails?.billingAddress)}</p>
           </div>
           <div>
-        { shipDetails && (
+        { shipDetails || purchaseShipDetails && (
           <div>
           <h3 className=" font-semibold">Ship To:</h3>
-          <p className="text-sm">{invoice?.partyDetails?.shippingAddress}</p>
+          <p className="text-sm">{isPurchase ? (purchaseInvoice?.partyDetails?.shippingAddress) :(invoice?.partyDetails?.shippingAddress)}</p>
           </div>
         )}
           
@@ -131,7 +151,25 @@ const InvoiceTemplate = () => {
             </thead>
             <tbody>
               
-              {saleItems.map((saleItem, index)=> (
+            { isPurchase ? (
+              purchaseItems.map((purchaseItem, index)=> (
+                purchaseItem.itemName && (
+                  <tr className="border-b" key={index}>
+                <td className="p-2 text-sm text-center ">{index+1}</td>
+                <td className="p-2 text-sm text-center">{purchaseItem?.itemName}</td>
+                <td className="p-2 text-sm text-center">{getHSNCode(purchaseItem?.itemName)}</td>
+                <td className="p-2 text-sm text-center">{purchaseItem?.qty || ""}</td>
+                <td className="p-2 text-sm text-center">₹{purchaseItem?.price || ""}</td>
+                <td className="p-2 text-sm text-center">₹{purchaseItem?.discountAmount || ""}</td>
+                <td className="p-2 text-sm flex items-center justify-center">
+                ₹{purchaseItem?.TaxInAmount || ""}
+                <div className="">{extractNumberAndFormat(purchaseItem?.TaxInPercent) || ""}</div>
+                </td>
+                <td className="p-2 text-sm text-center">₹{purchaseItem?.Amount || ""}</td>
+              </tr>
+                )))
+             ) : (
+              saleItems.map((saleItem, index)=> (
                 saleItem.itemName && (
                   <tr className="border-b" key={index}>
                 <td className="p-2 text-sm text-center ">{index+1}</td>
@@ -148,7 +186,8 @@ const InvoiceTemplate = () => {
               </tr>
                 )
                 
-              ))}
+              )))
+              }
               
               {/* More rows... */}
             </tbody>
@@ -202,16 +241,17 @@ const InvoiceTemplate = () => {
             </div>
             <div className="flex justify-between ">
               <span className="font-semibold">P&F:</span>
-              <span>{invoice?.invoice?.pandfAmount || 0.00 }</span>
+              <span>{isPurchase ? (purchaseInvoice?.invoice?.pandfAmount || 0.00 ) :(invoice?.invoice?.pandfAmount || 0.00 )}</span>
             </div>
 
             <div className="flex justify-between ">
               <span className="font-semibold">Total:</span>
-              <span>₹{invoice?.invoice?.grandTotal || ""}(Rounded off)</span>
+              <span>₹{ isPurchase? (purchaseInvoice?.invoice?.grandTotal || "") :(invoice?.invoice?.grandTotal || "")}(Rounded off)</span>
             </div>
             <div className="flex justify-between ">
               <span className="font-semibold">Invoice Amount in Words:</span>
-              <span>{invoice?.invoice?.grandTotal ? numberToWords(invoice.invoice.grandTotal) : "zero"}</span>
+              <span>{isPurchase ? (purchaseInvoice?.invoice?.grandTotal ? numberToWords(purchaseInvoice.invoice.grandTotal) : "zero") :
+              (invoice?.invoice?.grandTotal ? numberToWords(invoice.invoice.grandTotal) : "zero")}</span>
             </div>
             
           </div>

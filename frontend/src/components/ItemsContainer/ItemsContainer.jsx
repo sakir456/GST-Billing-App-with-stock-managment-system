@@ -5,8 +5,10 @@ import Searchbar from "../Dashboard/Searchbar"
 import ItemsMainContainer from "./ItemsMainContainer"
 
 
+
 const ItemsContainer = () => {
   const {isAddingItem } = useItemStore();
+   
 
   return (
     <div className="w-auto flex flex-col  ">

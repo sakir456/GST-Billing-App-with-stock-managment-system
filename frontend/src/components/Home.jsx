@@ -16,6 +16,9 @@ import useBankStore from "../zustand/useBankStore";
 import SettingsPage from "../pages/SettingsPage";
 import useSettingsStore from "../zustand/useSettingsStore";
 import { useEffect } from "react";
+import PurchaseContainer from "./purchase/PurchaseContainer";
+import usePurchaseStore from "../zustand/usePurchaseStore";
+import AddPurchaseForm from "../pages/purchase/AddPurchaseForm";
 
 
 
@@ -27,6 +30,9 @@ const Home = () => {
  const {isFirmForm, setIsFirmForm} = useSidebarStore()
  const {isBankForm, setIsBankForm }  = useBankStore()
  const { isSettings, setIsSettings}  = useSettingsStore()
+ const {isPurchaseForm} = usePurchaseStore()
+
+ 
 
 
  useEffect(() => {
@@ -34,6 +40,7 @@ const Home = () => {
   setIsBankForm(false) ;
   setIsSettings(false)
 }, [setIsFirmForm]);
+
   return (
   <div>
     {isSaleForm ?
@@ -45,6 +52,8 @@ const Home = () => {
       <BankInfoForm/>
     ): isSettings ? (
        <SettingsPage/>
+    ): isPurchaseForm ? (
+      <AddPurchaseForm/>
     ):(
       <div className="flex flex-row ">
     <Sidebar />
@@ -54,6 +63,7 @@ const Home = () => {
         <Route path="/items" element={<ItemsContainer />} />
         <Route path="/parties" element={<PartiesContainer />} />
         <Route path="/sales" element={<SalesContainer />} />
+        <Route path="/purchase" element={<PurchaseContainer />} />
         <Route path="/bank" element={<BankInfoForm />} />
        
         

@@ -1,14 +1,20 @@
 
+
 import useGeneralStore from "../../zustand/useGeneralStore";
 import Searchbar from "../Dashboard/Searchbar";
 import InvoicePrintPage from "./InvoicePrintPage";
-
 import SalesMainContainer from "./SalesMainContainer";
 
-const SalesContainer = () => {
 
-  const {invoicePrintPage} = useGeneralStore();
-  return (
+
+const SalesContainer = () => {
+   const {invoicePrintPage} = useGeneralStore();
+   
+
+
+ 
+   
+return (
     <div>
       {invoicePrintPage ? (
         <InvoicePrintPage />

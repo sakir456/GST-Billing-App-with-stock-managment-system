@@ -39,10 +39,7 @@ const handleSubmit = async(e) => {
   
    await resetForm()
    setInvoicePrintPage(true)
-
- 
-   
-}
+  }
 
 const handleUpdate  = async(e) => {
   e.preventDefault() 
