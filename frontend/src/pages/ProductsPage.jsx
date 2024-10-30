@@ -85,7 +85,7 @@ const ProductsPage = () => {
                     <div className="w-1/6 text-center">{item.category}</div>
                     <div className="w-1/6 text-center">{item.purchasePrice}</div>
                     <div className="w-1/6 text-center">{item.openingQuantity}</div>
-                    <div className="w-1/6 text-center">2</div>
+                    <div className="w-1/6 text-center">{item.stockInHand}</div>
                     <div className="w-1/6 h-full flex justify-center gap-3 text-center relative">
                       <button className="text-center group" onClick={() => handleUpdateButton(item)}>
                         <LuPencil />

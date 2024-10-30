@@ -3,7 +3,7 @@ import useSidebarStore from "../../zustand/useSidebarStore";
 
 
 const FirmLogo = () => {
-   const {logo, setLogo,displayedLogo, setDisplayedLogo } = useSidebarStore()
+   const {logo, setLogo,displayedLogo, setDisplayedLogo, firmInfo } = useSidebarStore()
    
     const [hovered, setHovered] = useState(false);
 
@@ -24,6 +24,7 @@ const FirmLogo = () => {
       const file = event.target.files[0];
       if (file) {
         setLogo(file); 
+        firmInfo.logo = null
       }
     };
   
@@ -32,11 +33,15 @@ const FirmLogo = () => {
     onMouseEnter={()=> setHovered(true)}
     onMouseLeave={() => setHovered(false)}
     >
-        <img 
+    {firmInfo?.logo ? 
+    <img src={firmInfo.logo} alt=""/> :
+    <img 
         src={displayedLogo}
         alt="company logo"
         className="w-full h-full rounded-md  "
         />
+    }
+       
        { hovered && (
         <div className=" absolute w-full  bottom-0 bg-black bg-opacity-50 flex
         items-center justify-center rounded-md rounded-t-none cursor-pointer ">

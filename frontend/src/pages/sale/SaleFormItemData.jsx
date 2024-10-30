@@ -220,6 +220,7 @@ const SaleFormItemData = () => {
                   <div key={item._id} className='flex justify-between text-sm hover:bg-green-100 items-center pl-2 py-1 cursor-pointer'
                     onClick={() => handleItemClick(item.itemName, index, item.salePrice,item)}>
                     <div>{item.itemName}</div>
+                    <div>{item.stockInHand}</div>
                     </div>
                 ))}
               </div>

@@ -1,10 +1,16 @@
 import { useState } from 'react'
 import useAuthStore from '../zustand/useAuthStore';
 import toast from "react-hot-toast"
+import useBankStore from '../zustand/useBankStore';
+import useSettingsStore from '../zustand/useSettingsStore';
+import useSidebarStore from '../zustand/useSidebarStore';
 
 const useLogout = () => {
   const [loading, setLoading] = useState(false)
   const {setAuthUser} = useAuthStore();
+  const {clearBankData} = useBankStore()
+  const {clearTermsAndConditions} = useSettingsStore()
+  const {clearFirmData}  = useSidebarStore()
 
   const logout = async()=> {
     setLoading(true)
@@ -18,6 +24,10 @@ const useLogout = () => {
             throw new Error(data.error)
         }
         setAuthUser(null)
+        clearBankData()
+        clearTermsAndConditions()
+        clearFirmData()
+
     } catch (error) {
         toast.error(error.message);
   }  finally {

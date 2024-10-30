@@ -25,7 +25,7 @@ const ProductForm = () => {
       purchasePrice: itemData.purchasePrice ? parseFloat(itemData.purchasePrice) : undefined,
       taxRate: itemData.taxRate === "none" ?  undefined : itemData.taxRate,
       openingQuantity: itemData.openingQuantity ? parseInt(itemData.openingQuantity, 10) : undefined,
-      stockPrice: itemData.stockPrice ? parseFloat(itemData.stockPrice) : undefined,
+      stockInHand: itemData.stockInHand ? parseFloat(itemData.stockInHand) : undefined,
       salePriceTax: itemData.salePriceTax === "none" ? undefined : itemData.salePriceTax,
       purchasePriceTax: itemData.purchasePriceTax === "none" ? undefined : itemData.purchasePriceTax,
       quantityUnit: itemData.quantityUnit === "none" ? undefined : itemData.quantityUnit
@@ -43,7 +43,7 @@ const ProductForm = () => {
       purchasePrice: itemData.purchasePrice ? parseFloat(itemData.purchasePrice) : undefined,
       taxRate: itemData.taxRate === "none" ?  undefined : itemData.taxRate,
       openingQuantity: itemData.openingQuantity ? parseInt(itemData.openingQuantity, 10) : undefined,
-      stockPrice: itemData.stockPrice ? parseFloat(itemData.stockPrice) : undefined,
+      stockInHand: itemData.stockInHand ? parseFloat(itemData.stockInHand) : undefined,
       salePriceTax: itemData.salePriceTax === "none" ? undefined : itemData.salePriceTax,
       purchasePriceTax: itemData.purchasePriceTax === "none" ? undefined : itemData.purchasePriceTax,
       quantityUnit: itemData.quantityUnit === "none" ? undefined : itemData.quantityUnit
@@ -78,34 +78,49 @@ return (
         <RxCross1 className="mr-3 cursor-pointer" onClick={closeProductForm} />
       </div>
       <div className="flex items-center gap-5 my-5">
+      <div className="relative">
         <input
           name="itemName"
           placeholder="Item Name"
-          className="py-1 px-2 border-2 border-gray-300 rounded-md outline-none focus:outline-customLightGreen"
+          className="py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
           value={itemData.itemName}
           onChange={handleChange}
         />
+        {itemData.itemName && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">ItemName*</label>
+          )}
+        </div>
+        <div className="relative">
         <input
           name="hsnCode"
           placeholder="Item HSN"
-          className="py-1 px-2 border-2 border-gray-300 rounded-md outline-none focus:outline-customLightGreen"
+          className="py-1 px-2 border-2 border-gray-300 rounded-md outline-none"
           value={itemData.hsnCode}
           onChange={handleChange}
         />
+        {itemData.hsnCode && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">Item HSN</label>
+          )}
+        </div>
         <SelectUnit value={itemData.quantityUnit} onChange={handleUnitChange} />
       </div>
-      <div>
+      <div className="relative">
         <input
           name="category"
           placeholder="Category"
-          className="py-1 px-2 border-2 border-gray-300 rounded-md outline-none focus:outline-customLightGreen"
+          className="py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
           value={itemData.category}
           onChange={handleChange}
         />
+        {itemData.category && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2.5 left-2 ">Category</label>
+          )}
       </div>
       <div className="mt-6 flex gap-28">
         <div>
           <div className="text-lg font-medium">Sale Price</div>
+          <div className="flex">
+          <div className="relative">
           <input
             name="salePrice"
             placeholder="Sale Price"
@@ -113,9 +128,14 @@ return (
             value={itemData.salePrice}
             onChange={handleChange}
           />
+          {itemData.salePrice && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white top-[3px] left-2 ">Sale Price</label>
+          )}
+          </div>
+          <div className=" mt-3">
           <select
          name="salePriceTax"
-            className="py-1 px-2 border-2 border-gray-300 border-l-0"
+            className=" py-1 border-2 border-gray-300 border-l-0"
             value={itemData.salePriceTax}
             onChange={handleChange}
           >
@@ -123,6 +143,8 @@ return (
             <option value="Without_tax" className="hover:bg-gray-300">Without Tax</option>
             <option value="with_tax" className="hover:bg-gray-300">With Tax</option>
           </select>
+          </div>
+          </div>
         </div>
         <div>
           <div className="text-lg font-medium">Tax Rate</div>
@@ -132,6 +154,8 @@ return (
       <div className="mt-6">
         <div>
           <div className="text-lg font-medium">Purchase Price</div>
+          <div className="flex">
+          <div className="relative">
           <input
             name="purchasePrice"
             placeholder="Purchase Price"
@@ -139,6 +163,11 @@ return (
             value={itemData.purchasePrice}
             onChange={handleChange}
           />
+          {itemData.purchasePrice && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white top-[3px] left-2 ">Purchase Price</label>
+          )}
+          </div>
+          <div className="mt-3">
           <select
             name="purchasePriceTax"
            
@@ -150,24 +179,38 @@ return (
             <option value="Without_tax">Without Tax</option>
             <option value="with_tax">With Tax</option>
           </select>
+          </div>
+          </div>
         </div>
       </div>
       <div className="mt-6">
         <div className="text-lg font-medium">Stock</div>
+        <div className="flex">
+        <div className="relative">
         <input
           name="openingQuantity"
           placeholder="Opening Quantity"
-          className="my-3 py-1 px-2 border-2 border-gray-300 rounded-md outline-none focus:outline-customLightGreen"
+          className="my-3 py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
           value={itemData.openingQuantity}
           onChange={handleChange}
         />
+        {itemData.openingQuantity && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white top-1 left-2 ">Opening Quantity</label>
+          )}
+        </div>
+        <div className="relative">
         <input
-          name="stockPrice"
-          placeholder="At Price"
-          className="my-3 mx-5 py-1 px-2 border-2 border-gray-300 rounded-md outline-none focus:outline-customLightGreen"
-          value={itemData.stockPrice}
+          name="stockInHand"
+          placeholder="Stock In Hand"
+          className="my-3 mx-5 py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
+          value={itemData.stockInHand}
           onChange={handleChange}
         />
+        {itemData.stockInHand && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white top-1 left-7 ">Stock In Hand</label>
+          )}
+        </div>
+        </div>
       </div>
       <div className="text-end">
         <button className={`mt-8 items-center px-4 py-2 text-white rounded-md 

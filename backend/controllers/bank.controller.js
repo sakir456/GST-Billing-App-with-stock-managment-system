@@ -11,7 +11,8 @@ export const saveBankDetails = async (req,res) => {
             bankName, 
             accountNO,
             bankIfsc,
-            address   
+            address,
+            userId: req.user._id   
         });
         await newBank.save()
         res.status(201).json(newBank)
@@ -24,8 +25,8 @@ export const saveBankDetails = async (req,res) => {
 export const updateBankDetails = async(req,res) => {
       try {
         const {bankName, accountNO,bankIfsc,address} = req.body;
-        const updatedBankDetails = await Bank.findByIdAndUpdate(
-            req.params.id,
+        const updatedBankDetails = await Bank.findOneAndUpdate(
+            { _id: req.params.id, userId: req.user._id },
             {
                 bankName, 
                 accountNO,
@@ -33,7 +34,7 @@ export const updateBankDetails = async(req,res) => {
                 address  
             },
             { new: true, runValidators: true }
-        )
+        );
         if(!updatedBankDetails){
             return res.status(404).json({error:"Bank details not found"})
         }

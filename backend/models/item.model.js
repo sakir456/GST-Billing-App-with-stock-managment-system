@@ -1,44 +1,50 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
-const itemSchema = new mongoose.Schema({
-    itemName:{
-     type: String,
-     required: true
+const itemSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
     },
-    hsnCode:{
-        type:Number,
+    itemName: {
+      type: String,
+      required: true,
     },
-    category:{
-        type:String
+    hsnCode: {
+      type: Number,
     },
-    salePrice:{
-        type:Number,
+    category: {
+      type: String,
     },
-    purchasePrice:{
-        type:Number,
+    salePrice: {
+      type: Number,
     },
-    taxRate:{
-        type:String,
+    purchasePrice: {
+      type: Number,
     },
-    openingQuantity:{
-        type:Number,
+    taxRate: {
+      type: String,
     },
-    stockPrice:{
-        type:Number,
+    openingQuantity: {
+      type: Number,
     },
-    salePriceTax:{
-        type:String,
+    stockInHand: {
+      type: Number,
     },
-    purchasePriceTax:{
-        type:String,
+    salePriceTax: {
+      type: String,
     },
-    quantityUnit:{
-        type:String,
-    }
+    purchasePriceTax: {
+      type: String,
+    },
+    quantityUnit: {
+      type: String,
+    },
+  },
+  { timestamps: true }
+);
 
-    
-}, {timestamps: true})
-
-const Item = mongoose.model('Item', itemSchema);
+const Item = mongoose.model("Item", itemSchema);
 
 export default Item;

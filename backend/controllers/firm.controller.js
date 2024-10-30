@@ -26,14 +26,14 @@ export const saveFirmDetails = async (req, res) => {
       businessCategory,
     } = req.body;
 
-    // Validate required fields
+    
     if (!businessName) {
       return res.status(400).json({ error: 'Business Name is required to save Firm' });
     }
 
     let logo;
 
-    // Handle logo file upload if present
+    
     if (req.file) {
       try {
         logo = await uploadToCloudinary(req.file.buffer, { folder: 'firm_logos' });
@@ -42,8 +42,9 @@ export const saveFirmDetails = async (req, res) => {
       }
     }
 
-    // Create new Firm document
+    
     const newFirm = new Firm({
+      userId: req.user._id,
       businessName,
       gstin,
       phoneNo,
@@ -54,7 +55,8 @@ export const saveFirmDetails = async (req, res) => {
       description,
       businessType,
       businessCategory,
-      logo, // Will be undefined if no logo was uploaded
+      logo, 
+      
     });
 
     // Save to database
@@ -88,7 +90,7 @@ export const updateFirmDetails =  async(req,res) => {
             }
             let updateFirmData = { businessName, gstin, phoneNo, email, address, pincode, state, description, businessType, businessCategory };
              if(req.file) {
-                const firm = await Firm.findById(req.params.id);
+              const firm = await Firm.findOne({ _id: id, userId: req.user._id });
                 if (!firm) {
                     return res.status(404).json({ error: "Firm not found" });
                   }
@@ -99,8 +101,8 @@ export const updateFirmDetails =  async(req,res) => {
                   }
                   updateFirmData.logo = await uploadToCloudinary(req.file.buffer);
              }
-             const updatedFirm = await Firm.findByIdAndUpdate(
-                req.params.id,
+             const updatedFirm = await Firm.findOneAndUpdate(
+              { _id: req.params.id, userId: req.user._id },
                 updateFirmData,
                 { new: true, runValidators: true }
               );

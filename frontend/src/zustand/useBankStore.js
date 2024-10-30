@@ -30,6 +30,7 @@ const useBankStore = create(
             },
             savedBankDetails: null,
           }),
+          
         }),
        {
         name:"bank-store",

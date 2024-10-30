@@ -7,9 +7,7 @@ const Dashboard = () => {
   return (
     <div className="w-auto">
     <Searchbar />
-
     <DashboardMain />
-      
     </div>
   )
 }

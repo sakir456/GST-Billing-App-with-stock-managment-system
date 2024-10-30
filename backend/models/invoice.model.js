@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const invoiveSchema = new mongoose.Schema({
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    },
     partyName:{
         type: String,
          required: true

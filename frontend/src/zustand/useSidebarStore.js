@@ -59,7 +59,8 @@ const useSidebarStore = create(
           businessCategory: "",
         },
         firmInfo: null,
-        displayedLogo:null
+        displayedLogo:"/shop.png",
+        logo:null,
       });
       localStorage.removeItem('firm-store');
     },

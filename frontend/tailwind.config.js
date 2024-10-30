@@ -9,7 +9,8 @@ export default {
       colors: {
                 customGreen: "#308760  ",
                 customLightGreen: "#39916F",
-                custom3shadeslight: "#4CB98E"
+                custom3shadeslight: "#4CB98E",
+                sageGreen: "#4A9D7A"
                 
             },
           },

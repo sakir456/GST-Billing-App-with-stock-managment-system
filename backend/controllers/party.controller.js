@@ -7,11 +7,12 @@ export const addParty = async(req,res) => {
         if(!partyName) {
             return res.status({error:"Party name is required"})
         }
-        const existingParty= await Party.findOne({ partyName });
+        const existingParty= await Party.findOne({ partyName, userId: req.user._id });
         if (existingParty) {
             return res.status(400).json({ error: "Party with the same name already exists" });
         }
         const newParty = new Party({
+            userId: req.user._id,
             partyName, 
             GSTIN,
             billingAddress,
@@ -29,7 +30,7 @@ export const addParty = async(req,res) => {
 
 export const getParties = async(req,res) => {
     try {
-        const parties = await Party.find();
+        const parties = await Party.find({ userId: req.user._id });
         return res.status(200).json(parties)
     } catch (error) {
        console.error("Error fething Parties", error) 
@@ -43,14 +44,18 @@ export const updateParty = async(req,res) => {
     if(!partyName) {
         return res.status({error:"Party name is required"})
     }
-    const existingParty= await Party.findOne({ partyName });
+    const existingParty= await Party.findOne({ 
+        partyName,
+        userId: req.user._id,
+        _id: { $ne: req.params.id }
+    });
         if (existingParty) {
             return res.status(400).json({ error: "Party with the same name already exists" });
         }
 
     
-    const updatedParty = await Party.findByIdAndUpdate(
-        req.params.id,
+    const updatedParty = await Party.findOneAndUpdate(
+        { _id: req.params.id, userId: req.user._id },
         {partyName, GSTIN,billingAddress,shippingAddress, openingBalance,asOfDate},
         {new:true, runValidators:true}
     );
@@ -66,7 +71,7 @@ export const updateParty = async(req,res) => {
 
 export const deleteParty  = async(req,res) => {
     try {
-        const deletedParty = await Party.findByIdAndDelete(req.params.id)
+        const deletedParty = await Party.findOneAndDelete({ _id: req.params.id, userId: req.user._id })
         if(!deletedParty){
             return res.status(404).json({error:"Party not found"})
         }

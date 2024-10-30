@@ -15,7 +15,7 @@ import useSidebarStore from "../zustand/useSidebarStore";
 import useBankStore from "../zustand/useBankStore";
 import SettingsPage from "../pages/SettingsPage";
 import useSettingsStore from "../zustand/useSettingsStore";
-import { useEffect } from "react";
+import { useEffect,  } from "react";
 import PurchaseContainer from "./purchase/PurchaseContainer";
 import usePurchaseStore from "../zustand/usePurchaseStore";
 import AddPurchaseForm from "../pages/purchase/AddPurchaseForm";
@@ -31,6 +31,10 @@ const Home = () => {
  const {isBankForm, setIsBankForm }  = useBankStore()
  const { isSettings, setIsSettings}  = useSettingsStore()
  const {isPurchaseForm} = usePurchaseStore()
+ 
+ 
+
+ 
 
  
 
@@ -56,6 +60,8 @@ const Home = () => {
       <AddPurchaseForm/>
     ):(
       <div className="flex flex-row ">
+       
+
     <Sidebar />
     <div className="flex-1">
       <Routes>

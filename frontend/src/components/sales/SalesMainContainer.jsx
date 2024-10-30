@@ -12,12 +12,13 @@ import useGeneralStore from "../../zustand/useGeneralStore";
 
 const SalesMainContainer = () => {
   const { setIsSaleForm, setIsUpdateForm, setSaleItems, setPartyInfo, setGrandTotal, setInvoiceId, resetForm  } = useSaleStore();
-  const {setInvoicePrintPage} = useGeneralStore();
+  const {setInvoicePrintPage, dashBoardSearchInput} = useGeneralStore();
   const { invoices, loading, fetchInvoices } = useGetInvoices();
   const { deleteInvoice, isLoading } = useDeleteInvoice();
   const [searchQuery,setSearchQuery] = useState("")
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  
 
   const formatInvoiceDate = (dateString) => {
     const date = new Date(dateString);
@@ -57,19 +58,30 @@ const SalesMainContainer = () => {
   const handleAddSaleBtn = async() => {
     setIsSaleForm(true);
     setIsUpdateForm(false);
-    // setSaleItems([{ id: 1, itemName: "", qty: 0, price: 0, discountPercent: "", discountAmount: 0, TaxInPercent: "", TaxInAmount: 0, Amount: 0 }]); 
     await resetForm()
   };
   const handleSearchInputChange = (e) => {
     setSearchQuery(e.target.value)
   }
 
-  const filteredInvoices = invoices.filter(invoice => (
+  const filteredInvoices = dashBoardSearchInput!=="" ? 
+  invoices.filter(invoice => (
+    invoice.partyName.toLowerCase().includes(dashBoardSearchInput.toLowerCase())
+  )) : 
+  invoices.filter(invoice => (
     String(formatInvoiceDate(invoice.invoiceDate)).includes(searchQuery) ||
     invoice.partyName.toLowerCase().includes(searchQuery.toLowerCase()) || 
     String(invoice.invoiceNo).includes(searchQuery) || 
     String(invoice.grandTotal).includes(searchQuery)
   ))
+
+
+  // const filteredInvoices = invoices.filter(invoice => (
+  //   String(formatInvoiceDate(invoice.invoiceDate)).includes(searchQuery) ||
+  //   invoice.partyName.toLowerCase().includes(searchQuery.toLowerCase()) || 
+  //   String(invoice.invoiceNo).includes(searchQuery) || 
+  //   String(invoice.grandTotal).includes(searchQuery)
+  // ))
 
   const handlePrintbtn = (invoiceId) => {
      setInvoiceId(invoiceId)

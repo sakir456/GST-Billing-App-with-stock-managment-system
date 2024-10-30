@@ -1,11 +1,13 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
 import useAuthStore from "../zustand/useAuthStore"
+import useSaleStore from "../zustand/useSaleStore"
 
 
 const useSignup = () => {
     const [loading,setLoading] = useState(false)
     const {setAuthUser} = useAuthStore();
+    const {resetForm} = useSaleStore()
 
     const signup = async({fullName,userName,password, confirmpassword,email}) => {
     const success = handleInputErrors({fullName,userName,password, confirmpassword,email})
@@ -23,6 +25,7 @@ const useSignup = () => {
         }
         console.log(data)
         setAuthUser(data)
+        resetForm()
      } catch (error) {
         toast.error(error.message)
      } finally {

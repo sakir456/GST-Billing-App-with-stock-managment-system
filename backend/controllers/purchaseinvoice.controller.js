@@ -12,6 +12,7 @@ export const createInvoice = async (req, res) => {
         const { pandfAmount, grandTotal: totalAmount } = grandTotal;
 
         const newInvoice = new PurchaseInvoice({
+          userId: req.user._id,
             partyName,
             billingName,
             email,
@@ -47,8 +48,10 @@ export const getInvoices = async (req, res) => {
       };
     }
 
-    const invoices = await PurchaseInvoice.find(query);
-
+    const invoices = await PurchaseInvoice.find({
+      ...query,
+      userId: req.user._id, // Add user filtering here directly
+    });
     if (!invoices) {
       return res.status(404).json({ error: "No invoices found" });
     }
@@ -59,26 +62,47 @@ export const getInvoices = async (req, res) => {
   }
 };
 
-export const getInvoice = async(req,res) => {
-  const {invoiceId} = req.params
-    try {
-      const invoice = await PurchaseInvoice.findById(req.params.id)
-      if(!invoice){
-        return res.status(404).json({error: "Invoice not found "})
-      }
-      const partyDetails = await Party.findOne({ partyName: invoice.partyName });
-      const itemDetails = await Promise.all(
-        invoice.purchaseItems.map(async(purchaseItem)=> {
-          return await Item.findOne({itemName: purchaseItem.itemName})
-        }) 
-      )
-      const foundItemDetails = itemDetails.filter(item => item!==null)
-      return res.status(200).json({invoice, partyDetails: partyDetails || null, itemDetails: foundItemDetails})
-    } catch (error) {
-       console.error("Error fetching invoice ", error);
-       return res.status(500).json({ error: "Server error" });
+export const getInvoice = async (req, res) => {
+  const { invoiceId } = req.params;
+
+  try {
+    const invoice = await PurchaseInvoice.findOne({
+      _id: req.params.id,
+      userId: req.user._id,
+    });
+
+    if (!invoice) {
+      return res.status(404).json({ error: "Invoice not found" });
     }
-}
+
+    const partyDetails = await Party.findOne({
+      partyName: invoice.partyName,
+      userId: req.user._id,
+    });
+
+    const itemDetails = await Promise.all(
+      invoice.purchaseItems.map(async (purchaseItem) => {
+        return await Item.findOne({
+          itemName: purchaseItem.itemName,
+          userId: req.user._id,
+        });
+      })
+    );
+
+    const foundItemDetails = itemDetails.filter((item) => item !== null);
+
+    return res
+      .status(200)
+      .json({
+        invoice,
+        partyDetails: partyDetails || null,
+        itemDetails: foundItemDetails,
+      });
+  } catch (error) {
+    console.error("Error fetching invoice ", error);
+    return res.status(500).json({ error: "Server error" });
+  }
+};
 
      
 
@@ -107,8 +131,8 @@ export const updateInvoice = async (req, res) => {
       } = partyInfo;
       const { pandfAmount, grandTotal: totalAmount } = grandTotal;
   
-      const updatedInvoice = await PurchaseInvoice.findByIdAndUpdate(
-        req.params.id,
+      const updatedInvoice = await PurchaseInvoice.findOneAndUpdate(
+        { _id: req.params.id, userId: req.user._id },
         {
           partyName,
           billingName,
@@ -138,7 +162,10 @@ export const updateInvoice = async (req, res) => {
 
 export const deleteInvoice = async(req,res) => {
     try {
-        const deletedInvoice = await PurchaseInvoice.findByIdAndDelete(req.params.id)
+      const deletedInvoice = await  PurchaseInvoice.findOneAndDelete({
+        _id: req.params.id,
+        userId: req.user._id, 
+      });
     if(!deletedInvoice){
         return res.status(404).json({error: "Invoice not found"})
     }
@@ -150,12 +177,21 @@ export const deleteInvoice = async(req,res) => {
     
 }
 
-export const highestInvoice = async(req,res) => {
+export const highestInvoice = async (req, res) => {
   try {
-    const highestInvoice = await PurchaseInvoice.findOne().sort('-invoiceNo').exec();
-    
-    res.json({highestInvoiceNo:highestInvoice ? highestInvoice.invoiceNo : 0})
+    const highestInvoice = await PurchaseInvoice.findOne({ userId: req.user._id }) 
+      .sort("-invoiceNo")
+      .exec();
+
+    res.json({
+      highestInvoiceNo: highestInvoice ? highestInvoice.invoiceNo : 0,
+    });
   } catch (error) {
-    res.status(500).json({ error: 'An error occurred while fetching the highest invoice number.' });
+    console.error("Error fetching highest invoice number", error);
+    res
+      .status(500)
+      .json({
+        error: "An error occurred while fetching the highest invoice number.",
+      });
   }
-}
+};

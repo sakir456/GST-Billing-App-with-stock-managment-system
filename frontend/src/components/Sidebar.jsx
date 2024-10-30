@@ -8,6 +8,7 @@ import useSettingsStore from "../zustand/useSettingsStore";
 import useGeneralStore from "../zustand/useGeneralStore";
 import usePurchaseStore from "../zustand/usePurchaseStore";
 
+
 const Sidebar = () => {
   const { setIsFirmForm, firmInfo } = useSidebarStore();
   const { setIsSettings } = useSettingsStore();
@@ -16,9 +17,11 @@ const Sidebar = () => {
   const { setIsParty } = usePartyStore();
   const { setInvoicePrintPage } = useGeneralStore();
   const { setIsPurchase } = usePurchaseStore();
-
+  
   return (
-    <div className="h-screen w-auto bg-customGreen pt-2 flex flex-col  ">
+    
+    
+    <div className=" hidden   h-screen w-auto bg-customGreen pt-2 sm:flex flex-col  ">
       <div
         className="flex items-center mb-6 ml-3 w-52 cursor-pointer"
         onClick={() => setIsFirmForm(true)}
@@ -105,6 +108,9 @@ const Sidebar = () => {
       </ul>
       <LogoutButton />
     </div>
+    
+    
+    
   );
 };
 

@@ -7,8 +7,14 @@ const useGeneralStore = create((set)=> ({
      fetchInvoiceId: null,
      setFetchInvoiceId: (id) => set({fetchInvoiceId:id}),
 
-       invoice:{invoice:null, partyDetails: null, itemDetails: null},
-       setInvoice : (data) => set({invoice: data})
+   invoice:{invoice:null, partyDetails: null, itemDetails: null},
+  setInvoice : (data) => set({invoice: data}),
+
+  dashBoardSearchInput : "",
+  setDashBoardSearchInput: (value) => set({dashBoardSearchInput:value})
+
+  
+       
      
 
 

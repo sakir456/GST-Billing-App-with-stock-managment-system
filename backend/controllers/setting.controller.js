@@ -5,7 +5,8 @@ export const saveSettings = async(req, res) => {
   try{
     const {termsAndConditions} = req.body
     const newSetting = new Setting({
-        termsAndConditions
+        termsAndConditions,
+        userId: req.user._id   
     })
     await newSetting.save()
     res.status(201).json(newSetting)
@@ -19,8 +20,8 @@ export const saveSettings = async(req, res) => {
 export const updateSettings = async(req,res)=> {
     try{
       const {termsAndConditions} = req.body
-      const updatedSetting = await Setting.findByIdAndUpdate(
-        req.params.id,
+      const updatedSetting = await Setting.findOneAndUpdate(
+        { _id: req.params.id, userId: req.user._id },
         {
             termsAndConditions   
         },

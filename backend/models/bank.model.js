@@ -12,6 +12,11 @@ const bankSchema  = new mongoose.Schema({
    },
    address:{
     type: String
+   },
+   userId: { 
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
    }
 },{timestamps: true})
 

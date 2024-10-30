@@ -47,7 +47,7 @@ const BankInfoForm = () => {
     
   },[savedBankDetails,setBankData ])
 
-  const isSaveDisabled = !bankData.bankName || bankData.bankName.trim()==="";
+  const isSaveDisabled = !bankData?.bankName || bankData?.bankName.trim()==="";
   return (
     <div>
     {loading || isLoading ? (
@@ -67,10 +67,10 @@ const BankInfoForm = () => {
         <input
         placeholder=" Bank Name"
         className=" w-64 py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
-        value={bankData.bankName}
+        value={bankData?.bankName}
         onChange={(e) => handleInputChange("bankName", e.target.value)}
         />
-        {bankData.bankName && (
+        {bankData?.bankName && (
        <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">Bank Name</label>
        )}
         </div>
@@ -80,10 +80,10 @@ const BankInfoForm = () => {
         <input
         placeholder="Account No."
         className=" w-64 py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
-        value={bankData.accountNO}
+        value={bankData?.accountNO}
         onChange={(e) => handleInputChange("accountNO", e.target.value)}
         />
-        {bankData.accountNO && (
+        {bankData?.accountNO && (
           <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">Account No.</label>
         )}
       </div>
@@ -94,10 +94,10 @@ const BankInfoForm = () => {
         <input
         placeholder=" Bank Ifsc"
         className=" w-64 py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
-        value={bankData.bankIfsc}
+        value={bankData?.bankIfsc}
         onChange={(e) => handleInputChange("bankIfsc", e.target.value)}
         />
-        {bankData.bankIfsc && (
+        {bankData?.bankIfsc && (
           <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">Bank Ifsc</label>
         )}
       </div>
@@ -106,10 +106,10 @@ const BankInfoForm = () => {
         <input
         placeholder="Address"
         className=" w-64 py-1 px-2 border-2 border-gray-300 rounded-md outline-none "
-        value={bankData.address}
+        value={bankData?.address}
         onChange={(e) => handleInputChange("address", e.target.value)}
         />
-        {bankData.address && (
+        {bankData?.address && (
           <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">Address</label>
         )}
       </div>

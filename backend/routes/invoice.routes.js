@@ -1,14 +1,16 @@
 import express from "express";
-import { createInvoice, deleteInvoice, getInvoice, getInvoices, highestInvoice, updateInvoice } from "../controllers/invoice.controller.js";
+import { createInvoice, deleteInvoice, getChartData,  getInvoice, getInvoices, highestInvoice, updateInvoice } from "../controllers/invoice.controller.js";
+import { authUser } from "../middleware/authUser.js";
 
 
 const router = express.Router();
 
-router.post("/createinvoice",createInvoice)
-router.get("/getinvoices",getInvoices)
-router.get("/getinvoice/:id",getInvoice);
-router.put("/updateinvoice/:id",updateInvoice )
-router.delete("/deleteinvoice/:id",deleteInvoice)
-router.get("/highestinvoice",highestInvoice)
+router.post("/createinvoice",authUser,createInvoice)
+router.get("/getinvoices",authUser,getInvoices)
+router.get("/getinvoice/:id",authUser,getInvoice);
+router.put("/updateinvoice/:id",authUser,updateInvoice )
+router.delete("/deleteinvoice/:id",authUser,deleteInvoice)
+router.get("/highestinvoice",authUser,highestInvoice)
+router.get("/getchartdata",authUser, getChartData)
 
 export default router
