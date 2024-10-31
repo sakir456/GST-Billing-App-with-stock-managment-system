@@ -23,7 +23,7 @@ const partySchema = new mongoose.Schema({
         type:Number
     },
     asOfDate:{
-     type:Number
+     type:String
     }
 },{timestamps:true})
 

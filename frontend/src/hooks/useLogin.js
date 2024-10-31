@@ -1,14 +1,14 @@
 import { useState } from "react"
 import toast from "react-hot-toast"
 import useAuthStore from "../zustand/useAuthStore"
-import useSaleStore from "../zustand/useSaleStore"
+
 
 
 
 const useLogin = () => {
   const [loading, setLoading] = useState(false)
   const { setAuthUser} = useAuthStore()
-  const {resetForm} = useSaleStore()
+  
  
 
   const login  = async (email, password) => {
@@ -29,7 +29,7 @@ const useLogin = () => {
         }
         
         setAuthUser(data)
-        resetForm()
+      
        
 
 

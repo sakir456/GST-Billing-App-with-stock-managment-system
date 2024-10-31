@@ -23,7 +23,7 @@ const SalesMainContainer = () => {
   const formatInvoiceDate = (dateString) => {
     const date = new Date(dateString);
     const day = date.getDate().toString().padStart(2, '0');
-    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-indexed
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
     const year = date.getFullYear();
     return `${day}-${month}-${year}`;
   };
@@ -103,7 +103,7 @@ const SalesMainContainer = () => {
               <div className="px-2 py-1.5  text-sm bg-gray-200  rounded-md rounded-r-none">Between</div>
               <input 
                 type="Date"
-                className="text-gray-300 border border-gray-300 px-2 py-1 text-sm border-x-0 outline-none cursor-pointer  "
+                className="text-gray-300 border border-gray-300 px-2 py-1 text-sm border-x-0 outline-none   "
                 value={startDate}
                 onChange={(e) => handleDateChange(e.target.value, endDate)}
               />
@@ -111,7 +111,7 @@ const SalesMainContainer = () => {
               <input 
                 type="Date"
                 className="text-gray-300 border border-gray-300 px-2 py-1 text-sm border-l-0 outline-none 
-                 cursor-pointer rounded-md rounded-l-none"
+                  rounded-md rounded-l-none"
                  value={endDate}
                  onChange={(e) => handleDateChange(startDate, e.target.value)}
               />

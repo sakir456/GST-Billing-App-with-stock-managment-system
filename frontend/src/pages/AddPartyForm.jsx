@@ -17,7 +17,7 @@ const AddPartyForm = () => {
     const formattedPartyData = {
      ...partyData,
      openingBalance: partyData.openingBalance ? parseFloat(partyData.openingBalance) : undefined,
-     asOfDate:partyData.asOfDate ? parseFloat(partyData.asOfDate) : undefined,
+    
      }
      await addParty(formattedPartyData)
      
@@ -32,7 +32,7 @@ const AddPartyForm = () => {
     const formattedPartyData = {
       ...partyData,
       openingBalance: partyData.openingBalance ? parseFloat(partyData.openingBalance) : undefined,
-      asOfDate:partyData.asOfDate ? parseFloat(partyData.asOfDate) : undefined,
+      
       }
       await updateParty (partyData._id,formattedPartyData);
       resetPartyData()
@@ -56,19 +56,28 @@ const AddPartyForm = () => {
     <RxCross1 className="mr-3 cursor-pointer"  onClick={handleCross}/>
     </div>
     <div className="flex items-center gap-5 my-5 ">
+        <div className="relative">
         <input placeholder="Party Name" className="py-1 px-2 border-2 border-gray-300
-         rounded-md  outline-none focus:outline-customLightGreen"
+         rounded-md  outline-none"
          name="partyName"
          value={partyData.partyName}
          onChange={handleChange}
-
-         />
+        />
+        {partyData.partyName && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">PartyName</label>
+        )}
+        </div>
+        <div className="relative">
         <input placeholder="GSTIN" className="py-1 px-2 border-2 border-gray-300 
-        rounded-md outline-none focus:outline-customLightGreen "
+        rounded-md outline-none "
         name="GSTIN"
         value={partyData.GSTIN}
         onChange={handleChange}
         />
+        {partyData.GSTIN && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">GSTIN</label>
+        )}
+        </div>
     </div>
     
     <div className="mt-6 flex gap-28">
@@ -95,18 +104,28 @@ const AddPartyForm = () => {
    </div>
    <div className="text-lg font-medium mt-4">Opening Balance</div>
    <div className="flex items-center gap-5 my-5 ">
+        <div className="relative">
         <input placeholder="Amount" className="py-1 px-2 border-2 border-gray-300
-         rounded-md  outline-none focus:outline-customLightGreen"
+         rounded-md  outline-none"
          name="openingBalance"
          value={partyData.openingBalance}
          onChange={handleChange}
          />
-        <input placeholder="As Of Date" className="py-1 px-2 border-2 border-gray-300 
-        rounded-md outline-none focus:outline-customLightGreen "
+         {partyData.openingBalance && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">Amount</label>
+        )}
+         </div>
+        <div className="relative">
+        <input type="Date" placeholder="As Of Date" className="py-1 px-2 border-2 border-gray-300 
+        rounded-md outline-none  "
           name="asOfDate"
         value={partyData.asOfDate}
         onChange={handleChange}
         />
+         {partyData.asOfDate && (
+          <label className="absolute text-[11px] font-medium text-customLightGreen bg-white -top-2 left-2 ">As Of Date</label>
+        )}
+        </div>
     </div>
     <div className="text-end mt-40">
       <button className={`mt-8 items-center px-4 py-2 text-white rounded-md 

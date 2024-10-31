@@ -25,18 +25,18 @@ const Searchbar = () => {
  
 
   return (
-    <div className="flex items-center shadow-md w-auto bg-white  ">
+    <div className="flex items-center shadow-md w-auto bg-white ">
        <IoSearch className="h-6 w-6 ml-5" />
        <input 
        value={dashBoardSearchInput}
        placeholder="Search Transactions" className="py-5 pl-4 pr-2 outline-none w-48" onChange={handleInput}/>
        <button className="flex items-center ml-4 py-2 px-3 rounded-3xl bg-customLightGreen text-white 
-          transition duration-300 ease-in-out transform hover:scale-105" onClick={()=> {navigate("/sales"); setIsSaleForm(true) }}>
+          transition duration-300 ease-in-out transform hover:scale-105" onClick={()=> {setIsSaleForm(true) }}>
          <FaCirclePlus className="mr-1 text-base"  />
          Add Sale
        </button> 
        <button className="flex items-center ml-4 py-2 px-3 rounded-3xl bg-customLightGreen text-white 
-        transition duration-300 ease-in-out transform hover:scale-105" onClick={()=> {navigate("/purchase"); setIsPurchaseForm(true) }}>
+        transition duration-300 ease-in-out transform hover:scale-105" onClick={()=> { setIsPurchaseForm(true) }}>
          <FaCirclePlus className="mr-1 text-base" />
          Add Purchase
        </button> 
