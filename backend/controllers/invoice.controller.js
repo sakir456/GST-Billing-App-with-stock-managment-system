@@ -127,14 +127,14 @@ export const getChartData = async (req, res) => {
       },
     ]);
 
-    if (chartData.length === 0) {
-      return res.status(404).json({ error: "No chart data found" });
-    }
+    // if (chartData.length === 0) {
+    //   return res.status(404).json({ error: "No chart data found" });
+    // }
 
-    // Format the result to match the front-end expectations
+   
     const formattedData = chartData.map((item) => ({
-      date: item._id, // The grouped date
-      amount: item.totalAmount, // The summed amount
+      date: item._id, 
+      amount: item.totalAmount, 
     }));
 
     return res.status(200).json(formattedData);
