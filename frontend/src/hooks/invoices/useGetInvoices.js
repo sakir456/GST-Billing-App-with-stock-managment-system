@@ -12,10 +12,10 @@ const useGetInvoices = () => {
 
 
        if (startDate) {
-       params.startDate = startDate; // Add startDate to the params object
+       params.startDate = startDate; 
        }
      if (endDate) {
-     params.endDate = endDate; // Add endDate to the params object
+     params.endDate = endDate; 
       }
 
     const query = new URLSearchParams(params).toString();

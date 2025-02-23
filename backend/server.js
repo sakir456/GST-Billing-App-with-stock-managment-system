@@ -20,7 +20,10 @@ const PORT = process.env.PORT || 6000;
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173"], // Allowed origins
+  credentials: true, // Allow cookies
+}));
 app.use(express.json());
 app.use(cookieParser());
 
