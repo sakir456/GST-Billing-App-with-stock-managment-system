@@ -3,14 +3,16 @@ import toast from "react-hot-toast"
 
 const useDeleteInvoice = () => {
     const [isLoading, setIsLoading]  = useState(false)
+
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const deleteInvoice =  async(invoiceId) => {
     setIsLoading(true)
     try {
-        const res = await fetch(`/api/invoice/deleteinvoice/${invoiceId}`,{
+        const res = await fetch(`${API_BASE_URL}/api/invoice/deleteinvoice/${invoiceId}`,{
             method: 'DELETE',
-            headers: {
-              'Content-Type': 'application/json',
-            },
+            headers: {'Content-Type': 'application/json'},
+            credentials: 'include',
         });
         const data = await res.json();
         if (data.error) {

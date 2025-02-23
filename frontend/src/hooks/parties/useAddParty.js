@@ -8,14 +8,18 @@ const useAddParty = () => {
     const {setIsParty, resetPartyData} = usePartyStore();
 
  const addParty = async(formattedPartyData) => {
+
+   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
      if(!formattedPartyData.partyName){
         toast.error("Name is required to save Party")
      }
      setLoading(true)
      try {
-        const res = await fetch("/api/parties/addparty", {
+        const res = await fetch(`${API_BASE_URL}/api/parties/addparty`, {
             method: "POST",
             headers: { 'Content-Type': 'application/json' },
+            credentials: "include",
             body: JSON.stringify(formattedPartyData)
         })
         const data = await res.json();

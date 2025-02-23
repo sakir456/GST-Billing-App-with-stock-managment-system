@@ -5,6 +5,8 @@ const useGetPurchaseInvoices = () => {
   const [loading, setLoading] = useState(false);
   const [invoices, setInvoices] = useState([]);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const fetchPurchaseInvoices = async (startDate, endDate) => {
     setLoading(true);
     try {
@@ -12,15 +14,18 @@ const useGetPurchaseInvoices = () => {
 
 
        if (startDate) {
-       params.startDate = startDate; // Add startDate to the params object
+       params.startDate = startDate; 
        }
      if (endDate) {
-     params.endDate = endDate; // Add endDate to the params object
+     params.endDate = endDate; 
       }
 
     const query = new URLSearchParams(params).toString();
 
-      const res = await fetch(`/api/purchaseinvoice/getinvoices?${query}`);
+      const res = await fetch(`${API_BASE_URL}/api/purchaseinvoice/getinvoices?${query}`,{
+        method: "GET",
+        credentials: "include", 
+      });
       const data = await res.json();
 
       if (data.error) {

@@ -7,6 +7,9 @@ const useUpdatePurchaseInvoice = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [data, setData] = useState()
   const {setIsPurchaseForm} = usePurchaseStore()
+
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const updatePurchaseInvoice = async(invoiceId, updatedInvoiceData) => {
         if(!updatedInvoiceData.partyInfo.partyName){
           toast.error("Name is required to update item");
@@ -14,9 +17,10 @@ const useUpdatePurchaseInvoice = () => {
         }
         setIsLoading(true)
         try {
-          const res = await fetch(`/api/purchaseinvoice/updateinvoice/${invoiceId}`, {
+          const res = await fetch(`${API_BASE_URL}/api/purchaseinvoice/updateinvoice/${invoiceId}`, {
             method: 'PUT',
-            headers: {'Content-Type': 'application/json',},
+            headers: {'Content-Type': 'application/json'},
+            credentials: "include",
             body:JSON.stringify(updatedInvoiceData),
           })
           const data = res.json();

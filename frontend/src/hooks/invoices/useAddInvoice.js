@@ -8,7 +8,7 @@ const useAddInvoice = () => {
     const [data,setData] = useState()
     const {setIsSaleForm, setSavedInvoiceData,setInvoiceId} = useSaleStore()
 
-
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
  const addInvoice = async(invoiceData) => {
       if(!invoiceData.partyInfo.partyName){
@@ -17,9 +17,10 @@ const useAddInvoice = () => {
       }
       setLoading(true)
       try {
-       const res =  await fetch(`/api/invoice/createinvoice`, {
+       const res =  await fetch(`${API_BASE_URL}/api/invoice/createinvoice`, {
         method:"POST",
         headers: {'Content-Type': 'application/json'},
+        credentials: "include",
         body:JSON.stringify(invoiceData)
        });
        const data = await res.json();

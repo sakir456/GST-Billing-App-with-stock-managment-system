@@ -6,13 +6,17 @@ import toast from "react-hot-toast"
 const useUpdateSetting = () => {
      const [loading, setLoading] = useState(false)
      const {setTermsAndConditionsData,   setIsSettings, clearTermsAndConditions} = useSettingsStore()
+
+     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
      const updateSetting = async(id, termsAndConditions) => {
         setLoading(true)
         try {
           clearTermsAndConditions()
-          const res = await fetch(`/api/settings/updatesettings/${id}`, {
+          const res = await fetch(`${API_BASE_URL}/api/settings/updatesettings/${id}`, {
             method: 'PUT',
             headers: {'Content-Type': 'application/json'},
+            credentials: "include",
             body: JSON.stringify({termsAndConditions})
           });
           const data = await res.json()

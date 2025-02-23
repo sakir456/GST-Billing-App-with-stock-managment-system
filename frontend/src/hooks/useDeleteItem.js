@@ -4,14 +4,15 @@ import toast from "react-hot-toast";
 const useDeleteItem = () => {
   const [isLoading, setIsLoading] = useState(false);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const deleteItem = async (itemId) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/item/deleteitem/${itemId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/item/deleteitem/${itemId}`, {
         method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: {"Content-Type": "application/json"},
+        credentials: "include",
       });
       const data = await response.json();
       if (data.error) {

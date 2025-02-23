@@ -6,13 +6,14 @@ import toast from "react-hot-toast"
 const useUpdateFirmDetails = () => {
   const [loading, setLoading] = useState(false)
   const {setSavedFirmData, setIsFirmForm,  setFirmInfo, clearFirmData} = useSidebarStore()
-  
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 const updateFirmDetails = async(firmId, firmData) => {
     setLoading(true)
   try {
     clearFirmData()
-    const res = await fetch(`/api/firm/updatefirmdetails/${firmId}`,{
+    const res = await fetch(`${API_BASE_URL}/api/firm/updatefirmdetails/${firmId}`,{
         method:"PUT",
+        credentials: "include",
         body:firmData
       })
       const data = await res.json();

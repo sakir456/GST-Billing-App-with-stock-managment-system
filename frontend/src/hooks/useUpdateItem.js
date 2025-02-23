@@ -7,6 +7,8 @@ const useUpdateItem = () => {
     const { setIsAddingItem, setIsProducts, resetItemData } = useItemStore();
    const [isLoading, setIsLoading] = useState(false)
    const [data, setData] = useState()
+
+   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   
    const updateItem = async(itemId, updatedItemData) => {
 
@@ -16,9 +18,10 @@ const useUpdateItem = () => {
       }
     setIsLoading(true);
     try {
-       const res = await fetch(`/api/item/updateitem/${itemId}`, {
+       const res = await fetch(`${API_BASE_URL}/api/item/updateitem/${itemId}`, {
         method: 'PUT',
-        headers: {'Content-Type': 'application/json',},
+        headers: {'Content-Type': 'application/json'},
+        credentials: "include",
         body:JSON.stringify(updatedItemData),
        })
        const data = await res.json();

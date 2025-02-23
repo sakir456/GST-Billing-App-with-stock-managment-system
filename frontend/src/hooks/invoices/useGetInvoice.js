@@ -7,11 +7,15 @@ const useGetInvoice = () => {
     const [loading, setLoading] = useState(false)
     const [invoice, setInvoice] =useState({invoice:null, partyDetails: null, itemDetails: null})
     
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const fetchInvoice = async(invoiceId) => {
         setLoading(true)
         try {
-            const res = await fetch(`/api/invoice/getinvoice/${invoiceId}`,)
+            const res = await fetch(`${API_BASE_URL}/api/invoice/getinvoice/${invoiceId}`,{
+                method: "GET",
+                credentials: "include", 
+              })
             const data = await res.json()
             if(data.error){
                 throw new Error(data.error || "Failed to fetch Invoice")

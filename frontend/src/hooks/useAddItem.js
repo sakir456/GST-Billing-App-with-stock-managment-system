@@ -7,6 +7,8 @@ const useAddItem = () => {
   const [data, setData] = useState();
   const [loading,setLoading] = useState(false)
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
   const addItem = async (formattedItemData) => {
     if (!formattedItemData.itemName) {
       toast.error("Name is required to save item");
@@ -14,9 +16,10 @@ const useAddItem = () => {
     }
     setLoading(true)
     try {
-      const res = await fetch("/api/item/additem", {
+      const res = await fetch(`${API_BASE_URL}/api/item/additem`, {
         method: "POST",
         headers: { 'Content-Type': 'application/json' },
+        credentials: "include",
         body: JSON.stringify(formattedItemData)
       });
 

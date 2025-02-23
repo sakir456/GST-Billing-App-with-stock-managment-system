@@ -6,10 +6,15 @@ export const useGetParties = () => {
     const [loading,setLoading] = useState()
     const [parties, setParties] = useState([]);
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
     const fetchParties = async() => {
          setLoading(true)
          try {
-            const res =  await fetch("/api/parties/getparties")
+            const res =  await fetch(`${API_BASE_URL}/api/parties/getparties`,{
+               method: "GET",
+               credentials: "include", 
+             })
             const data = await res.json();
             if (data.error) {
                 throw new Error(data.error || "failed to fetch Parties");

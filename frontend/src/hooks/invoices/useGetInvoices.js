@@ -5,6 +5,9 @@ const useGetInvoices = () => {
   const [loading, setLoading] = useState(false);
   const [invoices, setInvoices] = useState([]);
 
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
   const fetchInvoices = async (startDate, endDate) => {
     setLoading(true);
     try {
@@ -20,7 +23,10 @@ const useGetInvoices = () => {
 
     const query = new URLSearchParams(params).toString();
 
-      const res = await fetch(`/api/invoice/getinvoices?${query}`);
+      const res = await fetch(`${API_BASE_URL}/api/invoice/getinvoices?${query}`,{
+        method: "GET",
+        credentials: "include", 
+      });
       const data = await res.json();
 
       if (data.error) {

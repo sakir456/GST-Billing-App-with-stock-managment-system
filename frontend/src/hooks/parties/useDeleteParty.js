@@ -4,14 +4,16 @@ import toast from "react-hot-toast";
 
 const useDeleteParty = () => {
     const [isLoading, setIsLoading] = useState(false);
+
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
  const deleteParty = async(partyId) => {
     setIsLoading(true);
     try {
-        const response = await fetch(`/api/parties/deleteparty/${partyId}`,{
+        const response = await fetch(`${API_BASE_URL}/api/parties/deleteparty/${partyId}`,{
             method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
         });
         const data = await response.json();
         if (data.error) {
