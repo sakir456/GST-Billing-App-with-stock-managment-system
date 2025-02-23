@@ -64,7 +64,34 @@ const DashboardButton = () => {
      
       </div>
      </button>
-
+     <button className=" w-[200px] group flex flex-col items-center  ml-6 rounded-lg px-12 text-black py-4
+      hover:bg-customGreen hover:text-white shadow-md ">
+      <div className="flex items-center">
+      <BiDownload className="mr-1 text-customLightGreen group-hover:text-white"  />
+      <div className="text-sm">{"you'll Recieve"}</div>
+      </div>
+      <div className="flex items-center mt-3 font-bold text-lg">
+      <FaRupeeSign className="text-base" />
+      <div>{totalSalesAmount}</div>
+      </div>
+      <div className="flex text-xs">
+      (Total) 
+      </div>
+   </button>
+   <button className=" w-[200px] group flex flex-col items-center  ml-6 rounded-lg px-12 text-black py-4
+      hover:bg-customGreen hover:text-white shadow-md ">
+      <div className="flex items-center">
+      <BiUpload className="mr-1 text-customLightGreen group-hover:text-white"  />
+      <div className="text-sm">{"you'll Give" }</div>
+      </div>
+      <div className="flex items-center mt-3 font-bold text-lg">
+      <FaRupeeSign className="text-base" />
+      <div>{totalPurchaseAmount}</div>
+      </div>
+      <div className="flex text-xs">
+      (Total) 
+      </div>
+   </button>
     
    </div>
   )

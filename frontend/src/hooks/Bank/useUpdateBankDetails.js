@@ -6,6 +6,9 @@ import useBankStore from "../../zustand/useBankStore";
 const useUpdateBankDetails = () => {
      const [loading,setLoading] = useState(false);
      const {setSavedBankDetails, setIsBankForm,  clearBankData} = useBankStore()
+
+     const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
     const updateBankDetails = async(bankId, updatedBankData) => {
         if(!updatedBankData.bankName ) {
             toast.error ("Bank Name is required to Update BankDetails")
@@ -14,9 +17,10 @@ const useUpdateBankDetails = () => {
         setLoading(true)
         try {
             clearBankData()
-            const res = await fetch(`api/bank/updatebankdetails/${bankId}`, {
+            const res = await fetch(`${API_BASE_URL}/api/bank/updatebankdetails/${bankId}`, {
                 method:'PUT',
                 headers:{'Content-Type': 'application/json'},
+                credentials: "include",
                 body:JSON.stringify(updatedBankData)
             })
             const data = await res.json()
