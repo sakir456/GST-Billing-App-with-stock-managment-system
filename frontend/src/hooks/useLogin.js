@@ -15,12 +15,13 @@ const useLogin = () => {
     const success =  handleInputErrors({email,password})
     if(!success) return;
  
-
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
     setLoading(true)
     try {
-        const res = await fetch("/api/auth/login", {
+        const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
+            credentials: "include",
             body:JSON.stringify({ email, password })
         })
         const data = await res.json()

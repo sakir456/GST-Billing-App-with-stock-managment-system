@@ -8,15 +8,17 @@ const useSignup = () => {
     const [loading,setLoading] = useState(false)
     const {setAuthUser} = useAuthStore();
 
+    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
     const signup = async({fullName,userName,password, confirmpassword,email}) => {
     const success = handleInputErrors({fullName,userName,password, confirmpassword,email})
     if(!success) return;
     setLoading(true)
      try {
-        const res = await fetch("/api/auth/signup", {
+        const res = await fetch(`${API_BASE_URL}/api/auth/signup`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
+            credentials: "include",
             body:JSON.stringify({fullName,userName,password, confirmpassword,email})
         })
         const data = await res.json();
