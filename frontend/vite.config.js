@@ -6,18 +6,13 @@ export default defineConfig(({ mode }) => ({
   plugins: [react()],
   server: {
     port: 5173,
-    proxy: mode === 'development' ? {
+    proxy:  {
       '/api': {
-        target: 'http://localhost:6000', // Local backend URL in development
+        target: 'https://salesmart-backend.onrender.com', 
         changeOrigin: true,
         secure: false,
       },
-    } : undefined, // No proxy in production
+    }  
   },
 }));
 
-// "/api": {
-//       //   target: "http://localhost:6000",
-//       //   changeOrigin: true,  // This helps with CORS issues
-//       //   secure: false,   
-//       // }

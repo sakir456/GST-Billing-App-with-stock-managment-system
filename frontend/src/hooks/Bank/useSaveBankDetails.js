@@ -7,7 +7,9 @@ const useSaveBankDetails = () => {
     const [loading, setLoading] = useState(false);
     const {setSavedBankDetails,setIsBankForm,  clearBankData } = useBankStore()
     
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+    // const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+    console.log(import.meta.env.VITE_API_BASE_URL);
 
     const saveBankdetails = async(BankData) => {
         if(!BankData.bankName ) {
@@ -17,7 +19,7 @@ const useSaveBankDetails = () => {
         setLoading(true)
         try {
             clearBankData()
-           const res = await fetch(`${API_BASE_URL}/api/bank/savebankdetails`, {
+           const res = await fetch(`/api/bank/savebankdetails`, {
             method:"POST",
            headers: { 'Content-Type': 'application/json' },
            credentials: "include",
