@@ -1,6 +1,6 @@
 import DashboardButton from "./DashboardButton";
 import DashboardGraphs from "./DashboardGraphs";
-import DashboardMainRight from "./DashboardMainRight";
+
 
 
 const DashboardMain = () => {
@@ -12,7 +12,7 @@ const DashboardMain = () => {
      </div>
     
     
-    <DashboardMainRight/>
+   
     
     </div>
   )
