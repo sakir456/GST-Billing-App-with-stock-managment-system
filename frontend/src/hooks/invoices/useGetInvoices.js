@@ -32,7 +32,7 @@ const useGetInvoices = () => {
       if (data.error) {
         throw new Error(data.error || "Failed to fetch invoices");
       }
-
+     console.log(data)
       setInvoices(data);
     } catch (error) {
       toast.error(error.message);

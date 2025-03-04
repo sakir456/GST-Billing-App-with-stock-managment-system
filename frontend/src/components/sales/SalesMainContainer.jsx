@@ -76,18 +76,13 @@ const SalesMainContainer = () => {
   ))
 
 
-  // const filteredInvoices = invoices.filter(invoice => (
-  //   String(formatInvoiceDate(invoice.invoiceDate)).includes(searchQuery) ||
-  //   invoice.partyName.toLowerCase().includes(searchQuery.toLowerCase()) || 
-  //   String(invoice.invoiceNo).includes(searchQuery) || 
-  //   String(invoice.grandTotal).includes(searchQuery)
-  // ))
+  
 
   const handlePrintbtn = (invoiceId) => {
      setInvoiceId(invoiceId)
      setInvoicePrintPage(true)
   }
-
+  
   return (
     <div>
       {loading || isLoading ? (
@@ -200,4 +195,4 @@ const SalesMainContainer = () => {
 
 export default SalesMainContainer;
 
-            
+             

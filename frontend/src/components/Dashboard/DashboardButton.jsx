@@ -29,11 +29,24 @@ const DashboardButton = () => {
     setTotalPurchaseAmount(totalPuchasecalculated)
    },[invoices, purchaseInvoices])
 
+   const extractDateandDay = (date)=> {
+
+    const splitDate = date.split("T")[0]
+    const newdate = new Date(splitDate)
+    const day = newdate.getDate()
+    const month = newdate.getMonth()  
+    const fullYear = newdate.getFullYear()
+    
+  
+    return `${day}/${month}/${fullYear}  `
+  }
+
    
 
   return (
-    <div className="flex w-auto ml-8">
-   <button className=" w-[200px] group flex flex-col items-center rounded-lg px-12  
+    <div className="flex flex-col  ml-8">
+    <div className="flex ">
+   <button className="  group flex  flex-col items-center rounded-lg px-12  
   text-black py-4 hover:bg-customLightGreen hover:text-white shadow-md transition-all  ease-in-out" onClick={() => navigate("/sales")}>
   <div className="flex items-center trans ">
     <MdAlignVerticalBottom className="mr-1 text-customLightGreen group-hover:text-white " />
@@ -49,7 +62,7 @@ const DashboardButton = () => {
 </button>
 
 
-     <button className=" w-[200px] group flex flex-col items-center  ml-6 rounded-lg px-12  text-black py-4
+     <button className="  group flex flex-col items-center  ml-6 rounded-lg px-12  text-black py-4
       hover:bg-customLightGreen hover:text-white shadow-md " onClick={() => navigate("/purchase")}>
       <div className="flex items-center">
       <BiPurchaseTagAlt className="mr-1 text-customLightGreen group-hover:text-white" />
@@ -64,7 +77,7 @@ const DashboardButton = () => {
      
       </div>
      </button>
-     <button className=" w-[200px] group flex flex-col items-center  ml-6 rounded-lg px-12 text-black py-4
+     <button className=" group flex flex-col items-center  ml-6 rounded-lg px-12 text-black py-4
       hover:bg-customGreen hover:text-white shadow-md ">
       <div className="flex items-center">
       <BiDownload className="mr-1 text-customLightGreen group-hover:text-white"  />
@@ -78,7 +91,7 @@ const DashboardButton = () => {
       (Total) 
       </div>
    </button>
-   <button className=" w-[200px] group flex flex-col items-center  ml-6 rounded-lg px-12 text-black py-4
+   <button className="  group flex flex-col items-center  ml-6 rounded-lg px-12 text-black py-4
       hover:bg-customGreen hover:text-white shadow-md ">
       <div className="flex items-center">
       <BiUpload className="mr-1 text-customLightGreen group-hover:text-white"  />
@@ -92,6 +105,29 @@ const DashboardButton = () => {
       (Total) 
       </div>
    </button>
+   </div>
+
+   <div className="bg-white max-w-3xl mt-10">
+      <div className="flex items-center gap-2.5 p-4 rounded-t border ">
+        <p className="font-semibold">Recent Invoices</p>
+      </div>
+      <div className="pt-4 border border-t-0">
+        {
+          invoices.slice(0,5).map((invoice,index)=> (
+            <div key={index} className=" px-6 py-3 flex gap-3 items-center  hover:bg-gray-200">
+            <div className=" flex flex-col flex-1 ">
+             <div className=" font-medium text-gray-800">{invoice.partyName}</div>
+             <div className="text-xs text-gray-600">{`${extractDateandDay(invoice.updatedAt)} - ${invoice.invoiceNo}`}</div>
+            </div>
+            <div className=" text-gray-600">{invoice.grandTotal}</div>
+
+            </div>
+          ))
+        }
+      </div>
+      
+
+      </div>
     
    </div>
   )
